@@ -138,6 +138,7 @@ APP_INTENT_FUNCTION = {
                             },
                             "default_values": {
                                 "type": "array",
+                                "items": {"type": "string"},
                                 "description": "Default selected values",
                             },
                         },
@@ -229,7 +230,7 @@ def parse_intent(
         table_schema = get_table_schema()
 
     if sample_data is None:
-        sample_df = get_sample_rows(5)
+        sample_df = get_sample_rows(n=5)
         sample_data = sample_df.to_string()
 
     # Inject schema into system prompt
@@ -245,7 +246,7 @@ def parse_intent(
     # Initialize OpenAI client
     client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-    # Call GPT-5.1 with function calling
+    # Call GPT-5.1 with tool calling
     try:
         response = client.chat.completions.create(
             model=os.getenv("OPENAI_MODEL", "gpt-5.1"),
@@ -253,29 +254,30 @@ def parse_intent(
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_message},
             ],
-            functions=[APP_INTENT_FUNCTION],
-            function_call={"name": "create_data_app"},  # Force this function
+            tools=[APP_INTENT_FUNCTION],
+            tool_choice={"type": "function", "function": {"name": "create_data_app"}},
             temperature=0.3,
-            max_tokens=4096,
+            max_completion_tokens=4096,
         )
     except Exception as e:
         logger.error(f"OpenAI API error: {e}")
         raise ValueError(f"Failed to parse intent: {e}")
 
-    # Extract function call from response
-    if response.choices[0].finish_reason != "function_call":
+    # Extract tool call from response
+    tool_calls = response.choices[0].message.tool_calls
+    if not tool_calls:
         raise ValueError(
-            "GPT-5.1 did not return a function call. "
+            "GPT-5.1 did not return a tool call. "
             "Ensure the prompt and schema are clear."
         )
 
-    function_call = response.choices[0].message.function_call
-    if function_call.name != "create_data_app":
-        raise ValueError(f"Unexpected function call: {function_call.name}")
+    tool_call = tool_calls[0]
+    if tool_call.function.name != "create_data_app":
+        raise ValueError(f"Unexpected function call: {tool_call.function.name}")
 
     # Parse the app_definition from function arguments
     try:
-        app_definition = json.loads(function_call.arguments)
+        app_definition = json.loads(tool_call.function.arguments)
     except json.JSONDecodeError as e:
         logger.error(f"Failed to parse function arguments: {e}")
         raise ValueError(f"Invalid JSON in function call: {e}")
