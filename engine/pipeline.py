@@ -12,6 +12,7 @@ from engine.governance import (
     check_component_permissions,
     redact_pii,
 )
+from engine.overview import generate_overview
 
 logger = logging.getLogger(__name__)
 
@@ -137,9 +138,13 @@ def run_pipeline(
     if governance.get("pii_redacted"):
         execution_results = redact_pii(execution_results, role)
 
-    return {
+    # 8. Generate plain-English narration of how the dashboard answers the request
+    result = {
         "app_definition": app_definition,
         "execution_results": execution_results,
         "validation": validation,
         "governance": governance,
     }
+    result["overview"] = generate_overview(user_message, result)
+
+    return result

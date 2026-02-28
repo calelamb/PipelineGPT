@@ -1,0 +1,2014 @@
+{
+  "saved_at": "2026-02-28T09:56:15.364396",
+  "prompt": "View all delayed shipments from 'Superior Materials' and 'Reliable Suppliers Co', including order details, delivery performance, and costs.",
+  "result": {
+    "app_definition": {
+      "app_title": "Supplier Delayed Shipments Analysis",
+      "app_description": "Analyze delayed shipments and delivery performance for selected suppliers, including order details, costs, and delivery metrics.",
+      "components": [
+        {
+          "id": "delayed_orders_kpi",
+          "type": "kpi_card",
+          "title": "Total Delayed Orders",
+          "sql_query": "SELECT COUNT(*) as delayed_count FROM supply_chain WHERE supplier IN ('Superior Materials', 'Reliable Suppliers Co') AND on_time_delivery = 0",
+          "config": {
+            "metric_name": "Delayed Orders",
+            "value_column": "delayed_count",
+            "format": "number"
+          }
+        },
+        {
+          "id": "avg_delay_kpi",
+          "type": "kpi_card",
+          "title": "Average Delivery Days",
+          "sql_query": "SELECT ROUND(AVG(delivery_days), 1) as avg_delivery_days FROM supply_chain WHERE supplier IN ('Superior Materials', 'Reliable Suppliers Co') AND on_time_delivery = 0",
+          "config": {
+            "metric_name": "Avg Days to Deliver",
+            "value_column": "avg_delivery_days",
+            "format": "number"
+          }
+        },
+        {
+          "id": "delayed_orders_trend",
+          "type": "line_chart",
+          "title": "Delayed Orders Trend by Month",
+          "sql_query": "SELECT strftime('%Y-%m', order_date) as month, supplier, COUNT(*) as delayed_count FROM supply_chain WHERE supplier IN ('Superior Materials', 'Reliable Suppliers Co') AND on_time_delivery = 0 GROUP BY month, supplier ORDER BY month",
+          "config": {
+            "x_axis": "month",
+            "y_axis": "delayed_count"
+          }
+        },
+        {
+          "id": "cost_impact",
+          "type": "bar_chart",
+          "title": "Cost Impact of Delayed Orders by Supplier",
+          "sql_query": "SELECT supplier, SUM(total_cost) as total_cost, SUM(shipping_cost) as shipping_cost FROM supply_chain WHERE supplier IN ('Superior Materials', 'Reliable Suppliers Co') AND on_time_delivery = 0 GROUP BY supplier",
+          "config": {
+            "x_axis": "supplier",
+            "y_axis": "total_cost"
+          }
+        },
+        {
+          "id": "delayed_orders_detail",
+          "type": "table",
+          "title": "Delayed Orders Details",
+          "sql_query": "SELECT order_id, order_date, supplier, product, category, quantity, delivery_days, total_cost, shipping_cost FROM supply_chain WHERE supplier IN ('Superior Materials', 'Reliable Suppliers Co') AND on_time_delivery = 0 ORDER BY order_date DESC",
+          "config": {
+            "columns": [
+              "order_id",
+              "order_date",
+              "supplier",
+              "product",
+              "category",
+              "quantity",
+              "delivery_days",
+              "total_cost",
+              "shipping_cost"
+            ],
+            "sort_column": "order_date",
+            "sort_order": "desc"
+          }
+        }
+      ],
+      "filters": [
+        {
+          "id": "date_filter",
+          "name": "Order Date Range",
+          "column": "order_date",
+          "type": "date_range"
+        },
+        {
+          "id": "supplier_filter",
+          "name": "Supplier",
+          "column": "supplier",
+          "type": "multiselect",
+          "default_values": [
+            "Superior Materials",
+            "Reliable Suppliers Co"
+          ]
+        },
+        {
+          "id": "category_filter",
+          "name": "Product Category",
+          "column": "category",
+          "type": "multiselect"
+        },
+        {
+          "id": "delivery_days_filter",
+          "name": "Delivery Days Range",
+          "column": "delivery_days",
+          "type": "numeric_range"
+        }
+      ]
+    },
+    "execution_results": {
+      "delayed_orders_kpi": {
+        "status": "success",
+        "data": [
+          {
+            "delayed_count": 145
+          }
+        ],
+        "row_count": 1
+      },
+      "avg_delay_kpi": {
+        "status": "success",
+        "data": [
+          {
+            "avg_delivery_days": 28.5
+          }
+        ],
+        "row_count": 1
+      },
+      "delayed_orders_trend": {
+        "status": "error",
+        "error": "Binder Error: Could not choose a best candidate function for the function call \"strftime(STRING_LITERAL, VARCHAR)\". In order to select one, please add explicit type casts.\n\tCandidate functions:\n\tstrftime(TIMESTAMP, VARCHAR) -> VARCHAR\n\tstrftime(TIMESTAMP_NS, VARCHAR) -> VARCHAR\n\tstrftime(TIMESTAMP WITH TIME ZONE, VARCHAR) -> VARCHAR\n\tstrftime(DATE, VARCHAR) -> VARCHAR\n\n\nLINE 1: SELECT strftime('%Y-%m', order_date) as month, supplier, COUNT...\n               ^",
+        "row_count": 0
+      },
+      "cost_impact": {
+        "status": "success",
+        "data": [
+          {
+            "supplier": "Superior Materials",
+            "total_cost": 2013243.2000000004,
+            "shipping_cost": 77078.06
+          },
+          {
+            "supplier": "Reliable Suppliers Co",
+            "total_cost": 2288063.13,
+            "shipping_cost": 78067.08000000002
+          }
+        ],
+        "row_count": 2
+      },
+      "delayed_orders_detail": {
+        "status": "success",
+        "data": [
+          {
+            "order_id": "ORD-00497",
+            "order_date": "2024-12-28",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Plastic Components",
+            "category": "Materials",
+            "quantity": 499,
+            "delivery_days": 25,
+            "total_cost": 88926.79,
+            "shipping_cost": 894.83
+          },
+          {
+            "order_id": "ORD-00488",
+            "order_date": "2024-12-21",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Steel Fasteners",
+            "category": "Materials",
+            "quantity": 289,
+            "delivery_days": 30,
+            "total_cost": 53170.22,
+            "shipping_cost": 1216.74
+          },
+          {
+            "order_id": "ORD-00487",
+            "order_date": "2024-12-20",
+            "supplier": "Superior Materials",
+            "product": "Electronic Sensors",
+            "category": "Hardware",
+            "quantity": 183,
+            "delivery_days": 21,
+            "total_cost": 15836.82,
+            "shipping_cost": 52.4
+          },
+          {
+            "order_id": "ORD-00481",
+            "order_date": "2024-12-16",
+            "supplier": "Superior Materials",
+            "product": "Control Systems",
+            "category": "Hardware",
+            "quantity": 499,
+            "delivery_days": 32,
+            "total_cost": 50354.09,
+            "shipping_cost": 1603.76
+          },
+          {
+            "order_id": "ORD-00478",
+            "order_date": "2024-12-14",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Hydraulic Cylinders",
+            "category": "Hardware",
+            "quantity": 137,
+            "delivery_days": 30,
+            "total_cost": 15411.13,
+            "shipping_cost": 934.7
+          },
+          {
+            "order_id": "ORD-00468",
+            "order_date": "2024-12-06",
+            "supplier": "Superior Materials",
+            "product": "Drive Belts",
+            "category": "Mechanical",
+            "quantity": 490,
+            "delivery_days": 38,
+            "total_cost": 78532.3,
+            "shipping_cost": 440.7
+          },
+          {
+            "order_id": "ORD-00466",
+            "order_date": "2024-12-05",
+            "supplier": "Superior Materials",
+            "product": "Steel Fasteners",
+            "category": "Assembly",
+            "quantity": 108,
+            "delivery_days": 43,
+            "total_cost": 5472.36,
+            "shipping_cost": 1462.62
+          },
+          {
+            "order_id": "ORD-00465",
+            "order_date": "2024-12-04",
+            "supplier": "Superior Materials",
+            "product": "Hydraulic Cylinders",
+            "category": "Mechanical",
+            "quantity": 104,
+            "delivery_days": 27,
+            "total_cost": 21544.64,
+            "shipping_cost": 675.45
+          },
+          {
+            "order_id": "ORD-00456",
+            "order_date": "2024-11-28",
+            "supplier": "Superior Materials",
+            "product": "Plastic Components",
+            "category": "Electronics",
+            "quantity": 15,
+            "delivery_days": 42,
+            "total_cost": 828.45,
+            "shipping_cost": 1928.31
+          },
+          {
+            "order_id": "ORD-00454",
+            "order_date": "2024-11-26",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Hydraulic Cylinders",
+            "category": "Hardware",
+            "quantity": 55,
+            "delivery_days": 40,
+            "total_cost": 12846.35,
+            "shipping_cost": 306.1
+          },
+          {
+            "order_id": "ORD-00453",
+            "order_date": "2024-11-25",
+            "supplier": "Superior Materials",
+            "product": "Aluminum Extrusions",
+            "category": "Assembly",
+            "quantity": 486,
+            "delivery_days": 15,
+            "total_cost": 51073.74,
+            "shipping_cost": 498.6
+          },
+          {
+            "order_id": "ORD-00450",
+            "order_date": "2024-11-23",
+            "supplier": "Superior Materials",
+            "product": "Drive Belts",
+            "category": "Assembly",
+            "quantity": 181,
+            "delivery_days": 21,
+            "total_cost": 5636.34,
+            "shipping_cost": 631.83
+          },
+          {
+            "order_id": "ORD-00449",
+            "order_date": "2024-11-23",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Hydraulic Cylinders",
+            "category": "Mechanical",
+            "quantity": 26,
+            "delivery_days": 37,
+            "total_cost": 5189.6,
+            "shipping_cost": 1660.55
+          },
+          {
+            "order_id": "ORD-00446",
+            "order_date": "2024-11-20",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Plastic Components",
+            "category": "Mechanical",
+            "quantity": 44,
+            "delivery_days": 28,
+            "total_cost": 1477.96,
+            "shipping_cost": 249.28
+          },
+          {
+            "order_id": "ORD-00439",
+            "order_date": "2024-11-15",
+            "supplier": "Superior Materials",
+            "product": "Plastic Components",
+            "category": "Electronics",
+            "quantity": 457,
+            "delivery_days": 19,
+            "total_cost": 63710.37,
+            "shipping_cost": 775.08
+          },
+          {
+            "order_id": "ORD-00438",
+            "order_date": "2024-11-15",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Drive Belts",
+            "category": "Electronics",
+            "quantity": 376,
+            "delivery_days": 43,
+            "total_cost": 43728.8,
+            "shipping_cost": 1651.95
+          },
+          {
+            "order_id": "ORD-00437",
+            "order_date": "2024-11-14",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Aluminum Extrusions",
+            "category": "Assembly",
+            "quantity": 293,
+            "delivery_days": 25,
+            "total_cost": 27969.78,
+            "shipping_cost": 177.97
+          },
+          {
+            "order_id": "ORD-00432",
+            "order_date": "2024-11-10",
+            "supplier": "Superior Materials",
+            "product": "Steel Fasteners",
+            "category": "Assembly",
+            "quantity": 36,
+            "delivery_days": 42,
+            "total_cost": 950.04,
+            "shipping_cost": 1368.3
+          },
+          {
+            "order_id": "ORD-00427",
+            "order_date": "2024-11-06",
+            "supplier": "Superior Materials",
+            "product": "Rubber Seals",
+            "category": "Hardware",
+            "quantity": 374,
+            "delivery_days": 25,
+            "total_cost": 20151.12,
+            "shipping_cost": 973.47
+          },
+          {
+            "order_id": "ORD-00424",
+            "order_date": "2024-11-04",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Control Systems",
+            "category": "Mechanical",
+            "quantity": 167,
+            "delivery_days": 28,
+            "total_cost": 9225.08,
+            "shipping_cost": 374.44
+          },
+          {
+            "order_id": "ORD-00422",
+            "order_date": "2024-11-03",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Steel Fasteners",
+            "category": "Electronics",
+            "quantity": 31,
+            "delivery_days": 41,
+            "total_cost": 3774.87,
+            "shipping_cost": 1553.17
+          },
+          {
+            "order_id": "ORD-00421",
+            "order_date": "2024-11-02",
+            "supplier": "Superior Materials",
+            "product": "Control Systems",
+            "category": "Hardware",
+            "quantity": 384,
+            "delivery_days": 27,
+            "total_cost": 52254.72,
+            "shipping_cost": 388.82
+          },
+          {
+            "order_id": "ORD-00418",
+            "order_date": "2024-10-31",
+            "supplier": "Superior Materials",
+            "product": "Rubber Seals",
+            "category": "Electronics",
+            "quantity": 452,
+            "delivery_days": 22,
+            "total_cost": 82313.72,
+            "shipping_cost": 400.02
+          },
+          {
+            "order_id": "ORD-00416",
+            "order_date": "2024-10-29",
+            "supplier": "Superior Materials",
+            "product": "Aluminum Extrusions",
+            "category": "Electronics",
+            "quantity": 185,
+            "delivery_days": 21,
+            "total_cost": 45119.65,
+            "shipping_cost": 1688.24
+          },
+          {
+            "order_id": "ORD-00415",
+            "order_date": "2024-10-29",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Steel Fasteners",
+            "category": "Mechanical",
+            "quantity": 42,
+            "delivery_days": 40,
+            "total_cost": 264.6,
+            "shipping_cost": 892.87
+          },
+          {
+            "order_id": "ORD-00414",
+            "order_date": "2024-10-28",
+            "supplier": "Superior Materials",
+            "product": "Steel Fasteners",
+            "category": "Mechanical",
+            "quantity": 137,
+            "delivery_days": 15,
+            "total_cost": 31477.12,
+            "shipping_cost": 85.93
+          },
+          {
+            "order_id": "ORD-00413",
+            "order_date": "2024-10-27",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Plastic Components",
+            "category": "Hardware",
+            "quantity": 410,
+            "delivery_days": 22,
+            "total_cost": 59909.2,
+            "shipping_cost": 602.52
+          },
+          {
+            "order_id": "ORD-00409",
+            "order_date": "2024-10-24",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Plastic Components",
+            "category": "Electronics",
+            "quantity": 393,
+            "delivery_days": 21,
+            "total_cost": 3721.71,
+            "shipping_cost": 784.56
+          },
+          {
+            "order_id": "ORD-00403",
+            "order_date": "2024-10-20",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Rubber Seals",
+            "category": "Hardware",
+            "quantity": 77,
+            "delivery_days": 40,
+            "total_cost": 16435.65,
+            "shipping_cost": 554.44
+          },
+          {
+            "order_id": "ORD-00402",
+            "order_date": "2024-10-19",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Control Systems",
+            "category": "Assembly",
+            "quantity": 170,
+            "delivery_days": 24,
+            "total_cost": 21166.7,
+            "shipping_cost": 1525.44
+          },
+          {
+            "order_id": "ORD-00400",
+            "order_date": "2024-10-18",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Rubber Seals",
+            "category": "Assembly",
+            "quantity": 178,
+            "delivery_days": 22,
+            "total_cost": 10717.38,
+            "shipping_cost": 52.18
+          },
+          {
+            "order_id": "ORD-00397",
+            "order_date": "2024-10-16",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Electronic Sensors",
+            "category": "Mechanical",
+            "quantity": 172,
+            "delivery_days": 34,
+            "total_cost": 14781.68,
+            "shipping_cost": 1648.9
+          },
+          {
+            "order_id": "ORD-00394",
+            "order_date": "2024-10-13",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Plastic Components",
+            "category": "Mechanical",
+            "quantity": 347,
+            "delivery_days": 22,
+            "total_cost": 53385.95,
+            "shipping_cost": 957.67
+          },
+          {
+            "order_id": "ORD-00384",
+            "order_date": "2024-10-06",
+            "supplier": "Superior Materials",
+            "product": "Drive Belts",
+            "category": "Mechanical",
+            "quantity": 263,
+            "delivery_days": 17,
+            "total_cost": 43121.48,
+            "shipping_cost": 356.81
+          },
+          {
+            "order_id": "ORD-00382",
+            "order_date": "2024-10-05",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Aluminum Extrusions",
+            "category": "Mechanical",
+            "quantity": 113,
+            "delivery_days": 39,
+            "total_cost": 13686.56,
+            "shipping_cost": 1742.91
+          },
+          {
+            "order_id": "ORD-00381",
+            "order_date": "2024-10-04",
+            "supplier": "Superior Materials",
+            "product": "Hydraulic Cylinders",
+            "category": "Hardware",
+            "quantity": 431,
+            "delivery_days": 41,
+            "total_cost": 38367.62,
+            "shipping_cost": 1066.46
+          },
+          {
+            "order_id": "ORD-00379",
+            "order_date": "2024-10-02",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Steel Fasteners",
+            "category": "Materials",
+            "quantity": 465,
+            "delivery_days": 28,
+            "total_cost": 63314.4,
+            "shipping_cost": 1735.76
+          },
+          {
+            "order_id": "ORD-00378",
+            "order_date": "2024-10-02",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Rubber Seals",
+            "category": "Hardware",
+            "quantity": 122,
+            "delivery_days": 34,
+            "total_cost": 3276.92,
+            "shipping_cost": 1110.37
+          },
+          {
+            "order_id": "ORD-00376",
+            "order_date": "2024-09-30",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Steel Fasteners",
+            "category": "Electronics",
+            "quantity": 125,
+            "delivery_days": 17,
+            "total_cost": 17896.25,
+            "shipping_cost": 1164.07
+          },
+          {
+            "order_id": "ORD-00374",
+            "order_date": "2024-09-29",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Rubber Seals",
+            "category": "Assembly",
+            "quantity": 170,
+            "delivery_days": 22,
+            "total_cost": 31562.2,
+            "shipping_cost": 1056.35
+          },
+          {
+            "order_id": "ORD-00364",
+            "order_date": "2024-09-21",
+            "supplier": "Superior Materials",
+            "product": "Steel Fasteners",
+            "category": "Hardware",
+            "quantity": 242,
+            "delivery_days": 24,
+            "total_cost": 9970.4,
+            "shipping_cost": 59.91
+          },
+          {
+            "order_id": "ORD-00363",
+            "order_date": "2024-09-21",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Hydraulic Cylinders",
+            "category": "Mechanical",
+            "quantity": 18,
+            "delivery_days": 37,
+            "total_cost": 364.86,
+            "shipping_cost": 542.67
+          },
+          {
+            "order_id": "ORD-00357",
+            "order_date": "2024-09-16",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Electronic Sensors",
+            "category": "Assembly",
+            "quantity": 313,
+            "delivery_days": 21,
+            "total_cost": 42711.98,
+            "shipping_cost": 1711.78
+          },
+          {
+            "order_id": "ORD-00353",
+            "order_date": "2024-09-13",
+            "supplier": "Superior Materials",
+            "product": "Plastic Components",
+            "category": "Assembly",
+            "quantity": 69,
+            "delivery_days": 26,
+            "total_cost": 15023.37,
+            "shipping_cost": 812.78
+          },
+          {
+            "order_id": "ORD-00352",
+            "order_date": "2024-09-13",
+            "supplier": "Superior Materials",
+            "product": "Control Systems",
+            "category": "Mechanical",
+            "quantity": 121,
+            "delivery_days": 42,
+            "total_cost": 682.44,
+            "shipping_cost": 941.99
+          },
+          {
+            "order_id": "ORD-00343",
+            "order_date": "2024-09-06",
+            "supplier": "Superior Materials",
+            "product": "Aluminum Extrusions",
+            "category": "Materials",
+            "quantity": 160,
+            "delivery_days": 15,
+            "total_cost": 5846.4,
+            "shipping_cost": 1007.81
+          },
+          {
+            "order_id": "ORD-00339",
+            "order_date": "2024-09-03",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Plastic Components",
+            "category": "Assembly",
+            "quantity": 485,
+            "delivery_days": 33,
+            "total_cost": 67628.4,
+            "shipping_cost": 1214.68
+          },
+          {
+            "order_id": "ORD-00337",
+            "order_date": "2024-09-02",
+            "supplier": "Superior Materials",
+            "product": "Hydraulic Cylinders",
+            "category": "Hardware",
+            "quantity": 138,
+            "delivery_days": 21,
+            "total_cost": 12443.46,
+            "shipping_cost": 471.83
+          },
+          {
+            "order_id": "ORD-00334",
+            "order_date": "2024-08-31",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Steel Fasteners",
+            "category": "Assembly",
+            "quantity": 48,
+            "delivery_days": 20,
+            "total_cost": 2872.32,
+            "shipping_cost": 1661.1
+          },
+          {
+            "order_id": "ORD-00333",
+            "order_date": "2024-08-30",
+            "supplier": "Superior Materials",
+            "product": "Steel Fasteners",
+            "category": "Assembly",
+            "quantity": 137,
+            "delivery_days": 43,
+            "total_cost": 20888.39,
+            "shipping_cost": 1916.68
+          },
+          {
+            "order_id": "ORD-00332",
+            "order_date": "2024-08-29",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Aluminum Extrusions",
+            "category": "Assembly",
+            "quantity": 433,
+            "delivery_days": 36,
+            "total_cost": 105396.53,
+            "shipping_cost": 121.63
+          },
+          {
+            "order_id": "ORD-00327",
+            "order_date": "2024-08-25",
+            "supplier": "Superior Materials",
+            "product": "Hydraulic Cylinders",
+            "category": "Mechanical",
+            "quantity": 361,
+            "delivery_days": 25,
+            "total_cost": 17732.32,
+            "shipping_cost": 499.61
+          },
+          {
+            "order_id": "ORD-00320",
+            "order_date": "2024-08-20",
+            "supplier": "Superior Materials",
+            "product": "Rubber Seals",
+            "category": "Electronics",
+            "quantity": 452,
+            "delivery_days": 28,
+            "total_cost": 66448.52,
+            "shipping_cost": 1221.56
+          },
+          {
+            "order_id": "ORD-00316",
+            "order_date": "2024-08-17",
+            "supplier": "Superior Materials",
+            "product": "Hydraulic Cylinders",
+            "category": "Mechanical",
+            "quantity": 358,
+            "delivery_days": 22,
+            "total_cost": 5813.92,
+            "shipping_cost": 555.02
+          },
+          {
+            "order_id": "ORD-00315",
+            "order_date": "2024-08-17",
+            "supplier": "Superior Materials",
+            "product": "Steel Fasteners",
+            "category": "Electronics",
+            "quantity": 473,
+            "delivery_days": 30,
+            "total_cost": 10041.79,
+            "shipping_cost": 1606.08
+          },
+          {
+            "order_id": "ORD-00313",
+            "order_date": "2024-08-15",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Rubber Seals",
+            "category": "Assembly",
+            "quantity": 196,
+            "delivery_days": 44,
+            "total_cost": 41416.76,
+            "shipping_cost": 292.65
+          },
+          {
+            "order_id": "ORD-00311",
+            "order_date": "2024-08-14",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Control Systems",
+            "category": "Electronics",
+            "quantity": 210,
+            "delivery_days": 30,
+            "total_cost": 42029.4,
+            "shipping_cost": 263.46
+          },
+          {
+            "order_id": "ORD-00309",
+            "order_date": "2024-08-12",
+            "supplier": "Superior Materials",
+            "product": "Plastic Components",
+            "category": "Assembly",
+            "quantity": 153,
+            "delivery_days": 36,
+            "total_cost": 20391.84,
+            "shipping_cost": 1825.16
+          },
+          {
+            "order_id": "ORD-00306",
+            "order_date": "2024-08-10",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Plastic Components",
+            "category": "Assembly",
+            "quantity": 479,
+            "delivery_days": 20,
+            "total_cost": 55310.13,
+            "shipping_cost": 1445.33
+          },
+          {
+            "order_id": "ORD-00305",
+            "order_date": "2024-08-09",
+            "supplier": "Superior Materials",
+            "product": "Aluminum Extrusions",
+            "category": "Electronics",
+            "quantity": 207,
+            "delivery_days": 31,
+            "total_cost": 28797.84,
+            "shipping_cost": 1713.0
+          },
+          {
+            "order_id": "ORD-00301",
+            "order_date": "2024-08-07",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Drive Belts",
+            "category": "Mechanical",
+            "quantity": 289,
+            "delivery_days": 36,
+            "total_cost": 46523.22,
+            "shipping_cost": 1477.93
+          },
+          {
+            "order_id": "ORD-00300",
+            "order_date": "2024-08-06",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Rubber Seals",
+            "category": "Electronics",
+            "quantity": 303,
+            "delivery_days": 24,
+            "total_cost": 46655.94,
+            "shipping_cost": 1068.91
+          },
+          {
+            "order_id": "ORD-00298",
+            "order_date": "2024-08-04",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Drive Belts",
+            "category": "Hardware",
+            "quantity": 410,
+            "delivery_days": 35,
+            "total_cost": 64054.3,
+            "shipping_cost": 228.81
+          },
+          {
+            "order_id": "ORD-00294",
+            "order_date": "2024-08-01",
+            "supplier": "Superior Materials",
+            "product": "Aluminum Extrusions",
+            "category": "Assembly",
+            "quantity": 448,
+            "delivery_days": 26,
+            "total_cost": 88363.52,
+            "shipping_cost": 985.57
+          },
+          {
+            "order_id": "ORD-00289",
+            "order_date": "2024-07-29",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Steel Fasteners",
+            "category": "Mechanical",
+            "quantity": 169,
+            "delivery_days": 21,
+            "total_cost": 4505.54,
+            "shipping_cost": 186.56
+          },
+          {
+            "order_id": "ORD-00287",
+            "order_date": "2024-07-27",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Steel Fasteners",
+            "category": "Electronics",
+            "quantity": 181,
+            "delivery_days": 37,
+            "total_cost": 37106.81,
+            "shipping_cost": 798.73
+          },
+          {
+            "order_id": "ORD-00283",
+            "order_date": "2024-07-24",
+            "supplier": "Superior Materials",
+            "product": "Aluminum Extrusions",
+            "category": "Hardware",
+            "quantity": 412,
+            "delivery_days": 35,
+            "total_cost": 52344.6,
+            "shipping_cost": 950.79
+          },
+          {
+            "order_id": "ORD-00277",
+            "order_date": "2024-07-20",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Aluminum Extrusions",
+            "category": "Materials",
+            "quantity": 63,
+            "delivery_days": 43,
+            "total_cost": 3513.51,
+            "shipping_cost": 1340.23
+          },
+          {
+            "order_id": "ORD-00271",
+            "order_date": "2024-07-16",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Hydraulic Cylinders",
+            "category": "Electronics",
+            "quantity": 90,
+            "delivery_days": 26,
+            "total_cost": 17143.2,
+            "shipping_cost": 1084.02
+          },
+          {
+            "order_id": "ORD-00263",
+            "order_date": "2024-07-10",
+            "supplier": "Superior Materials",
+            "product": "Drive Belts",
+            "category": "Electronics",
+            "quantity": 277,
+            "delivery_days": 20,
+            "total_cost": 2312.95,
+            "shipping_cost": 937.53
+          },
+          {
+            "order_id": "ORD-00260",
+            "order_date": "2024-07-08",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Drive Belts",
+            "category": "Hardware",
+            "quantity": 327,
+            "delivery_days": 17,
+            "total_cost": 6723.12,
+            "shipping_cost": 1600.92
+          },
+          {
+            "order_id": "ORD-00256",
+            "order_date": "2024-07-05",
+            "supplier": "Superior Materials",
+            "product": "Plastic Components",
+            "category": "Mechanical",
+            "quantity": 481,
+            "delivery_days": 18,
+            "total_cost": 90740.65,
+            "shipping_cost": 1475.5
+          },
+          {
+            "order_id": "ORD-00252",
+            "order_date": "2024-07-02",
+            "supplier": "Superior Materials",
+            "product": "Control Systems",
+            "category": "Hardware",
+            "quantity": 324,
+            "delivery_days": 19,
+            "total_cost": 63345.24,
+            "shipping_cost": 1133.82
+          },
+          {
+            "order_id": "ORD-00250",
+            "order_date": "2024-06-30",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Hydraulic Cylinders",
+            "category": "Mechanical",
+            "quantity": 161,
+            "delivery_days": 31,
+            "total_cost": 7306.18,
+            "shipping_cost": 1197.11
+          },
+          {
+            "order_id": "ORD-00245",
+            "order_date": "2024-06-27",
+            "supplier": "Superior Materials",
+            "product": "Control Systems",
+            "category": "Assembly",
+            "quantity": 174,
+            "delivery_days": 22,
+            "total_cost": 25644.12,
+            "shipping_cost": 1311.0
+          },
+          {
+            "order_id": "ORD-00243",
+            "order_date": "2024-06-25",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Hydraulic Cylinders",
+            "category": "Electronics",
+            "quantity": 146,
+            "delivery_days": 19,
+            "total_cost": 34372.78,
+            "shipping_cost": 1962.12
+          },
+          {
+            "order_id": "ORD-00241",
+            "order_date": "2024-06-24",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Plastic Components",
+            "category": "Assembly",
+            "quantity": 465,
+            "delivery_days": 19,
+            "total_cost": 17497.95,
+            "shipping_cost": 1462.0
+          },
+          {
+            "order_id": "ORD-00240",
+            "order_date": "2024-06-23",
+            "supplier": "Superior Materials",
+            "product": "Electronic Sensors",
+            "category": "Assembly",
+            "quantity": 207,
+            "delivery_days": 18,
+            "total_cost": 14775.66,
+            "shipping_cost": 1530.12
+          },
+          {
+            "order_id": "ORD-00239",
+            "order_date": "2024-06-22",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Hydraulic Cylinders",
+            "category": "Materials",
+            "quantity": 368,
+            "delivery_days": 30,
+            "total_cost": 56186.24,
+            "shipping_cost": 1295.95
+          },
+          {
+            "order_id": "ORD-00238",
+            "order_date": "2024-06-22",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Plastic Components",
+            "category": "Mechanical",
+            "quantity": 268,
+            "delivery_days": 34,
+            "total_cost": 28341.0,
+            "shipping_cost": 1528.87
+          },
+          {
+            "order_id": "ORD-00237",
+            "order_date": "2024-06-21",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Steel Fasteners",
+            "category": "Materials",
+            "quantity": 242,
+            "delivery_days": 24,
+            "total_cost": 17796.68,
+            "shipping_cost": 1918.43
+          },
+          {
+            "order_id": "ORD-00234",
+            "order_date": "2024-06-19",
+            "supplier": "Superior Materials",
+            "product": "Hydraulic Cylinders",
+            "category": "Materials",
+            "quantity": 130,
+            "delivery_days": 37,
+            "total_cost": 8929.7,
+            "shipping_cost": 1396.59
+          },
+          {
+            "order_id": "ORD-00227",
+            "order_date": "2024-06-13",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Rubber Seals",
+            "category": "Assembly",
+            "quantity": 240,
+            "delivery_days": 17,
+            "total_cost": 20937.6,
+            "shipping_cost": 1937.01
+          },
+          {
+            "order_id": "ORD-00219",
+            "order_date": "2024-06-08",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Electronic Sensors",
+            "category": "Assembly",
+            "quantity": 53,
+            "delivery_days": 21,
+            "total_cost": 9314.75,
+            "shipping_cost": 735.5
+          },
+          {
+            "order_id": "ORD-00212",
+            "order_date": "2024-06-03",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Rubber Seals",
+            "category": "Materials",
+            "quantity": 54,
+            "delivery_days": 20,
+            "total_cost": 3616.92,
+            "shipping_cost": 1690.98
+          },
+          {
+            "order_id": "ORD-00209",
+            "order_date": "2024-05-31",
+            "supplier": "Superior Materials",
+            "product": "Rubber Seals",
+            "category": "Mechanical",
+            "quantity": 293,
+            "delivery_days": 37,
+            "total_cost": 4579.59,
+            "shipping_cost": 576.33
+          },
+          {
+            "order_id": "ORD-00208",
+            "order_date": "2024-05-31",
+            "supplier": "Superior Materials",
+            "product": "Aluminum Extrusions",
+            "category": "Hardware",
+            "quantity": 95,
+            "delivery_days": 19,
+            "total_cost": 7985.7,
+            "shipping_cost": 993.32
+          },
+          {
+            "order_id": "ORD-00203",
+            "order_date": "2024-05-27",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Aluminum Extrusions",
+            "category": "Hardware",
+            "quantity": 22,
+            "delivery_days": 20,
+            "total_cost": 2957.9,
+            "shipping_cost": 1240.29
+          },
+          {
+            "order_id": "ORD-00196",
+            "order_date": "2024-05-22",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Electronic Sensors",
+            "category": "Electronics",
+            "quantity": 416,
+            "delivery_days": 42,
+            "total_cost": 85937.28,
+            "shipping_cost": 226.16
+          },
+          {
+            "order_id": "ORD-00195",
+            "order_date": "2024-05-21",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Steel Fasteners",
+            "category": "Mechanical",
+            "quantity": 494,
+            "delivery_days": 22,
+            "total_cost": 95322.24,
+            "shipping_cost": 409.52
+          },
+          {
+            "order_id": "ORD-00191",
+            "order_date": "2024-05-18",
+            "supplier": "Superior Materials",
+            "product": "Aluminum Extrusions",
+            "category": "Electronics",
+            "quantity": 61,
+            "delivery_days": 41,
+            "total_cost": 4096.15,
+            "shipping_cost": 1553.28
+          },
+          {
+            "order_id": "ORD-00187",
+            "order_date": "2024-05-15",
+            "supplier": "Superior Materials",
+            "product": "Control Systems",
+            "category": "Assembly",
+            "quantity": 72,
+            "delivery_days": 39,
+            "total_cost": 12798.0,
+            "shipping_cost": 1013.83
+          },
+          {
+            "order_id": "ORD-00186",
+            "order_date": "2024-05-15",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Rubber Seals",
+            "category": "Materials",
+            "quantity": 188,
+            "delivery_days": 21,
+            "total_cost": 18350.68,
+            "shipping_cost": 1284.54
+          },
+          {
+            "order_id": "ORD-00173",
+            "order_date": "2024-05-05",
+            "supplier": "Superior Materials",
+            "product": "Drive Belts",
+            "category": "Mechanical",
+            "quantity": 14,
+            "delivery_days": 44,
+            "total_cost": 3129.14,
+            "shipping_cost": 1082.84
+          },
+          {
+            "order_id": "ORD-00170",
+            "order_date": "2024-05-03",
+            "supplier": "Superior Materials",
+            "product": "Plastic Components",
+            "category": "Materials",
+            "quantity": 471,
+            "delivery_days": 16,
+            "total_cost": 51522.69,
+            "shipping_cost": 1397.88
+          },
+          {
+            "order_id": "ORD-00166",
+            "order_date": "2024-04-30",
+            "supplier": "Superior Materials",
+            "product": "Plastic Components",
+            "category": "Assembly",
+            "quantity": 458,
+            "delivery_days": 25,
+            "total_cost": 79495.06,
+            "shipping_cost": 1307.86
+          },
+          {
+            "order_id": "ORD-00164",
+            "order_date": "2024-04-28",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Steel Fasteners",
+            "category": "Electronics",
+            "quantity": 484,
+            "delivery_days": 39,
+            "total_cost": 86118.12,
+            "shipping_cost": 834.97
+          },
+          {
+            "order_id": "ORD-00163",
+            "order_date": "2024-04-28",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Steel Fasteners",
+            "category": "Assembly",
+            "quantity": 223,
+            "delivery_days": 30,
+            "total_cost": 30941.25,
+            "shipping_cost": 1412.75
+          },
+          {
+            "order_id": "ORD-00162",
+            "order_date": "2024-04-27",
+            "supplier": "Superior Materials",
+            "product": "Steel Fasteners",
+            "category": "Hardware",
+            "quantity": 369,
+            "delivery_days": 29,
+            "total_cost": 68475.33,
+            "shipping_cost": 1496.29
+          },
+          {
+            "order_id": "ORD-00158",
+            "order_date": "2024-04-24",
+            "supplier": "Superior Materials",
+            "product": "Plastic Components",
+            "category": "Assembly",
+            "quantity": 225,
+            "delivery_days": 33,
+            "total_cost": 52443.0,
+            "shipping_cost": 968.58
+          },
+          {
+            "order_id": "ORD-00157",
+            "order_date": "2024-04-23",
+            "supplier": "Superior Materials",
+            "product": "Drive Belts",
+            "category": "Hardware",
+            "quantity": 71,
+            "delivery_days": 37,
+            "total_cost": 2328.8,
+            "shipping_cost": 1971.47
+          },
+          {
+            "order_id": "ORD-00156",
+            "order_date": "2024-04-23",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Rubber Seals",
+            "category": "Electronics",
+            "quantity": 416,
+            "delivery_days": 43,
+            "total_cost": 81710.72,
+            "shipping_cost": 1153.26
+          },
+          {
+            "order_id": "ORD-00151",
+            "order_date": "2024-04-19",
+            "supplier": "Superior Materials",
+            "product": "Steel Fasteners",
+            "category": "Assembly",
+            "quantity": 337,
+            "delivery_days": 23,
+            "total_cost": 9257.39,
+            "shipping_cost": 1729.08
+          },
+          {
+            "order_id": "ORD-00149",
+            "order_date": "2024-04-18",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Hydraulic Cylinders",
+            "category": "Hardware",
+            "quantity": 144,
+            "delivery_days": 31,
+            "total_cost": 18113.76,
+            "shipping_cost": 1558.98
+          },
+          {
+            "order_id": "ORD-00147",
+            "order_date": "2024-04-16",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Plastic Components",
+            "category": "Hardware",
+            "quantity": 50,
+            "delivery_days": 15,
+            "total_cost": 8540.5,
+            "shipping_cost": 1669.78
+          },
+          {
+            "order_id": "ORD-00146",
+            "order_date": "2024-04-15",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Rubber Seals",
+            "category": "Mechanical",
+            "quantity": 240,
+            "delivery_days": 21,
+            "total_cost": 57460.8,
+            "shipping_cost": 116.74
+          },
+          {
+            "order_id": "ORD-00141",
+            "order_date": "2024-04-12",
+            "supplier": "Superior Materials",
+            "product": "Rubber Seals",
+            "category": "Electronics",
+            "quantity": 428,
+            "delivery_days": 29,
+            "total_cost": 12626.0,
+            "shipping_cost": 1825.72
+          },
+          {
+            "order_id": "ORD-00140",
+            "order_date": "2024-04-11",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Drive Belts",
+            "category": "Assembly",
+            "quantity": 172,
+            "delivery_days": 28,
+            "total_cost": 13402.24,
+            "shipping_cost": 1422.69
+          },
+          {
+            "order_id": "ORD-00139",
+            "order_date": "2024-04-10",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Drive Belts",
+            "category": "Electronics",
+            "quantity": 401,
+            "delivery_days": 22,
+            "total_cost": 40284.46,
+            "shipping_cost": 1303.7
+          },
+          {
+            "order_id": "ORD-00138",
+            "order_date": "2024-04-10",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Drive Belts",
+            "category": "Hardware",
+            "quantity": 90,
+            "delivery_days": 25,
+            "total_cost": 11399.4,
+            "shipping_cost": 1759.07
+          },
+          {
+            "order_id": "ORD-00132",
+            "order_date": "2024-04-05",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Steel Fasteners",
+            "category": "Hardware",
+            "quantity": 353,
+            "delivery_days": 44,
+            "total_cost": 22401.38,
+            "shipping_cost": 681.78
+          },
+          {
+            "order_id": "ORD-00127",
+            "order_date": "2024-04-01",
+            "supplier": "Superior Materials",
+            "product": "Drive Belts",
+            "category": "Assembly",
+            "quantity": 310,
+            "delivery_days": 21,
+            "total_cost": 11246.8,
+            "shipping_cost": 1623.36
+          },
+          {
+            "order_id": "ORD-00124",
+            "order_date": "2024-03-30",
+            "supplier": "Superior Materials",
+            "product": "Control Systems",
+            "category": "Materials",
+            "quantity": 50,
+            "delivery_days": 18,
+            "total_cost": 7214.5,
+            "shipping_cost": 1620.36
+          },
+          {
+            "order_id": "ORD-00119",
+            "order_date": "2024-03-27",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Rubber Seals",
+            "category": "Assembly",
+            "quantity": 419,
+            "delivery_days": 32,
+            "total_cost": 6117.4,
+            "shipping_cost": 711.58
+          },
+          {
+            "order_id": "ORD-00116",
+            "order_date": "2024-03-24",
+            "supplier": "Superior Materials",
+            "product": "Electronic Sensors",
+            "category": "Hardware",
+            "quantity": 376,
+            "delivery_days": 32,
+            "total_cost": 65709.76,
+            "shipping_cost": 432.42
+          },
+          {
+            "order_id": "ORD-00112",
+            "order_date": "2024-03-22",
+            "supplier": "Superior Materials",
+            "product": "Plastic Components",
+            "category": "Materials",
+            "quantity": 222,
+            "delivery_days": 30,
+            "total_cost": 38184.0,
+            "shipping_cost": 1740.64
+          },
+          {
+            "order_id": "ORD-00111",
+            "order_date": "2024-03-21",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Aluminum Extrusions",
+            "category": "Assembly",
+            "quantity": 305,
+            "delivery_days": 22,
+            "total_cost": 30323.1,
+            "shipping_cost": 1687.59
+          },
+          {
+            "order_id": "ORD-00110",
+            "order_date": "2024-03-20",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Steel Fasteners",
+            "category": "Hardware",
+            "quantity": 199,
+            "delivery_days": 25,
+            "total_cost": 32964.35,
+            "shipping_cost": 1958.92
+          },
+          {
+            "order_id": "ORD-00107",
+            "order_date": "2024-03-18",
+            "supplier": "Superior Materials",
+            "product": "Electronic Sensors",
+            "category": "Electronics",
+            "quantity": 471,
+            "delivery_days": 25,
+            "total_cost": 6853.05,
+            "shipping_cost": 1799.99
+          },
+          {
+            "order_id": "ORD-00105",
+            "order_date": "2024-03-16",
+            "supplier": "Superior Materials",
+            "product": "Aluminum Extrusions",
+            "category": "Hardware",
+            "quantity": 280,
+            "delivery_days": 18,
+            "total_cost": 16119.6,
+            "shipping_cost": 1518.83
+          },
+          {
+            "order_id": "ORD-00102",
+            "order_date": "2024-03-14",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Steel Fasteners",
+            "category": "Assembly",
+            "quantity": 279,
+            "delivery_days": 15,
+            "total_cost": 45926.19,
+            "shipping_cost": 250.81
+          },
+          {
+            "order_id": "ORD-00085",
+            "order_date": "2024-03-02",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Steel Fasteners",
+            "category": "Hardware",
+            "quantity": 369,
+            "delivery_days": 25,
+            "total_cost": 86231.61,
+            "shipping_cost": 654.38
+          },
+          {
+            "order_id": "ORD-00084",
+            "order_date": "2024-03-01",
+            "supplier": "Superior Materials",
+            "product": "Hydraulic Cylinders",
+            "category": "Hardware",
+            "quantity": 59,
+            "delivery_days": 41,
+            "total_cost": 516.25,
+            "shipping_cost": 634.21
+          },
+          {
+            "order_id": "ORD-00075",
+            "order_date": "2024-02-24",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Steel Fasteners",
+            "category": "Assembly",
+            "quantity": 453,
+            "delivery_days": 25,
+            "total_cost": 86985.06,
+            "shipping_cost": 479.19
+          },
+          {
+            "order_id": "ORD-00074",
+            "order_date": "2024-02-23",
+            "supplier": "Superior Materials",
+            "product": "Steel Fasteners",
+            "category": "Assembly",
+            "quantity": 376,
+            "delivery_days": 40,
+            "total_cost": 3459.2,
+            "shipping_cost": 591.29
+          },
+          {
+            "order_id": "ORD-00070",
+            "order_date": "2024-02-20",
+            "supplier": "Superior Materials",
+            "product": "Plastic Components",
+            "category": "Electronics",
+            "quantity": 62,
+            "delivery_days": 28,
+            "total_cost": 1740.34,
+            "shipping_cost": 372.75
+          },
+          {
+            "order_id": "ORD-00069",
+            "order_date": "2024-02-19",
+            "supplier": "Superior Materials",
+            "product": "Steel Fasteners",
+            "category": "Mechanical",
+            "quantity": 355,
+            "delivery_days": 32,
+            "total_cost": 9758.95,
+            "shipping_cost": 1176.38
+          },
+          {
+            "order_id": "ORD-00068",
+            "order_date": "2024-02-18",
+            "supplier": "Superior Materials",
+            "product": "Steel Fasteners",
+            "category": "Hardware",
+            "quantity": 274,
+            "delivery_days": 38,
+            "total_cost": 24320.24,
+            "shipping_cost": 534.04
+          },
+          {
+            "order_id": "ORD-00060",
+            "order_date": "2024-02-13",
+            "supplier": "Superior Materials",
+            "product": "Control Systems",
+            "category": "Assembly",
+            "quantity": 338,
+            "delivery_days": 28,
+            "total_cost": 44477.42,
+            "shipping_cost": 1733.86
+          },
+          {
+            "order_id": "ORD-00057",
+            "order_date": "2024-02-10",
+            "supplier": "Superior Materials",
+            "product": "Drive Belts",
+            "category": "Hardware",
+            "quantity": 316,
+            "delivery_days": 15,
+            "total_cost": 15736.8,
+            "shipping_cost": 1227.26
+          },
+          {
+            "order_id": "ORD-00054",
+            "order_date": "2024-02-08",
+            "supplier": "Superior Materials",
+            "product": "Electronic Sensors",
+            "category": "Hardware",
+            "quantity": 329,
+            "delivery_days": 31,
+            "total_cost": 37302.02,
+            "shipping_cost": 1501.29
+          },
+          {
+            "order_id": "ORD-00049",
+            "order_date": "2024-02-05",
+            "supplier": "Superior Materials",
+            "product": "Drive Belts",
+            "category": "Hardware",
+            "quantity": 455,
+            "delivery_days": 17,
+            "total_cost": 11288.55,
+            "shipping_cost": 697.69
+          },
+          {
+            "order_id": "ORD-00044",
+            "order_date": "2024-02-01",
+            "supplier": "Superior Materials",
+            "product": "Plastic Components",
+            "category": "Hardware",
+            "quantity": 473,
+            "delivery_days": 43,
+            "total_cost": 48581.83,
+            "shipping_cost": 289.48
+          },
+          {
+            "order_id": "ORD-00043",
+            "order_date": "2024-01-31",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Drive Belts",
+            "category": "Materials",
+            "quantity": 197,
+            "delivery_days": 23,
+            "total_cost": 2966.82,
+            "shipping_cost": 1825.84
+          },
+          {
+            "order_id": "ORD-00032",
+            "order_date": "2024-01-23",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Aluminum Extrusions",
+            "category": "Assembly",
+            "quantity": 469,
+            "delivery_days": 24,
+            "total_cost": 33547.57,
+            "shipping_cost": 249.31
+          },
+          {
+            "order_id": "ORD-00029",
+            "order_date": "2024-01-21",
+            "supplier": "Superior Materials",
+            "product": "Electronic Sensors",
+            "category": "Assembly",
+            "quantity": 453,
+            "delivery_days": 15,
+            "total_cost": 61875.27,
+            "shipping_cost": 549.23
+          },
+          {
+            "order_id": "ORD-00025",
+            "order_date": "2024-01-18",
+            "supplier": "Superior Materials",
+            "product": "Rubber Seals",
+            "category": "Assembly",
+            "quantity": 423,
+            "delivery_days": 34,
+            "total_cost": 91283.4,
+            "shipping_cost": 1249.15
+          },
+          {
+            "order_id": "ORD-00022",
+            "order_date": "2024-01-16",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Hydraulic Cylinders",
+            "category": "Hardware",
+            "quantity": 318,
+            "delivery_days": 21,
+            "total_cost": 13670.82,
+            "shipping_cost": 493.33
+          },
+          {
+            "order_id": "ORD-00019",
+            "order_date": "2024-01-14",
+            "supplier": "Superior Materials",
+            "product": "Rubber Seals",
+            "category": "Electronics",
+            "quantity": 161,
+            "delivery_days": 33,
+            "total_cost": 18101.23,
+            "shipping_cost": 1662.26
+          },
+          {
+            "order_id": "ORD-00015",
+            "order_date": "2024-01-11",
+            "supplier": "Superior Materials",
+            "product": "Drive Belts",
+            "category": "Electronics",
+            "quantity": 97,
+            "delivery_days": 41,
+            "total_cost": 1691.68,
+            "shipping_cost": 1216.96
+          },
+          {
+            "order_id": "ORD-00009",
+            "order_date": "2024-01-06",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Control Systems",
+            "category": "Electronics",
+            "quantity": 112,
+            "delivery_days": 21,
+            "total_cost": 2798.88,
+            "shipping_cost": 1029.46
+          },
+          {
+            "order_id": "ORD-00008",
+            "order_date": "2024-01-06",
+            "supplier": "Superior Materials",
+            "product": "Control Systems",
+            "category": "Materials",
+            "quantity": 30,
+            "delivery_days": 42,
+            "total_cost": 4644.6,
+            "shipping_cost": 1227.72
+          },
+          {
+            "order_id": "ORD-00007",
+            "order_date": "2024-01-05",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Drive Belts",
+            "category": "Materials",
+            "quantity": 198,
+            "delivery_days": 38,
+            "total_cost": 13418.46,
+            "shipping_cost": 941.15
+          },
+          {
+            "order_id": "ORD-00005",
+            "order_date": "2024-01-03",
+            "supplier": "Reliable Suppliers Co",
+            "product": "Steel Fasteners",
+            "category": "Assembly",
+            "quantity": 116,
+            "delivery_days": 29,
+            "total_cost": 9006.24,
+            "shipping_cost": 1096.14
+          },
+          {
+            "order_id": "ORD-00002",
+            "order_date": "2024-01-01",
+            "supplier": "Superior Materials",
+            "product": "Hydraulic Cylinders",
+            "category": "Materials",
+            "quantity": 445,
+            "delivery_days": 40,
+            "total_cost": 17119.15,
+            "shipping_cost": 1013.26
+          }
+        ],
+        "row_count": 145
+      }
+    },
+    "validation": {
+      "overall_status": "warning",
+      "components": [
+        {
+          "id": "delayed_orders_kpi",
+          "title": "Total Delayed Orders",
+          "type": "kpi_card",
+          "status": "success",
+          "warnings": [],
+          "explanation": "Total Delayed Orders: Displays a single metric value (1 data point)"
+        },
+        {
+          "id": "avg_delay_kpi",
+          "title": "Average Delivery Days",
+          "type": "kpi_card",
+          "status": "success",
+          "warnings": [],
+          "explanation": "Average Delivery Days: Displays a single metric value (1 data point)"
+        },
+        {
+          "id": "delayed_orders_trend",
+          "title": "Delayed Orders Trend by Month",
+          "type": "line_chart",
+          "status": "warning",
+          "warnings": [
+            "Query failed: Binder Error: Could not choose a best candidate function for the function call \"strftime(STRING_LITERAL, VARCHAR)\". In order to select one, please add explicit type casts.\n\tCandidate functions:\n\tstrftime(TIMESTAMP, VARCHAR) -> VARCHAR\n\tstrftime(TIMESTAMP_NS, VARCHAR) -> VARCHAR\n\tstrftime(TIMESTAMP WITH TIME ZONE, VARCHAR) -> VARCHAR\n\tstrftime(DATE, VARCHAR) -> VARCHAR\n\n\nLINE 1: SELECT strftime('%Y-%m', order_date) as month, supplier, COUNT...\n               ^"
+          ],
+          "explanation": "Delayed Orders Trend by Month: Failed to load data (Binder Error: Could not choose a best candidate function for the function call \"strftime(STRING_LITERAL, VARCHAR)\". In order to select one, please add explicit type casts.\n\tCandidate functions:\n\tstrftime(TIMESTAMP, VARCHAR) -> VARCHAR\n\tstrftime(TIMESTAMP_NS, VARCHAR) -> VARCHAR\n\tstrftime(TIMESTAMP WITH TIME ZONE, VARCHAR) -> VARCHAR\n\tstrftime(DATE, VARCHAR) -> VARCHAR\n\n\nLINE 1: SELECT strftime('%Y-%m', order_date) as month, supplier, COUNT...\n               ^)"
+        },
+        {
+          "id": "cost_impact",
+          "title": "Cost Impact of Delayed Orders by Supplier",
+          "type": "bar_chart",
+          "status": "success",
+          "warnings": [],
+          "explanation": "Cost Impact of Delayed Orders by Supplier: Compares 2 categories"
+        },
+        {
+          "id": "delayed_orders_detail",
+          "title": "Delayed Orders Details",
+          "type": "table",
+          "status": "success",
+          "warnings": [],
+          "explanation": "Delayed Orders Details: Shows 145 rows across 9 columns"
+        }
+      ],
+      "total_warnings": 1
+    },
+    "governance": {
+      "overall_status": "pass",
+      "passed": true,
+      "role": "admin",
+      "role_display_name": "Administrator",
+      "checks": [
+        {
+          "name": "sql_sanitization",
+          "status": "pass",
+          "details": "All queries passed sanitization"
+        },
+        {
+          "name": "column_access",
+          "status": "pass",
+          "details": "All columns accessible"
+        },
+        {
+          "name": "component_permissions",
+          "status": "pass",
+          "details": "All component types allowed"
+        },
+        {
+          "name": "pii_detection",
+          "status": "pass",
+          "details": "No PII detected"
+        },
+        {
+          "name": "access_control",
+          "status": "pass",
+          "details": "Role 'admin' granted create_app"
+        },
+        {
+          "name": "query_complexity",
+          "status": "pass",
+          "details": "Analyzed 5 queries"
+        },
+        {
+          "name": "data_quality",
+          "status": "pass",
+          "details": "good"
+        },
+        {
+          "name": "export_control",
+          "status": "pass",
+          "details": "149 rows (limit: None)"
+        }
+      ],
+      "sql_safety": {
+        "safe": true,
+        "blocked_keywords": [],
+        "query_length_ok": true,
+        "details": ""
+      },
+      "column_access": {
+        "allowed": true,
+        "blocked_columns": [],
+        "column_details": [
+          {
+            "column": "supplier",
+            "sensitivity": "restricted",
+            "allowed": true
+          },
+          {
+            "column": "supplier",
+            "sensitivity": "restricted",
+            "allowed": true
+          },
+          {
+            "column": "order_date",
+            "sensitivity": "public",
+            "allowed": true
+          },
+          {
+            "column": "supplier",
+            "sensitivity": "restricted",
+            "allowed": true
+          },
+          {
+            "column": "total_cost",
+            "sensitivity": "internal",
+            "allowed": true
+          },
+          {
+            "column": "shipping_cost",
+            "sensitivity": "internal",
+            "allowed": true
+          },
+          {
+            "column": "supplier",
+            "sensitivity": "restricted",
+            "allowed": true
+          },
+          {
+            "column": "order_id",
+            "sensitivity": "public",
+            "allowed": true
+          },
+          {
+            "column": "order_date",
+            "sensitivity": "public",
+            "allowed": true
+          },
+          {
+            "column": "product",
+            "sensitivity": "public",
+            "allowed": true
+          },
+          {
+            "column": "category",
+            "sensitivity": "public",
+            "allowed": true
+          },
+          {
+            "column": "quantity",
+            "sensitivity": "public",
+            "allowed": true
+          },
+          {
+            "column": "total_cost",
+            "sensitivity": "internal",
+            "allowed": true
+          },
+          {
+            "column": "shipping_cost",
+            "sensitivity": "internal",
+            "allowed": true
+          },
+          {
+            "column": "supplier",
+            "sensitivity": "restricted",
+            "allowed": true
+          }
+        ],
+        "redaction_needed": false
+      },
+      "component_permissions": {
+        "allowed": true,
+        "blocked_components": [],
+        "component_count_ok": true,
+        "max_allowed": 15
+      },
+      "pii_detected": [],
+      "pii_redacted": false,
+      "access_granted": true,
+      "query_complexity": {
+        "delayed_orders_kpi": {
+          "join_count": 0,
+          "subquery_count": 0,
+          "has_aggregation": true,
+          "is_complex": false
+        },
+        "avg_delay_kpi": {
+          "join_count": 0,
+          "subquery_count": 0,
+          "has_aggregation": true,
+          "is_complex": false
+        },
+        "delayed_orders_trend": {
+          "join_count": 0,
+          "subquery_count": 0,
+          "has_aggregation": true,
+          "is_complex": false
+        },
+        "cost_impact": {
+          "join_count": 0,
+          "subquery_count": 0,
+          "has_aggregation": true,
+          "is_complex": false
+        },
+        "delayed_orders_detail": {
+          "join_count": 0,
+          "subquery_count": 0,
+          "has_aggregation": false,
+          "is_complex": false
+        }
+      },
+      "data_quality": {
+        "overall_quality": "good",
+        "null_count": 0,
+        "duplicate_count": 0,
+        "outlier_count": 0,
+        "issues": [],
+        "per_component": {
+          "delayed_orders_kpi": {
+            "null_count": 0,
+            "duplicate_count": 0,
+            "outlier_count": 0,
+            "quality": "good"
+          },
+          "avg_delay_kpi": {
+            "null_count": 0,
+            "duplicate_count": 0,
+            "outlier_count": 0,
+            "quality": "good"
+          },
+          "cost_impact": {
+            "null_count": 0,
+            "duplicate_count": 0,
+            "outlier_count": 0,
+            "quality": "good"
+          },
+          "delayed_orders_detail": {
+            "null_count": 0,
+            "duplicate_count": 0,
+            "outlier_count": 0,
+            "quality": "good"
+          }
+        }
+      },
+      "export_allowed": true,
+      "export_formats": [
+        "csv",
+        "json",
+        "pdf"
+      ],
+      "warnings": [],
+      "blocked_reasons": [],
+      "audit_entry_id": "dd3f3ddb"
+    }
+  }
+}

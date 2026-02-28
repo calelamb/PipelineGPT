@@ -1,0 +1,583 @@
+{
+  "saved_at": "2026-02-28T10:08:01.798429",
+  "prompt": "Can you show me delayed shipment trends over the last year?",
+  "result": {
+    "app_definition": {
+      "app_title": "Supply Chain Delivery Performance Dashboard",
+      "components": [
+        {
+          "title": "Avg. Delivery Time (Days)",
+          "type": "kpi_card",
+          "id": "kpi_avg_delivery",
+          "sql_query": "SELECT AVG(delivery_days) as avg_delivery_days FROM supply_chain",
+          "config": {
+            "value_column": "avg_delivery_days",
+            "metric_name": "Average Delivery Days"
+          }
+        },
+        {
+          "config": {
+            "format": "percentage",
+            "value_column": "on_time_rate_pct",
+            "metric_name": "On-Time Rate"
+          },
+          "sql_query": "SELECT (SUM(on_time_delivery) * 100.0 / COUNT(*)) as on_time_rate_pct FROM supply_chain",
+          "id": "kpi_on_time_rate",
+          "type": "kpi_card",
+          "title": "On-Time Delivery Rate (%)"
+        },
+        {
+          "type": "kpi_card",
+          "id": "kpi_delayed_count",
+          "title": "Total Delayed Orders",
+          "config": {
+            "value_column": "delayed_count",
+            "metric_name": "Total Delayed Orders"
+          },
+          "sql_query": "SELECT COUNT(*) as delayed_count FROM supply_chain WHERE on_time_delivery = 0"
+        },
+        {
+          "type": "line_chart",
+          "id": "delayed_trend_chart",
+          "title": "Delayed Shipments Trend (Monthly)",
+          "config": {
+            "y_axis": "delayed_orders",
+            "x_axis": "order_month"
+          },
+          "sql_query": "SELECT strftime(CAST(order_date AS DATE), '%Y-%m') as order_month, COUNT(*) as delayed_orders FROM supply_chain WHERE on_time_delivery = 0 GROUP BY 1 ORDER BY 1"
+        },
+        {
+          "sql_query": "SELECT region, AVG(delivery_days) as avg_delay FROM supply_chain WHERE on_time_delivery = 0 GROUP BY 1 ORDER BY 2 DESC",
+          "config": {
+            "x_axis": "region",
+            "y_axis": "avg_delay"
+          },
+          "title": "Avg. Delay Duration by Region (Days)",
+          "type": "bar_chart",
+          "id": "delay_by_region_chart"
+        },
+        {
+          "title": "Delayed Orders by Shipping Mode",
+          "id": "delay_by_mode_chart",
+          "type": "pie_chart",
+          "sql_query": "SELECT shipping_mode, COUNT(*) as delay_count FROM supply_chain WHERE on_time_delivery = 0 GROUP BY 1 ORDER BY 2 DESC",
+          "config": {
+            "x_axis": "shipping_mode",
+            "y_axis": "delay_count"
+          }
+        },
+        {
+          "sql_query": "SELECT supplier, COUNT(*) as total_orders, SUM(CASE WHEN on_time_delivery = 0 THEN 1 ELSE 0 END) as delayed_orders, ROUND(AVG(delivery_days), 2) as avg_delivery_days, ROUND(AVG(defect_rate), 2) as avg_defect_rate FROM supply_chain GROUP BY 1 ORDER BY 3 DESC",
+          "config": {
+            "sort_column": "delayed_orders",
+            "sort_order": "desc",
+            "columns": [
+              "supplier",
+              "total_orders",
+              "delayed_orders",
+              "avg_delivery_days",
+              "avg_defect_rate"
+            ]
+          },
+          "title": "Supplier Reliability Ranking",
+          "type": "table",
+          "id": "supplier_performance_table"
+        }
+      ],
+      "filters": [
+        {
+          "column": "region",
+          "type": "multiselect",
+          "id": "region_filter",
+          "name": "Region"
+        },
+        {
+          "column": "category",
+          "id": "category_filter",
+          "name": "Product Category",
+          "type": "multiselect"
+        },
+        {
+          "id": "shipping_mode_filter",
+          "name": "Shipping Mode",
+          "type": "multiselect",
+          "column": "shipping_mode"
+        }
+      ],
+      "app_description": "Analysis of delayed shipments, delivery performance, and supplier reliability over time."
+    },
+    "execution_results": {
+      "kpi_avg_delivery": {
+        "status": "success",
+        "data": [
+          {
+            "avg_delivery_days": 22.66
+          }
+        ],
+        "row_count": 1
+      },
+      "kpi_on_time_rate": {
+        "status": "success",
+        "data": [
+          {
+            "on_time_rate_pct": 30.0
+          }
+        ],
+        "row_count": 1
+      },
+      "kpi_delayed_count": {
+        "status": "success",
+        "data": [
+          {
+            "delayed_count": 350
+          }
+        ],
+        "row_count": 1
+      },
+      "delayed_trend_chart": {
+        "status": "success",
+        "data": [
+          {
+            "order_month": "2024-01",
+            "delayed_orders": 30
+          },
+          {
+            "order_month": "2024-02",
+            "delayed_orders": 26
+          },
+          {
+            "order_month": "2024-03",
+            "delayed_orders": 33
+          },
+          {
+            "order_month": "2024-04",
+            "delayed_orders": 33
+          },
+          {
+            "order_month": "2024-05",
+            "delayed_orders": 27
+          },
+          {
+            "order_month": "2024-06",
+            "delayed_orders": 30
+          },
+          {
+            "order_month": "2024-07",
+            "delayed_orders": 27
+          },
+          {
+            "order_month": "2024-08",
+            "delayed_orders": 33
+          },
+          {
+            "order_month": "2024-09",
+            "delayed_orders": 30
+          },
+          {
+            "order_month": "2024-10",
+            "delayed_orders": 30
+          },
+          {
+            "order_month": "2024-11",
+            "delayed_orders": 27
+          },
+          {
+            "order_month": "2024-12",
+            "delayed_orders": 24
+          }
+        ],
+        "row_count": 12
+      },
+      "delay_by_region_chart": {
+        "status": "success",
+        "data": [
+          {
+            "region": "Latin America",
+            "avg_delay": 30.424657534246574
+          },
+          {
+            "region": "Africa",
+            "avg_delay": 29.55263157894737
+          },
+          {
+            "region": "Europe",
+            "avg_delay": 29.080645161290324
+          },
+          {
+            "region": "Asia Pacific",
+            "avg_delay": 28.625
+          },
+          {
+            "region": "North America",
+            "avg_delay": 28.266666666666666
+          }
+        ],
+        "row_count": 5
+      },
+      "delay_by_mode_chart": {
+        "status": "success",
+        "data": [
+          {
+            "shipping_mode": "rail",
+            "delay_count": 93
+          },
+          {
+            "shipping_mode": "air",
+            "delay_count": 92
+          },
+          {
+            "shipping_mode": "sea",
+            "delay_count": 90
+          },
+          {
+            "shipping_mode": "truck",
+            "delay_count": 75
+          }
+        ],
+        "row_count": 4
+      },
+      "supplier_performance_table": {
+        "status": "success",
+        "data": [
+          {
+            "supplier": "Acme Corp",
+            "total_orders": 104,
+            "delayed_orders": 80.0,
+            "avg_delivery_days": 25.1,
+            "avg_defect_rate": 2.61
+          },
+          {
+            "supplier": "Reliable Suppliers Co",
+            "total_orders": 104,
+            "delayed_orders": 74.0,
+            "avg_delivery_days": 22.38,
+            "avg_defect_rate": 2.31
+          },
+          {
+            "supplier": "Superior Materials",
+            "total_orders": 106,
+            "delayed_orders": 71.0,
+            "avg_delivery_days": 22.06,
+            "avg_defect_rate": 2.44
+          },
+          {
+            "supplier": "Global Parts Ltd",
+            "total_orders": 113,
+            "delayed_orders": 71.0,
+            "avg_delivery_days": 19.95,
+            "avg_defect_rate": 2.48
+          },
+          {
+            "supplier": "BuildRight Inc",
+            "total_orders": 73,
+            "delayed_orders": 54.0,
+            "avg_delivery_days": 24.67,
+            "avg_defect_rate": 2.29
+          }
+        ],
+        "row_count": 5
+      }
+    },
+    "validation": {
+      "overall_status": "success",
+      "components": [
+        {
+          "id": "kpi_avg_delivery",
+          "title": "Avg. Delivery Time (Days)",
+          "type": "kpi_card",
+          "status": "success",
+          "warnings": [],
+          "explanation": "Avg. Delivery Time (Days): Displays a single metric value (1 data point)"
+        },
+        {
+          "id": "kpi_on_time_rate",
+          "title": "On-Time Delivery Rate (%)",
+          "type": "kpi_card",
+          "status": "success",
+          "warnings": [],
+          "explanation": "On-Time Delivery Rate (%): Displays a single metric value (1 data point)"
+        },
+        {
+          "id": "kpi_delayed_count",
+          "title": "Total Delayed Orders",
+          "type": "kpi_card",
+          "status": "success",
+          "warnings": [],
+          "explanation": "Total Delayed Orders: Displays a single metric value (1 data point)"
+        },
+        {
+          "id": "delayed_trend_chart",
+          "title": "Delayed Shipments Trend (Monthly)",
+          "type": "line_chart",
+          "status": "success",
+          "warnings": [],
+          "explanation": "Delayed Shipments Trend (Monthly): Shows trend across 12 time points"
+        },
+        {
+          "id": "delay_by_region_chart",
+          "title": "Avg. Delay Duration by Region (Days)",
+          "type": "bar_chart",
+          "status": "success",
+          "warnings": [],
+          "explanation": "Avg. Delay Duration by Region (Days): Compares 5 categories"
+        },
+        {
+          "id": "delay_by_mode_chart",
+          "title": "Delayed Orders by Shipping Mode",
+          "type": "pie_chart",
+          "status": "success",
+          "warnings": [],
+          "explanation": "Delayed Orders by Shipping Mode: Breaks down into 4 segments"
+        },
+        {
+          "id": "supplier_performance_table",
+          "title": "Supplier Reliability Ranking",
+          "type": "table",
+          "status": "success",
+          "warnings": [],
+          "explanation": "Supplier Reliability Ranking: Shows 5 rows across 5 columns"
+        }
+      ],
+      "total_warnings": 0
+    },
+    "governance": {
+      "overall_status": "pass",
+      "passed": true,
+      "role": "admin",
+      "role_display_name": "Administrator",
+      "checks": [
+        {
+          "name": "sql_sanitization",
+          "status": "pass",
+          "details": "All queries passed sanitization"
+        },
+        {
+          "name": "column_access",
+          "status": "pass",
+          "details": "All columns accessible"
+        },
+        {
+          "name": "component_permissions",
+          "status": "pass",
+          "details": "All component types allowed"
+        },
+        {
+          "name": "pii_detection",
+          "status": "pass",
+          "details": "No PII detected"
+        },
+        {
+          "name": "access_control",
+          "status": "pass",
+          "details": "Role 'admin' granted create_app"
+        },
+        {
+          "name": "query_complexity",
+          "status": "pass",
+          "details": "Analyzed 7 queries"
+        },
+        {
+          "name": "data_quality",
+          "status": "pass",
+          "details": "good"
+        },
+        {
+          "name": "export_control",
+          "status": "pass",
+          "details": "29 rows (limit: None)"
+        }
+      ],
+      "sql_safety": {
+        "safe": true,
+        "blocked_keywords": [],
+        "query_length_ok": true,
+        "details": ""
+      },
+      "column_access": {
+        "allowed": true,
+        "blocked_columns": [],
+        "column_details": [
+          {
+            "column": "order_date",
+            "sensitivity": "public",
+            "allowed": true
+          },
+          {
+            "column": "region",
+            "sensitivity": "public",
+            "allowed": true
+          },
+          {
+            "column": "shipping_mode",
+            "sensitivity": "public",
+            "allowed": true
+          },
+          {
+            "column": "defect_rate",
+            "sensitivity": "internal",
+            "allowed": true
+          },
+          {
+            "column": "supplier",
+            "sensitivity": "restricted",
+            "allowed": true
+          }
+        ],
+        "redaction_needed": false
+      },
+      "component_permissions": {
+        "allowed": true,
+        "blocked_components": [],
+        "component_count_ok": true,
+        "max_allowed": 15
+      },
+      "pii_detected": [],
+      "pii_redacted": false,
+      "access_granted": true,
+      "query_complexity": {
+        "kpi_avg_delivery": {
+          "join_count": 0,
+          "subquery_count": 0,
+          "has_aggregation": true,
+          "is_complex": false
+        },
+        "kpi_on_time_rate": {
+          "join_count": 0,
+          "subquery_count": 0,
+          "has_aggregation": true,
+          "is_complex": false
+        },
+        "kpi_delayed_count": {
+          "join_count": 0,
+          "subquery_count": 0,
+          "has_aggregation": true,
+          "is_complex": false
+        },
+        "delayed_trend_chart": {
+          "join_count": 0,
+          "subquery_count": 0,
+          "has_aggregation": true,
+          "is_complex": false
+        },
+        "delay_by_region_chart": {
+          "join_count": 0,
+          "subquery_count": 0,
+          "has_aggregation": true,
+          "is_complex": false
+        },
+        "delay_by_mode_chart": {
+          "join_count": 0,
+          "subquery_count": 0,
+          "has_aggregation": true,
+          "is_complex": false
+        },
+        "supplier_performance_table": {
+          "join_count": 0,
+          "subquery_count": 0,
+          "has_aggregation": true,
+          "is_complex": false
+        }
+      },
+      "data_quality": {
+        "overall_quality": "good",
+        "null_count": 0,
+        "duplicate_count": 0,
+        "outlier_count": 0,
+        "issues": [],
+        "per_component": {
+          "kpi_avg_delivery": {
+            "null_count": 0,
+            "duplicate_count": 0,
+            "outlier_count": 0,
+            "quality": "good"
+          },
+          "kpi_on_time_rate": {
+            "null_count": 0,
+            "duplicate_count": 0,
+            "outlier_count": 0,
+            "quality": "good"
+          },
+          "kpi_delayed_count": {
+            "null_count": 0,
+            "duplicate_count": 0,
+            "outlier_count": 0,
+            "quality": "good"
+          },
+          "delayed_trend_chart": {
+            "null_count": 0,
+            "duplicate_count": 0,
+            "outlier_count": 0,
+            "quality": "good"
+          },
+          "delay_by_region_chart": {
+            "null_count": 0,
+            "duplicate_count": 0,
+            "outlier_count": 0,
+            "quality": "good"
+          },
+          "delay_by_mode_chart": {
+            "null_count": 0,
+            "duplicate_count": 0,
+            "outlier_count": 0,
+            "quality": "good"
+          },
+          "supplier_performance_table": {
+            "null_count": 0,
+            "duplicate_count": 0,
+            "outlier_count": 0,
+            "quality": "good"
+          }
+        }
+      },
+      "export_allowed": true,
+      "export_formats": [
+        "csv",
+        "json",
+        "pdf"
+      ],
+      "warnings": [],
+      "blocked_reasons": [],
+      "audit_entry_id": "3db25e2d"
+    },
+    "overview": {
+      "summary": "This dashboard provides a comprehensive overview of your supply chain challenges, revealing that only 30% of orders are currently delivered on time. While monthly delay trends show some fluctuation, the data highlights significant bottlenecks across all shipping modes and specific regional delays that contribute to an average delivery time of nearly 23 days.",
+      "components": [
+        {
+          "id": "kpi_avg_delivery",
+          "title": "Avg. Delivery Time (Days)",
+          "narration": "This indicator shows that it takes an average of 22.66 days for an order to be delivered, establishing a baseline for your current fulfillment speed."
+        },
+        {
+          "id": "kpi_on_time_rate",
+          "title": "On-Time Delivery Rate (%)",
+          "narration": "You can see that only 30% of your shipments are arriving on schedule, indicating a critical need to address systemic delays."
+        },
+        {
+          "id": "kpi_delayed_count",
+          "title": "Total Delayed Orders",
+          "narration": "This card tracks the scale of the issue, showing that 350 total orders have failed to meet their expected delivery dates."
+        },
+        {
+          "id": "delayed_trend_chart",
+          "title": "Delayed Shipments Trend (Monthly)",
+          "narration": "This line chart tracks monthly fluctuations, showing that delays peaked in March and April with 33 orders each before seeing a slight improvement in May."
+        },
+        {
+          "id": "delay_by_region_chart",
+          "title": "Avg. Delay Duration by Region (Days)",
+          "narration": "This chart identifies Latin America as the region with the longest wait times, averaging over 30 days per delay, while North America performs slightly better at 28.27 days."
+        },
+        {
+          "id": "delay_by_mode_chart",
+          "title": "Delayed Orders by Shipping Mode",
+          "narration": "This breakdown shows that delays are relatively evenly distributed across transport types, though rail and air account for the highest volume of late shipments."
+        },
+        {
+          "id": "supplier_performance_table",
+          "title": "Supplier Reliability Ranking",
+          "narration": "This table ranks your partners by reliability; for example, Acme Corp has a high volume of delays (80) and a longer average delivery time compared to Global Parts Ltd."
+        }
+      ]
+    }
+  }
+}
