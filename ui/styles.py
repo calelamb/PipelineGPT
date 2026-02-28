@@ -346,6 +346,35 @@ details[data-testid="stExpanderDetails"] > summary,
     border-radius: var(--radius-lg) var(--radius-lg) 0 0 !important;
     padding: 12px 16px !important;
 }
+/* Fix the expander toggle marker/arrow — prevent garbled text */
+.stExpander summary::marker,
+[data-testid="stExpander"] summary::marker,
+details summary::marker {
+    content: "" !important;
+    display: none !important;
+}
+.stExpander summary::-webkit-details-marker,
+[data-testid="stExpander"] summary::-webkit-details-marker,
+details summary::-webkit-details-marker {
+    display: none !important;
+}
+/* Ensure the expand/collapse icon inside summary is visible and clean */
+.stExpander summary svg,
+[data-testid="stExpander"] summary svg {
+    display: inline-block !important;
+    visibility: visible !important;
+    width: 16px !important;
+    height: 16px !important;
+    flex-shrink: 0 !important;
+    margin-right: 6px !important;
+    color: var(--text-tertiary) !important;
+}
+/* Fix the summary span text — prevent overlap */
+.stExpander summary span,
+[data-testid="stExpander"] summary span {
+    color: var(--text-primary) !important;
+    font-family: var(--font) !important;
+}
 .stExpander summary:hover,
 [data-testid="stExpander"] summary:hover {
     background-color: var(--bg-hover) !important;
@@ -359,12 +388,9 @@ details[data-testid="stExpanderDetails"] > summary,
     background-color: var(--bg-card) !important;
     background: var(--bg-card) !important;
 }
-/* Override any dark child divs inside expander */
-.stExpander div,
-[data-testid="stExpander"] div {
-    background-color: transparent !important;
-}
-.stExpander [data-testid="stExpanderDetails"] div {
+/* Override any dark child divs inside expander — but NOT inside data grids */
+.stExpander > details > div,
+.stExpander > details > [data-testid="stExpanderDetails"] > div:not([data-testid="stDataFrame"] *) {
     background-color: transparent !important;
 }
 
@@ -408,6 +434,7 @@ div[data-testid="stBottom"] > div {
 [data-testid="stChatInput"] {
     background-color: transparent !important;
     border-top: none !important;
+    border: none !important;
 }
 [data-testid="stChatInput"] > div {
     background-color: #ffffff !important;
@@ -439,6 +466,44 @@ div[data-testid="stBottom"] > div {
 }
 [data-testid="stChatInput"] button:hover {
     color: var(--text-primary) !important;
+}
+/* Kill resize handles / corner brackets on chat input */
+[data-testid="stChatInput"] textarea {
+    resize: none !important;
+}
+/* Hide ALL non-button child elements that could be bracket decorations */
+[data-testid="stChatInput"] > div > *:not(div):not(button),
+[data-testid="stChatInput"] > div > div > *:not(textarea):not(div):not(button) {
+    display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+    position: absolute !important;
+    overflow: hidden !important;
+}
+/* Hide SVGs except send button */
+[data-testid="stChatInput"] svg {
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+[data-testid="stChatInput"] button svg {
+    visibility: visible !important;
+    width: auto !important;
+    height: auto !important;
+}
+/* Nuke all pseudo-elements */
+[data-testid="stChatInput"] > div::before,
+[data-testid="stChatInput"] > div::after,
+[data-testid="stChatInput"] > div > *::before,
+[data-testid="stChatInput"] > div > *::after {
+    display: none !important;
+    content: none !important;
+}
+/* Hide any span elements that might be the brackets */
+[data-testid="stChatInput"] > div > span,
+[data-testid="stChatInput"] > div > div > span:not(button span) {
+    display: none !important;
 }
 
 /* ══════════════════════════════════════
@@ -477,6 +542,22 @@ div[data-testid="stBottom"] > div {
     border-radius: var(--radius-lg) !important;
     overflow: hidden !important;
     animation: fadeInUp 0.3s ease forwards;
+}
+/* Lighten the dataframe header (glide-data-grid) */
+[data-testid="stDataFrame"] [data-testid="glide-data-grid-canvas"],
+[data-testid="stDataFrame"] canvas {
+    border-radius: var(--radius-md) !important;
+}
+/* Override the dark header row via the theme variables */
+[data-testid="stDataFrame"] .gdg-header,
+[data-testid="stDataFrame"] th,
+[data-testid="stDataFrame"] [role="columnheader"] {
+    background-color: #f9fafb !important;
+    color: var(--text-primary) !important;
+    font-family: var(--font) !important;
+    font-weight: 500 !important;
+    font-size: 12px !important;
+    border-bottom: 1px solid var(--border) !important;
 }
 /* Legacy expander classes (older Streamlit versions) */
 .streamlit-expanderHeader {
@@ -756,6 +837,42 @@ section[data-testid="stSidebar"] .stButton:last-of-type > button:hover {
     color: var(--text-primary) !important;
     background-color: var(--bg-card) !important;
     box-shadow: var(--shadow-sm) !important;
+}
+
+/* ══════════════════════════════════════
+   LOGIN PAGE HELPERS
+   ══════════════════════════════════════ */
+.login-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0 0 6px 0;
+    font-family: var(--font);
+    text-align: center;
+}
+.login-hint {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    margin: 4px 0 20px 0;
+    line-height: 1.4;
+    font-family: var(--font);
+    text-align: center;
+}
+.login-error {
+    color: var(--danger);
+    font-size: 12px;
+    margin: 4px 0 0 0;
+    font-family: var(--font);
+    text-align: center;
+}
+.login-footer {
+    text-align: center;
+    color: #c0c0c0;
+    font-size: 11px;
+    margin-top: 32px;
+    font-family: var(--font);
 }
 
 /* Spinner */

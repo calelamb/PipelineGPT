@@ -142,7 +142,8 @@ PLOTLY_DEFAULTS = dict(
     template="simple_white",
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
-    font=dict(color="#6b7280", family="Inter"),
+    font=dict(color="#6b7280", family="DM Sans, -apple-system, sans-serif"),
+    title_font=dict(color="#111111", size=14),
     height=380,
     margin=dict(l=40, r=20, t=50, b=40),
 )
@@ -570,17 +571,35 @@ def render_login_screen():
         overflow: hidden !important;
     }
 
-    /* Center the main block */
+    /* Center the main block — narrow + centered */
     .stMainBlockContainer {
-        max-width: 380px !important;
+        max-width: 360px !important;
         margin: 0 auto !important;
-        padding-top: 12vh !important;
+        padding-top: 10vh !important;
+    }
+
+    /* Center ALL content inside the login form */
+    .stMainBlockContainer [data-testid="stVerticalBlock"] {
+        align-items: center !important;
+    }
+    .stMainBlockContainer .stMarkdown {
+        width: 100% !important;
+        text-align: center !important;
+    }
+    .stMainBlockContainer .stMarkdown p {
+        text-align: center !important;
+    }
+    /* But keep form inputs full-width */
+    .stMainBlockContainer .stSelectbox,
+    .stMainBlockContainer .stTextInput,
+    .stMainBlockContainer .stButton {
+        width: 100% !important;
     }
 
     /* Selectbox — light border, not black */
     .stSelectbox > div > div {
-        border-radius: 8px !important;
-        min-height: 42px !important;
+        border-radius: 10px !important;
+        min-height: 44px !important;
         font-size: 14px !important;
         border: 1px solid #e5e7eb !important;
         background: #ffffff !important;
@@ -592,17 +611,21 @@ def render_login_screen():
     }
     .stSelectbox label { display: none !important; }
 
-    /* Password field */
+    /* Password field — hide toggle, clean border */
+    .stTextInput > div {
+        width: 100% !important;
+    }
     .stTextInput input {
-        border-radius: 8px !important;
-        height: 42px !important;
+        border-radius: 10px !important;
+        height: 44px !important;
         font-size: 14px !important;
-        padding: 0 12px !important;
+        padding: 0 14px !important;
         border: 1px solid #e5e7eb !important;
         background: #ffffff !important;
         color: #111111 !important;
-        font-family: 'Inter', -apple-system, sans-serif !important;
+        font-family: var(--font) !important;
         transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+        width: 100% !important;
     }
     .stTextInput input:focus {
         border-color: #9ca3af !important;
@@ -611,23 +634,29 @@ def render_login_screen():
     }
     .stTextInput input::placeholder { color: #9ca3af !important; }
     .stTextInput label { display: none !important; }
-    .stTextInput button { display: none !important; }
+    /* Hide the password show/hide toggle button */
+    .stTextInput button {
+        display: none !important;
+    }
 
-    /* Sign-in button — proportional, not massive */
+    /* Sign-in button — solid dark pill */
     [data-testid="baseButton-primary"] {
         width: 100% !important;
-        height: 42px !important;
+        height: 44px !important;
         background-color: #111111 !important;
+        background: #111111 !important;
         color: #ffffff !important;
-        border-radius: 8px !important;
+        border-radius: 10px !important;
         font-size: 14px !important;
         font-weight: 500 !important;
         border: none !important;
         transition: background-color 0.15s ease !important;
-        margin-top: 4px !important;
+        margin-top: 8px !important;
     }
     [data-testid="baseButton-primary"]:hover {
         background-color: #333333 !important;
+        background: #333333 !important;
+        color: #ffffff !important;
     }
     </style>""", unsafe_allow_html=True)
 
@@ -641,16 +670,15 @@ def render_login_screen():
             </svg>
         </div>
         <div style="font-size:24px;font-weight:700;color:#111111;letter-spacing:-0.5px;
-                    font-family:'Inter',-apple-system,sans-serif">StackForge</div>
+                    font-family:'DM Sans',-apple-system,sans-serif">StackForge</div>
         <div style="font-size:13px;color:#9ca3af;margin-top:4px;
-                    font-family:'Inter',-apple-system,sans-serif">Sign in to continue</div>
+                    font-family:'DM Sans',-apple-system,sans-serif">Sign in to continue</div>
     </div>
     """, unsafe_allow_html=True)
 
     # ── Role — native selectbox ──
     st.markdown(
-        '<p style="font-size:11px;font-weight:500;color:#9ca3af;text-transform:uppercase;'
-        'letter-spacing:0.06em;margin:0 0 4px 2px;font-family:Inter,-apple-system,sans-serif">Role</p>',
+        '<p class="login-label">Role</p>',
         unsafe_allow_html=True,
     )
     selected_display = st.selectbox(
@@ -662,15 +690,13 @@ def render_login_screen():
     )
     role_key = ROLE_KEY_MAP.get(selected_display, "analyst")
     st.markdown(
-        f'<p style="font-size:12px;color:#9ca3af;margin:2px 0 16px 2px;'
-        f'line-height:1.4;font-family:Inter,-apple-system,sans-serif">{ROLE_DESC[role_key]}</p>',
+        f'<p class="login-hint">{ROLE_DESC[role_key]}</p>',
         unsafe_allow_html=True,
     )
 
     # ── Password ──
     st.markdown(
-        '<p style="font-size:11px;font-weight:500;color:#9ca3af;text-transform:uppercase;'
-        'letter-spacing:0.06em;margin:0 0 4px 2px;font-family:Inter,-apple-system,sans-serif">Password</p>',
+        '<p class="login-label">Password</p>',
         unsafe_allow_html=True,
     )
     pwd = st.text_input(
@@ -682,8 +708,7 @@ def render_login_screen():
     )
     if st.session_state.get("login_error"):
         st.markdown(
-            '<p style="color:#dc2626;font-size:12px;margin:4px 0 0 2px;'
-            'font-family:Inter,-apple-system,sans-serif">Incorrect password</p>',
+            '<p class="login-error">Incorrect password</p>',
             unsafe_allow_html=True,
         )
 
@@ -702,8 +727,7 @@ def render_login_screen():
             st.rerun()
 
     st.markdown(
-        '<p style="text-align:center;color:#c0c0c0;font-size:11px;margin-top:28px;'
-        'font-family:Inter,-apple-system,sans-serif">StackForge v1.0 · HackUSU 2026</p>',
+        '<p class="login-footer">StackForge v1.0 · HackUSU 2026</p>',
         unsafe_allow_html=True,
     )
 
