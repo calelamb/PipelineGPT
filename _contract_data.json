@@ -1,0 +1,482 @@
+{
+  "app_definition": {
+    "app_title": "Supplier Defect Rates by Region",
+    "app_description": "Analyze average defect rates for each supplier across regions to identify quality issues and improvement opportunities.",
+    "components": [
+      {
+        "id": "bar_1",
+        "type": "bar_chart",
+        "title": "Average Defect Rate by Supplier and Region",
+        "sql_query": "SELECT supplier, region, AVG(defect_rate) AS avg_defect_rate\nFROM supply_chain\nGROUP BY supplier, region\nORDER BY avg_defect_rate DESC;",
+        "config": {
+          "x_axis": "region",
+          "y_axis": "avg_defect_rate",
+          "format": "percentage"
+        }
+      },
+      {
+        "id": "table_1",
+        "type": "table",
+        "title": "Supplier Defect Rate Details by Region",
+        "sql_query": "SELECT supplier, region, COUNT(DISTINCT order_id) AS orders_count, SUM(quantity) AS total_quantity, AVG(defect_rate) AS avg_defect_rate\nFROM supply_chain\nGROUP BY supplier, region\nORDER BY avg_defect_rate DESC;",
+        "config": {
+          "columns": [
+            "supplier",
+            "region",
+            "orders_count",
+            "total_quantity",
+            "avg_defect_rate"
+          ],
+          "sort_column": "avg_defect_rate",
+          "sort_order": "desc",
+          "format": "number"
+        }
+      },
+      {
+        "id": "kpi_1",
+        "type": "kpi_card",
+        "title": "Overall Average Defect Rate",
+        "sql_query": "SELECT AVG(defect_rate) AS overall_defect_rate\nFROM supply_chain;",
+        "config": {
+          "value_column": "overall_defect_rate",
+          "metric_name": "Overall Defect Rate",
+          "format": "percentage"
+        }
+      }
+    ],
+    "filters": [
+      {
+        "id": "region_filter",
+        "name": "Region",
+        "column": "region",
+        "type": "multiselect"
+      },
+      {
+        "id": "supplier_filter",
+        "name": "Supplier",
+        "column": "supplier",
+        "type": "multiselect"
+      },
+      {
+        "id": "category_filter",
+        "name": "Category",
+        "column": "category",
+        "type": "multiselect"
+      }
+    ]
+  },
+  "execution_results": {
+    "bar_1": {
+      "status": "success",
+      "data": [
+        {
+          "supplier": "Acme Corp",
+          "region": "Europe",
+          "avg_defect_rate": 3.183846153846154
+        },
+        {
+          "supplier": "Superior Materials",
+          "region": "Africa",
+          "avg_defect_rate": 2.794285714285714
+        },
+        {
+          "supplier": "Global Parts Ltd",
+          "region": "Asia Pacific",
+          "avg_defect_rate": 2.7895833333333333
+        },
+        {
+          "supplier": "Reliable Suppliers Co",
+          "region": "Europe",
+          "avg_defect_rate": 2.6983333333333337
+        },
+        {
+          "supplier": "Global Parts Ltd",
+          "region": "North America",
+          "avg_defect_rate": 2.6875
+        },
+        {
+          "supplier": "Acme Corp",
+          "region": "Latin America",
+          "avg_defect_rate": 2.6789473684210523
+        },
+        {
+          "supplier": "Reliable Suppliers Co",
+          "region": "Asia Pacific",
+          "avg_defect_rate": 2.6783333333333332
+        },
+        {
+          "supplier": "Reliable Suppliers Co",
+          "region": "North America",
+          "avg_defect_rate": 2.5944444444444446
+        },
+        {
+          "supplier": "BuildRight Inc",
+          "region": "Asia Pacific",
+          "avg_defect_rate": 2.592222222222222
+        },
+        {
+          "supplier": "Reliable Suppliers Co",
+          "region": "Africa",
+          "avg_defect_rate": 2.5700000000000007
+        },
+        {
+          "supplier": "Superior Materials",
+          "region": "Europe",
+          "avg_defect_rate": 2.557586206896551
+        },
+        {
+          "supplier": "Acme Corp",
+          "region": "Asia Pacific",
+          "avg_defect_rate": 2.5566666666666666
+        },
+        {
+          "supplier": "Acme Corp",
+          "region": "North America",
+          "avg_defect_rate": 2.555909090909091
+        },
+        {
+          "supplier": "BuildRight Inc",
+          "region": "Europe",
+          "avg_defect_rate": 2.5557142857142856
+        },
+        {
+          "supplier": "BuildRight Inc",
+          "region": "Africa",
+          "avg_defect_rate": 2.5421739130434777
+        },
+        {
+          "supplier": "Acme Corp",
+          "region": "Africa",
+          "avg_defect_rate": 2.4575
+        },
+        {
+          "supplier": "Global Parts Ltd",
+          "region": "Africa",
+          "avg_defect_rate": 2.4510526315789476
+        },
+        {
+          "supplier": "BuildRight Inc",
+          "region": "North America",
+          "avg_defect_rate": 2.4457894736842105
+        },
+        {
+          "supplier": "Reliable Suppliers Co",
+          "region": "Latin America",
+          "avg_defect_rate": 2.369285714285714
+        },
+        {
+          "supplier": "Global Parts Ltd",
+          "region": "Latin America",
+          "avg_defect_rate": 2.34
+        },
+        {
+          "supplier": "Superior Materials",
+          "region": "Latin America",
+          "avg_defect_rate": 2.3054545454545456
+        },
+        {
+          "supplier": "BuildRight Inc",
+          "region": "Latin America",
+          "avg_defect_rate": 2.297619047619048
+        },
+        {
+          "supplier": "Superior Materials",
+          "region": "Asia Pacific",
+          "avg_defect_rate": 2.291904761904762
+        },
+        {
+          "supplier": "Superior Materials",
+          "region": "North America",
+          "avg_defect_rate": 2.1115384615384616
+        },
+        {
+          "supplier": "Global Parts Ltd",
+          "region": "Europe",
+          "avg_defect_rate": 2.025
+        }
+      ],
+      "row_count": 25
+    },
+    "table_1": {
+      "status": "success",
+      "data": [
+        {
+          "supplier": "Acme Corp",
+          "region": "Europe",
+          "orders_count": 26,
+          "total_quantity": 7076.0,
+          "avg_defect_rate": 3.183846153846154
+        },
+        {
+          "supplier": "Superior Materials",
+          "region": "Africa",
+          "orders_count": 14,
+          "total_quantity": 4494.0,
+          "avg_defect_rate": 2.794285714285714
+        },
+        {
+          "supplier": "Global Parts Ltd",
+          "region": "Asia Pacific",
+          "orders_count": 24,
+          "total_quantity": 5996.0,
+          "avg_defect_rate": 2.7895833333333333
+        },
+        {
+          "supplier": "Reliable Suppliers Co",
+          "region": "Europe",
+          "orders_count": 12,
+          "total_quantity": 2862.0,
+          "avg_defect_rate": 2.6983333333333337
+        },
+        {
+          "supplier": "Global Parts Ltd",
+          "region": "North America",
+          "orders_count": 16,
+          "total_quantity": 5728.0,
+          "avg_defect_rate": 2.6875
+        },
+        {
+          "supplier": "Acme Corp",
+          "region": "Latin America",
+          "orders_count": 19,
+          "total_quantity": 3599.0,
+          "avg_defect_rate": 2.6789473684210523
+        },
+        {
+          "supplier": "Reliable Suppliers Co",
+          "region": "Asia Pacific",
+          "orders_count": 18,
+          "total_quantity": 5008.0,
+          "avg_defect_rate": 2.6783333333333332
+        },
+        {
+          "supplier": "Reliable Suppliers Co",
+          "region": "North America",
+          "orders_count": 18,
+          "total_quantity": 4861.0,
+          "avg_defect_rate": 2.5944444444444446
+        },
+        {
+          "supplier": "BuildRight Inc",
+          "region": "Asia Pacific",
+          "orders_count": 18,
+          "total_quantity": 5101.0,
+          "avg_defect_rate": 2.592222222222222
+        },
+        {
+          "supplier": "Reliable Suppliers Co",
+          "region": "Africa",
+          "orders_count": 31,
+          "total_quantity": 8389.0,
+          "avg_defect_rate": 2.5700000000000007
+        },
+        {
+          "supplier": "Superior Materials",
+          "region": "Europe",
+          "orders_count": 29,
+          "total_quantity": 7858.0,
+          "avg_defect_rate": 2.557586206896551
+        },
+        {
+          "supplier": "Acme Corp",
+          "region": "Asia Pacific",
+          "orders_count": 18,
+          "total_quantity": 4448.0,
+          "avg_defect_rate": 2.5566666666666666
+        },
+        {
+          "supplier": "Acme Corp",
+          "region": "North America",
+          "orders_count": 22,
+          "total_quantity": 5137.0,
+          "avg_defect_rate": 2.555909090909091
+        },
+        {
+          "supplier": "BuildRight Inc",
+          "region": "Europe",
+          "orders_count": 14,
+          "total_quantity": 3432.0,
+          "avg_defect_rate": 2.5557142857142856
+        },
+        {
+          "supplier": "BuildRight Inc",
+          "region": "Africa",
+          "orders_count": 23,
+          "total_quantity": 5670.0,
+          "avg_defect_rate": 2.5421739130434777
+        },
+        {
+          "supplier": "Acme Corp",
+          "region": "Africa",
+          "orders_count": 24,
+          "total_quantity": 7340.0,
+          "avg_defect_rate": 2.4575
+        },
+        {
+          "supplier": "Global Parts Ltd",
+          "region": "Africa",
+          "orders_count": 19,
+          "total_quantity": 4353.0,
+          "avg_defect_rate": 2.4510526315789476
+        },
+        {
+          "supplier": "BuildRight Inc",
+          "region": "North America",
+          "orders_count": 19,
+          "total_quantity": 3982.0,
+          "avg_defect_rate": 2.4457894736842105
+        },
+        {
+          "supplier": "Reliable Suppliers Co",
+          "region": "Latin America",
+          "orders_count": 14,
+          "total_quantity": 3558.0,
+          "avg_defect_rate": 2.369285714285714
+        },
+        {
+          "supplier": "Global Parts Ltd",
+          "region": "Latin America",
+          "orders_count": 18,
+          "total_quantity": 5049.0,
+          "avg_defect_rate": 2.34
+        },
+        {
+          "supplier": "Superior Materials",
+          "region": "Latin America",
+          "orders_count": 22,
+          "total_quantity": 5591.0,
+          "avg_defect_rate": 2.3054545454545456
+        },
+        {
+          "supplier": "BuildRight Inc",
+          "region": "Latin America",
+          "orders_count": 21,
+          "total_quantity": 5587.0,
+          "avg_defect_rate": 2.297619047619048
+        },
+        {
+          "supplier": "Superior Materials",
+          "region": "Asia Pacific",
+          "orders_count": 21,
+          "total_quantity": 5198.0,
+          "avg_defect_rate": 2.291904761904762
+        },
+        {
+          "supplier": "Superior Materials",
+          "region": "North America",
+          "orders_count": 26,
+          "total_quantity": 7146.0,
+          "avg_defect_rate": 2.1115384615384616
+        },
+        {
+          "supplier": "Global Parts Ltd",
+          "region": "Europe",
+          "orders_count": 14,
+          "total_quantity": 2561.0,
+          "avg_defect_rate": 2.025
+        }
+      ],
+      "row_count": 25
+    },
+    "kpi_1": {
+      "status": "success",
+      "data": [
+        {
+          "overall_defect_rate": 2.5294000000000025
+        }
+      ],
+      "row_count": 1
+    }
+  },
+  "validation": {
+    "overall_status": "success",
+    "components": [
+      {
+        "id": "bar_1",
+        "title": "Average Defect Rate by Supplier and Region",
+        "type": "bar_chart",
+        "status": "success",
+        "warnings": [],
+        "explanation": "Average Defect Rate by Supplier and Region: Compares 25 categories"
+      },
+      {
+        "id": "table_1",
+        "title": "Supplier Defect Rate Details by Region",
+        "type": "table",
+        "status": "success",
+        "warnings": [],
+        "explanation": "Supplier Defect Rate Details by Region: Shows 25 rows across 5 columns"
+      },
+      {
+        "id": "kpi_1",
+        "title": "Overall Average Defect Rate",
+        "type": "kpi_card",
+        "status": "success",
+        "warnings": [],
+        "explanation": "Overall Average Defect Rate: Displays a single metric value (1 data point)"
+      }
+    ],
+    "total_warnings": 0
+  },
+  "governance": {
+    "overall_status": "pass",
+    "passed": true,
+    "role": "analyst",
+    "checks": [
+      {
+        "name": "pii_detection",
+        "status": "pass",
+        "details": "No PII detected"
+      },
+      {
+        "name": "access_control",
+        "status": "pass",
+        "details": "Role 'analyst' granted create_app"
+      },
+      {
+        "name": "query_complexity",
+        "status": "pass",
+        "details": "Analyzed 3 queries"
+      },
+      {
+        "name": "data_quality",
+        "status": "pass",
+        "details": "good"
+      },
+      {
+        "name": "export_control",
+        "status": "pass",
+        "details": "51 rows (limit: 100000)"
+      }
+    ],
+    "pii_detected": [],
+    "access_granted": true,
+    "query_complexity": {
+      "bar_1": {
+        "join_count": 0,
+        "subquery_count": 0,
+        "has_aggregation": true,
+        "is_complex": false
+      },
+      "table_1": {
+        "join_count": 0,
+        "subquery_count": 0,
+        "has_aggregation": true,
+        "is_complex": false
+      },
+      "kpi_1": {
+        "join_count": 0,
+        "subquery_count": 0,
+        "has_aggregation": true,
+        "is_complex": false
+      }
+    },
+    "data_quality": {
+      "has_null_values": false,
+      "has_duplicates": false,
+      "overall_quality": "good"
+    },
+    "export_allowed": true,
+    "warnings": []
+  }
+}
