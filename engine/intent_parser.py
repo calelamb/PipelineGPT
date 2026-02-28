@@ -180,13 +180,16 @@ Based on the user's request, create an app definition that:
 3. Provides useful filters for exploration
 4. Follows the app_definition schema exactly
 
-IMPORTANT:
+IMPORTANT SQL RULES:
 - All SQL queries must be valid DuckDB syntax
 - All SQL queries must SELECT FROM the 'supply_chain' table
 - Only use columns that exist in the schema above
 - Keep queries efficient (avoid SELECT *)
 - For aggregations, use GROUP BY appropriately
 - For filters, the column name must match exactly what's in the schema
+- NEVER use parameterized placeholders (?, $1, :param) — always use literal values or omit conditions
+- When using CASE WHEN with aggregates like AVG(), the CASE must wrap the aggregate (e.g., CASE WHEN AVG(x) < 2 THEN 'Good' END) and must appear in SELECT only, NOT in GROUP BY. Group by non-aggregate columns instead.
+- For date operations, use DuckDB functions: strftime, date_trunc, extract. Example: strftime(order_date, '%Y-%m') for monthly grouping.
 
 Return the app definition as a JSON object via the create_data_app function.
 """

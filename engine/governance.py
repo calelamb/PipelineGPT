@@ -163,6 +163,7 @@ def run_governance_checks(
     app_definition: Dict[str, Any],
     role: str = "analyst",
     execution_results: Dict[str, Any] = None,
+    user_message: str = "",
 ) -> Dict[str, Any]:
     """
     Run comprehensive governance checks on an app and its execution.
@@ -199,8 +200,13 @@ def run_governance_checks(
     warnings = []
     checks = []
 
-    # 1. PII Detection
+    # 1. PII Detection — scan both user prompt AND SQL queries
     pii_detected = []
+    if user_message:
+        prompt_pii = _detect_pii(user_message)
+        if prompt_pii:
+            pii_detected.extend(prompt_pii)
+            warnings.append("PII detected in user prompt")
     for component in app_definition.get("components", []):
         sql_query = component.get("sql_query", "")
         pii = _detect_pii(sql_query)

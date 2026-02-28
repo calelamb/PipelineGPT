@@ -50,7 +50,8 @@ def run_pipeline(
 
     # 4. Run governance checks
     governance = run_governance_checks(
-        app_definition, role=role, execution_results=execution_results
+        app_definition, role=role, execution_results=execution_results,
+        user_message=user_message,
     )
 
     # Convert DataFrames to dicts for Streamlit/Plotly consumption
