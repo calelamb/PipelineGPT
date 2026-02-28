@@ -910,12 +910,11 @@ def main():
                 )
             else:
                 st.markdown(
-                    f'<div style="display:flex;align-items:center;justify-content:space-between;'
+                    f'<div style="display:flex;align-items:center;'
                     f'padding:6px 10px;background:#f8fafc;border:1px solid #e2e8f0;'
                     f'border-radius:8px;margin-bottom:4px;font-size:12px">'
                     f'<span style="color:#334155;font-weight:500">'
                     f'{LUCIDE["database"]} &nbsp;{tbl}</span>'
-                    f'<span style="color:#94a3b8;font-size:11px">built-in</span>'
                     f'</div>',
                     unsafe_allow_html=True,
                 )
@@ -1055,9 +1054,14 @@ def _render_graph_history():
         prompt = payload.get("prompt", "")
         saved_at = payload.get("saved_at", "")
         app_def = result.get("app_definition", {})
-        gov = result.get("governance", {})
         app_title = app_def.get("app_title", "Dashboard")
         n_comps = len(app_def.get("components", []))
+
+        # Re-run governance for the CURRENT user's role (not the original)
+        current_role = st.session_state.get("user_role", "analyst")
+        from engine.governance import run_governance_checks
+        gov = run_governance_checks(app_def, role=current_role)
+        result["governance"] = gov
         passed = gov.get("passed", True)
 
         try:
