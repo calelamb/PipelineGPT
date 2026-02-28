@@ -56,7 +56,7 @@ ROLES = {
             "bypass_row_limit",
         ],
         "max_rows_per_query": None,         # No limit
-        "max_components_per_app": 8,
+        "max_components_per_app": 15,       # Generous limit for admins
         "allowed_component_types": None,    # All types
         "can_use_templates": True,
         "session_timeout_minutes": 480,     # 8 hours

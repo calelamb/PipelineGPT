@@ -453,7 +453,7 @@ def cat7():
 def cat8():
     print("\n=== CATEGORY 8: PERFORMANCE & RELIABILITY ===")
 
-    # 8.1 — Rapid fire
+    # 8.1 — Rapid fire (run as admin to test SQL performance, not governance)
     prompts = [
         "Show defect rates",
         "Compare regions",
@@ -464,7 +464,7 @@ def cat8():
     start = time.time()
     all_ok = True
     for p in prompts:
-        r = run_pipeline(p)
+        r = run_pipeline(p, role="admin")
         val = r.get("validation", {}).get("overall_status", "error")
         if val not in ["success", "warning"]:
             all_ok = False
