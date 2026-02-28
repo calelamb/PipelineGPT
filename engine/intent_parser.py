@@ -2,7 +2,10 @@ import json
 import os
 from typing import Optional, Dict, Any
 from openai import OpenAI
+from dotenv import load_dotenv
 import logging
+
+load_dotenv()  # load .env file
 
 logger = logging.getLogger(__name__)
 
@@ -247,13 +250,16 @@ def parse_intent(
     if existing_app:
         system_prompt += f"\n\nCurrent app definition:\n{json.dumps(existing_app, indent=2)}\n\nUser is asking to refine this app."
 
-    # Initialize OpenAI client
-    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    # Initialize OpenAI client (use OpenRouter if OPENROUTER_API_KEY is set)
+    api_key = os.getenv("OPENROUTER_API_KEY") or os.getenv("OPENAI_API_KEY")
+    base_url = os.getenv("OPENAI_BASE_URL", "https://openrouter.ai/api/v1")
+    client = OpenAI(api_key=api_key, base_url=base_url)
 
-    # Call GPT-5.1 with tool calling
+    # Call LLM with tool calling
+    model = os.getenv("OPENAI_MODEL", "openai/gpt-4.1")
     try:
         response = client.chat.completions.create(
-            model=os.getenv("OPENAI_MODEL", "gpt-5.1"),
+            model=model,
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_message},
