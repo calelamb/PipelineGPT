@@ -1,0 +1,21 @@
+customer_id,customer_name,industry,company_size,revenue_category,region,account_manager,satisfaction_score,last_order_date
+CUST-001,TechCorp Inc,Technology,Large,$50M-$100M,North America,John Smith,4.5,2024-02-15
+CUST-002,BuildWell Ltd,Construction,Medium,$10M-$50M,Europe,Sarah Johnson,3.8,2024-02-10
+CUST-003,GlobalTrade Co,Retail,Large,$100M+,Asia Pacific,Mike Davis,4.2,2024-02-20
+CUST-004,InnovateLabs,Healthcare,Small,$1M-$10M,North America,Lisa Chen,4.7,2024-02-18
+CUST-005,MetroLogistics,Transportation,Medium,$10M-$50M,Europe,David Wilson,3.9,2024-02-12
+CUST-006,EcoEnergy Corp,Energy,Large,$100M+,Latin America,Ana Rodriguez,4.1,2024-02-14
+CUST-007,FoodChain Inc,Food & Beverage,Medium,$10M-$50M,Asia Pacific,Tom Anderson,4.3,2024-02-16
+CUST-008,MediCare Plus,Healthcare,Large,$50M-$100M,North America,Jennifer Lee,4.6,2024-02-19
+CUST-009,AutoParts Pro,Automotive,Medium,$10M-$50M,Europe,Mark Thompson,3.7,2024-02-11
+CUST-010,FinTech Solutions,Financial Services,Large,$100M+,Africa,Rachel Green,4.4,2024-02-17
+CUST-011,AgriTech Farms,Agriculture,Small,$1M-$10M,Latin America,Carlos Mendez,4.0,2024-02-13
+CUST-012,SmartHome Inc,Consumer Electronics,Medium,$10M-$50M,Asia Pacific,Susan White,4.8,2024-02-21
+CUST-013,ChemicalWorks,Chemicals,Large,$50M-$100M,North America,Robert Brown,3.6,2024-02-09
+CUST-014,TextilePlus,Manufacturing,Medium,$10M-$50M,Europe,Maria Garcia,4.2,2024-02-15
+CUST-015,PharmaLife,Pharmaceuticals,Large,$100M+,Asia Pacific,James Miller,4.5,2024-02-20
+CUST-016,EduLearn Academy,Education,Small,$1M-$10M,North America,Emily Davis,4.3,2024-02-16
+CUST-017,DefenseTech Inc,Defense,Large,$100M+,Europe,William Johnson,3.9,2024-02-12
+CUST-018,RetailMax,Sports & Recreation,Medium,$10M-$50M,Latin America,Sofia Martinez,4.1,2024-02-14
+CUST-019,CloudServices Pro,IT Services,Large,$50M-$100M,Africa,Ahmed Hassan,4.4,2024-02-18
+CUST-020,GreenEnergy Ltd,Renewable Energy,Medium,$10M-$50M,Asia Pacific,Yuki Tanaka,4.6,2024-02-19

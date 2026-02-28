@@ -1,0 +1,501 @@
+order_id,order_date,supplier,region,product,category,quantity,unit_cost,total_cost,defect_rate,delivery_days,on_time_delivery,shipping_mode,shipping_cost,warehouse_cost
+ORD-00001,2024-01-01,Acme Corp,Asia Pacific,Rubber Seals,Mechanical,112,212.92,23847.04,2.354,18,0,rail,1442.42,346.62
+ORD-00002,2024-01-01,Superior Materials,Asia Pacific,Hydraulic Cylinders,Materials,445,38.47,17119.15,3.28,40,0,air,1013.26,209.86
+ORD-00003,2024-01-02,BuildRight Inc,Europe,Hydraulic Cylinders,Mechanical,358,178.68,63967.44,2.798,35,0,rail,1521.54,487.86
+ORD-00004,2024-01-03,BuildRight Inc,Europe,Electronic Sensors,Electronics,280,140.44,39323.2,3.435,41,0,air,250.69,366.51
+ORD-00005,2024-01-03,Reliable Suppliers Co,Africa,Steel Fasteners,Assembly,116,77.64,9006.24,3.29,29,0,sea,1096.14,335.35
+ORD-00006,2024-01-04,Global Parts Ltd,Latin America,Aluminum Extrusions,Mechanical,81,107.85,8735.85,0.585,29,0,rail,788.7,383.39
+ORD-00007,2024-01-05,Reliable Suppliers Co,Europe,Drive Belts,Materials,198,67.77,13418.46,3.999,38,0,sea,941.15,477.27
+ORD-00008,2024-01-06,Superior Materials,North America,Control Systems,Materials,30,154.82,4644.6,0.616,42,0,rail,1227.72,455.75
+ORD-00009,2024-01-06,Reliable Suppliers Co,Asia Pacific,Control Systems,Electronics,112,24.99,2798.88,3.493,21,0,air,1029.46,367.66
+ORD-00010,2024-01-07,Acme Corp,North America,Hydraulic Cylinders,Materials,131,6.27,821.37,2.081,42,0,air,1102.73,379.6
+ORD-00011,2024-01-08,Superior Materials,Asia Pacific,Electronic Sensors,Hardware,476,158.83,75603.08,2.569,13,1,rail,998.4,90.04
+ORD-00012,2024-01-09,BuildRight Inc,Asia Pacific,Electronic Sensors,Assembly,224,52.6,11782.4,4.516,41,0,air,847.46,69.34
+ORD-00013,2024-01-09,Global Parts Ltd,Europe,Rubber Seals,Mechanical,340,22.38,7609.2,4.449,17,0,sea,1555.17,294.03
+ORD-00014,2024-01-10,Superior Materials,Europe,Plastic Components,Assembly,468,102.21,47834.28,4.089,9,1,sea,73.8,28.82
+ORD-00015,2024-01-11,Superior Materials,North America,Drive Belts,Electronics,97,17.44,1691.68,2.551,41,0,truck,1216.96,251.53
+ORD-00016,2024-01-11,Acme Corp,Asia Pacific,Plastic Components,Mechanical,382,222.22,84888.04,3.681,1,1,air,1152.74,120.97
+ORD-00017,2024-01-12,Global Parts Ltd,North America,Hydraulic Cylinders,Mechanical,109,11.77,1282.93,2.564,2,1,sea,1446.55,186.09
+ORD-00018,2024-01-13,BuildRight Inc,Latin America,Control Systems,Hardware,369,146.82,54176.58,4.348,29,0,rail,1218.11,392.39
+ORD-00019,2024-01-14,Superior Materials,North America,Rubber Seals,Electronics,161,112.43,18101.23,2.014,33,0,air,1662.26,471.79
+ORD-00020,2024-01-14,Superior Materials,Africa,Rubber Seals,Materials,140,169.65,23751.0,4.851,10,1,sea,1920.2,54.76
+ORD-00021,2024-01-15,Acme Corp,North America,Rubber Seals,Hardware,159,85.4,13578.6,4.662,40,0,air,717.92,276.44
+ORD-00022,2024-01-16,Reliable Suppliers Co,Africa,Hydraulic Cylinders,Hardware,318,42.99,13670.82,3.708,21,0,rail,493.33,443.62
+ORD-00023,2024-01-17,BuildRight Inc,Africa,Plastic Components,Assembly,267,245.55,65561.85,1.397,28,0,sea,876.01,59.6
+ORD-00024,2024-01-17,Global Parts Ltd,Africa,Control Systems,Assembly,353,210.54,74320.62,0.658,11,1,truck,611.46,415.77
+ORD-00025,2024-01-18,Superior Materials,Latin America,Rubber Seals,Assembly,423,215.8,91283.4,4.274,34,0,truck,1249.15,191.74
+ORD-00026,2024-01-19,Superior Materials,North America,Control Systems,Hardware,303,66.31,20091.93,0.827,8,1,air,1828.11,174.61
+ORD-00027,2024-01-19,BuildRight Inc,North America,Steel Fasteners,Materials,395,14.51,5731.45,4.271,22,0,rail,321.28,489.18
+ORD-00028,2024-01-20,Reliable Suppliers Co,Latin America,Electronic Sensors,Mechanical,201,79.3,15939.3,2.454,8,1,sea,246.55,116.41
+ORD-00029,2024-01-21,Superior Materials,Asia Pacific,Electronic Sensors,Assembly,453,136.59,61875.27,2.033,15,0,rail,549.23,352.73
+ORD-00030,2024-01-22,BuildRight Inc,Europe,Control Systems,Materials,286,85.03,24318.58,4.516,17,0,sea,1465.89,414.29
+ORD-00031,2024-01-22,Acme Corp,North America,Aluminum Extrusions,Electronics,170,207.83,35331.1,3.019,23,0,air,1206.28,39.77
+ORD-00032,2024-01-23,Reliable Suppliers Co,Europe,Aluminum Extrusions,Assembly,469,71.53,33547.57,2.883,24,0,sea,249.31,341.79
+ORD-00033,2024-01-24,Global Parts Ltd,Latin America,Hydraulic Cylinders,Mechanical,323,241.49,78001.27,2.794,19,0,rail,1841.56,476.74
+ORD-00034,2024-01-25,Superior Materials,Asia Pacific,Hydraulic Cylinders,Electronics,31,117.03,3627.93,1.856,5,1,rail,1590.67,79.63
+ORD-00035,2024-01-25,BuildRight Inc,Asia Pacific,Electronic Sensors,Electronics,262,211.3,55360.6,3.928,32,0,air,94.89,450.19
+ORD-00036,2024-01-26,Acme Corp,Asia Pacific,Steel Fasteners,Mechanical,245,52.62,12891.9,1.264,44,0,rail,1320.17,305.49
+ORD-00037,2024-01-27,Global Parts Ltd,Latin America,Drive Belts,Assembly,354,105.78,37446.12,4.694,1,1,sea,1553.93,315.97
+ORD-00038,2024-01-28,BuildRight Inc,Africa,Plastic Components,Hardware,58,176.38,10230.04,4.47,23,0,air,780.15,314.21
+ORD-00039,2024-01-28,BuildRight Inc,Africa,Plastic Components,Mechanical,484,38.9,18827.6,1.687,37,0,sea,184.4,163.44
+ORD-00040,2024-01-29,Global Parts Ltd,Europe,Hydraulic Cylinders,Mechanical,68,37.52,2551.36,3.647,8,1,rail,200.78,468.9
+ORD-00041,2024-01-30,Acme Corp,Africa,Steel Fasteners,Mechanical,179,242.54,43414.66,2.866,13,1,air,253.28,474.73
+ORD-00042,2024-01-30,Acme Corp,Africa,Hydraulic Cylinders,Electronics,485,180.08,87338.8,1.688,8,1,sea,1688.86,320.15
+ORD-00043,2024-01-31,Reliable Suppliers Co,Asia Pacific,Drive Belts,Materials,197,15.06,2966.82,4.943,23,0,rail,1825.84,396.04
+ORD-00044,2024-02-01,Superior Materials,Asia Pacific,Plastic Components,Hardware,473,102.71,48581.83,0.126,43,0,rail,289.48,313.88
+ORD-00045,2024-02-02,Global Parts Ltd,Europe,Control Systems,Assembly,280,111.21,31138.8,1.263,1,1,truck,510.02,252.51
+ORD-00046,2024-02-02,Global Parts Ltd,North America,Hydraulic Cylinders,Assembly,199,187.29,37270.71,2.6,24,0,rail,372.76,337.19
+ORD-00047,2024-02-03,Global Parts Ltd,Europe,Rubber Seals,Materials,455,66.46,30239.3,2.61,35,0,sea,413.33,285.44
+ORD-00048,2024-02-04,Acme Corp,Europe,Control Systems,Mechanical,184,50.16,9229.44,2.945,24,0,air,1683.11,306.79
+ORD-00049,2024-02-05,Superior Materials,Latin America,Drive Belts,Hardware,455,24.81,11288.55,3.758,17,0,truck,697.69,396.24
+ORD-00050,2024-02-05,Reliable Suppliers Co,Latin America,Drive Belts,Assembly,60,109.94,6596.4,3.117,5,1,rail,657.32,250.83
+ORD-00051,2024-02-06,BuildRight Inc,Europe,Hydraulic Cylinders,Assembly,373,173.68,64782.64,3.001,20,0,rail,493.42,39.56
+ORD-00052,2024-02-07,BuildRight Inc,Europe,Electronic Sensors,Mechanical,64,19.26,1232.64,0.268,21,0,rail,1235.39,98.72
+ORD-00053,2024-02-07,Global Parts Ltd,Europe,Hydraulic Cylinders,Materials,253,229.23,57995.19,1.883,40,0,sea,789.65,230.53
+ORD-00054,2024-02-08,Superior Materials,Africa,Electronic Sensors,Hardware,329,113.38,37302.02,1.16,31,0,truck,1501.29,367.92
+ORD-00055,2024-02-09,Acme Corp,Latin America,Drive Belts,Materials,140,63.75,8925.0,1.327,36,0,sea,450.88,304.77
+ORD-00056,2024-02-10,Superior Materials,Europe,Steel Fasteners,Materials,494,28.0,13832.0,2.772,11,1,truck,1586.19,332.14
+ORD-00057,2024-02-10,Superior Materials,Asia Pacific,Drive Belts,Hardware,316,49.8,15736.8,0.998,15,0,air,1227.26,250.05
+ORD-00058,2024-02-11,Acme Corp,Asia Pacific,Plastic Components,Hardware,144,233.98,33693.12,1.47,19,0,sea,272.82,315.56
+ORD-00059,2024-02-12,Global Parts Ltd,Africa,Control Systems,Assembly,30,161.38,4841.4,1.185,7,1,sea,858.28,177.93
+ORD-00060,2024-02-13,Superior Materials,Africa,Control Systems,Assembly,338,131.59,44477.42,4.743,28,0,air,1733.86,245.69
+ORD-00061,2024-02-13,BuildRight Inc,North America,Aluminum Extrusions,Hardware,176,165.99,29214.24,4.723,43,0,truck,1849.77,377.25
+ORD-00062,2024-02-14,Acme Corp,North America,Aluminum Extrusions,Electronics,283,111.74,31622.42,3.05,5,1,rail,958.12,438.48
+ORD-00063,2024-02-15,Reliable Suppliers Co,North America,Drive Belts,Assembly,397,183.86,72992.42,4.623,5,1,air,987.63,228.15
+ORD-00064,2024-02-15,Global Parts Ltd,Africa,Plastic Components,Electronics,98,16.69,1635.62,3.929,30,0,rail,1840.99,40.96
+ORD-00065,2024-02-16,Acme Corp,Africa,Aluminum Extrusions,Hardware,325,143.68,46696.0,2.95,32,0,rail,1194.78,97.6
+ORD-00066,2024-02-17,Reliable Suppliers Co,Africa,Control Systems,Assembly,23,43.87,1009.01,0.032,8,1,air,114.05,30.01
+ORD-00067,2024-02-18,Reliable Suppliers Co,Asia Pacific,Hydraulic Cylinders,Materials,251,34.44,8644.44,3.863,10,1,truck,1829.86,333.57
+ORD-00068,2024-02-18,Superior Materials,Africa,Steel Fasteners,Hardware,274,88.76,24320.24,3.512,38,0,rail,534.04,179.51
+ORD-00069,2024-02-19,Superior Materials,Asia Pacific,Steel Fasteners,Mechanical,355,27.49,9758.95,3.076,32,0,air,1176.38,280.39
+ORD-00070,2024-02-20,Superior Materials,North America,Plastic Components,Electronics,62,28.07,1740.34,3.802,28,0,sea,372.75,256.77
+ORD-00071,2024-02-21,Acme Corp,North America,Drive Belts,Hardware,395,81.3,32113.5,2.565,17,0,sea,116.06,59.13
+ORD-00072,2024-02-21,Acme Corp,North America,Aluminum Extrusions,Hardware,349,244.98,85498.02,3.52,31,0,sea,657.37,213.57
+ORD-00073,2024-02-22,Global Parts Ltd,Europe,Hydraulic Cylinders,Assembly,101,47.96,4843.96,4.676,8,1,air,1571.97,125.87
+ORD-00074,2024-02-23,Superior Materials,Europe,Steel Fasteners,Assembly,376,9.2,3459.2,1.879,40,0,sea,591.29,220.83
+ORD-00075,2024-02-24,Reliable Suppliers Co,Latin America,Steel Fasteners,Assembly,453,192.02,86985.06,3.541,25,0,rail,479.19,117.72
+ORD-00076,2024-02-24,BuildRight Inc,Latin America,Rubber Seals,Mechanical,464,202.69,94048.16,2.378,9,1,sea,464.73,423.42
+ORD-00077,2024-02-25,Global Parts Ltd,Latin America,Drive Belts,Assembly,437,89.84,39260.08,3.372,2,1,sea,1054.59,103.61
+ORD-00078,2024-02-26,Acme Corp,Europe,Rubber Seals,Hardware,273,118.85,32446.05,3.814,15,0,rail,1952.31,481.17
+ORD-00079,2024-02-26,Global Parts Ltd,Europe,Control Systems,Assembly,440,164.19,72243.6,0.227,3,1,sea,945.03,219.64
+ORD-00080,2024-02-27,Global Parts Ltd,Latin America,Steel Fasteners,Materials,44,16.77,737.88,3.233,36,0,rail,1136.75,426.2
+ORD-00081,2024-02-28,Global Parts Ltd,Latin America,Plastic Components,Assembly,215,237.54,51071.1,1.134,4,1,sea,1728.23,321.81
+ORD-00082,2024-02-29,Global Parts Ltd,Africa,Electronic Sensors,Mechanical,90,222.24,20001.6,3.35,14,1,rail,1093.39,372.97
+ORD-00083,2024-02-29,BuildRight Inc,Latin America,Electronic Sensors,Materials,429,68.92,29566.68,2.342,41,0,sea,409.7,388.51
+ORD-00084,2024-03-01,Superior Materials,Africa,Hydraulic Cylinders,Hardware,59,8.75,516.25,3.868,41,0,rail,634.21,262.33
+ORD-00085,2024-03-02,Reliable Suppliers Co,Asia Pacific,Steel Fasteners,Hardware,369,233.69,86231.61,0.617,25,0,air,654.38,280.78
+ORD-00086,2024-03-03,Global Parts Ltd,Europe,Steel Fasteners,Electronics,397,127.75,50716.75,3.132,10,1,rail,824.77,266.72
+ORD-00087,2024-03-03,Global Parts Ltd,Latin America,Control Systems,Materials,11,137.15,1508.65,1.392,21,0,sea,882.24,302.27
+ORD-00088,2024-03-04,Global Parts Ltd,Europe,Steel Fasteners,Electronics,399,172.57,68855.43,4.265,36,0,sea,1609.57,34.11
+ORD-00089,2024-03-05,Superior Materials,Europe,Plastic Components,Materials,63,155.88,9820.44,4.642,12,1,truck,731.3,209.85
+ORD-00090,2024-03-05,Acme Corp,Europe,Rubber Seals,Materials,115,236.25,27168.75,4.982,27,0,rail,963.05,310.97
+ORD-00091,2024-03-06,Acme Corp,Asia Pacific,Steel Fasteners,Mechanical,269,236.34,63575.46,3.98,40,0,air,1268.7,306.91
+ORD-00092,2024-03-07,BuildRight Inc,North America,Steel Fasteners,Electronics,319,217.46,69369.74,3.769,2,1,rail,786.57,400.62
+ORD-00093,2024-03-08,Acme Corp,Latin America,Control Systems,Mechanical,486,160.92,78207.12,1.078,13,1,rail,1681.3,334.4
+ORD-00094,2024-03-08,Global Parts Ltd,North America,Drive Belts,Materials,200,201.23,40246.0,1.68,32,0,air,1195.53,496.22
+ORD-00095,2024-03-09,Global Parts Ltd,North America,Aluminum Extrusions,Hardware,411,170.91,70244.01,2.328,31,0,rail,623.39,156.25
+ORD-00096,2024-03-10,Global Parts Ltd,North America,Drive Belts,Materials,227,145.47,33021.69,3.867,16,0,air,1442.42,192.39
+ORD-00097,2024-03-11,BuildRight Inc,Europe,Control Systems,Mechanical,53,36.48,1933.44,4.575,32,0,air,1078.91,204.25
+ORD-00098,2024-03-11,Global Parts Ltd,Africa,Drive Belts,Electronics,171,203.75,34841.25,0.946,32,0,rail,1092.19,243.59
+ORD-00099,2024-03-12,Acme Corp,Europe,Control Systems,Electronics,211,206.06,43478.66,4.612,34,0,rail,988.12,421.28
+ORD-00100,2024-03-13,Superior Materials,Europe,Plastic Components,Mechanical,455,158.36,72053.8,3.478,11,1,sea,1019.17,133.18
+ORD-00101,2024-03-14,Superior Materials,North America,Hydraulic Cylinders,Electronics,493,206.0,101558.0,3.054,10,1,sea,1542.44,392.48
+ORD-00102,2024-03-14,Reliable Suppliers Co,Europe,Steel Fasteners,Assembly,279,164.61,45926.19,0.999,15,0,truck,250.81,214.55
+ORD-00103,2024-03-15,Acme Corp,North America,Control Systems,Hardware,360,55.64,20030.4,0.278,17,0,truck,702.01,308.89
+ORD-00104,2024-03-16,Global Parts Ltd,Africa,Control Systems,Hardware,313,72.12,22573.56,2.842,40,0,rail,197.23,323.62
+ORD-00105,2024-03-16,Superior Materials,Latin America,Aluminum Extrusions,Hardware,280,57.57,16119.6,3.258,18,0,air,1518.83,198.97
+ORD-00106,2024-03-17,Acme Corp,North America,Control Systems,Electronics,465,97.43,45304.95,1.054,9,1,truck,580.99,266.06
+ORD-00107,2024-03-18,Superior Materials,Africa,Electronic Sensors,Electronics,471,14.55,6853.05,2.782,25,0,rail,1799.99,218.25
+ORD-00108,2024-03-19,Global Parts Ltd,Latin America,Hydraulic Cylinders,Materials,224,156.47,35049.28,4.282,40,0,truck,1076.83,53.18
+ORD-00109,2024-03-19,Superior Materials,Asia Pacific,Steel Fasteners,Materials,261,87.46,22827.06,4.175,14,1,air,1611.46,229.84
+ORD-00110,2024-03-20,Reliable Suppliers Co,North America,Steel Fasteners,Hardware,199,165.65,32964.35,4.637,25,0,rail,1958.92,66.75
+ORD-00111,2024-03-21,Reliable Suppliers Co,North America,Aluminum Extrusions,Assembly,305,99.42,30323.1,1.829,22,0,air,1687.59,214.41
+ORD-00112,2024-03-22,Superior Materials,Asia Pacific,Plastic Components,Materials,222,172.0,38184.0,1.59,30,0,rail,1740.64,304.6
+ORD-00113,2024-03-22,Acme Corp,Asia Pacific,Steel Fasteners,Materials,217,88.45,19193.65,3.747,20,0,truck,845.57,298.12
+ORD-00114,2024-03-23,Acme Corp,North America,Electronic Sensors,Electronics,246,68.87,16942.02,2.156,21,0,sea,1125.86,338.06
+ORD-00115,2024-03-24,Acme Corp,Asia Pacific,Steel Fasteners,Assembly,347,126.53,43905.91,0.438,44,0,truck,545.08,65.73
+ORD-00116,2024-03-24,Superior Materials,Europe,Electronic Sensors,Hardware,376,174.76,65709.76,1.414,32,0,truck,432.42,333.02
+ORD-00117,2024-03-25,Acme Corp,Latin America,Hydraulic Cylinders,Materials,62,90.34,5601.08,2.093,21,0,sea,1035.74,169.83
+ORD-00118,2024-03-26,Global Parts Ltd,Latin America,Hydraulic Cylinders,Assembly,289,234.48,67764.72,1.463,35,0,sea,1210.35,211.54
+ORD-00119,2024-03-27,Reliable Suppliers Co,Latin America,Rubber Seals,Assembly,419,14.6,6117.4,1.661,32,0,rail,711.58,431.83
+ORD-00120,2024-03-27,Global Parts Ltd,Europe,Rubber Seals,Hardware,226,107.4,24272.4,1.469,30,0,rail,1160.41,24.33
+ORD-00121,2024-03-28,Acme Corp,Asia Pacific,Electronic Sensors,Assembly,261,242.06,63177.66,0.207,39,0,air,1780.55,302.44
+ORD-00122,2024-03-29,Global Parts Ltd,Africa,Plastic Components,Assembly,197,139.25,27432.25,3.185,12,1,air,1135.61,307.38
+ORD-00123,2024-03-30,Acme Corp,Asia Pacific,Steel Fasteners,Assembly,389,108.75,42303.75,2.986,41,0,truck,1455.59,210.4
+ORD-00124,2024-03-30,Superior Materials,North America,Control Systems,Materials,50,144.29,7214.5,3.267,18,0,sea,1620.36,133.77
+ORD-00125,2024-03-31,Global Parts Ltd,Latin America,Steel Fasteners,Hardware,166,146.1,24252.6,0.962,21,0,air,1978.02,132.64
+ORD-00126,2024-04-01,Superior Materials,Asia Pacific,Rubber Seals,Assembly,24,184.25,4422.0,1.478,13,1,truck,1226.23,444.18
+ORD-00127,2024-04-01,Superior Materials,Africa,Drive Belts,Assembly,310,36.28,11246.8,3.098,21,0,sea,1623.36,232.17
+ORD-00128,2024-04-02,BuildRight Inc,North America,Control Systems,Materials,74,66.25,4902.5,2.998,8,1,rail,1927.17,178.83
+ORD-00129,2024-04-03,Acme Corp,Europe,Electronic Sensors,Hardware,354,147.23,52119.42,2.532,40,0,truck,1891.6,235.41
+ORD-00130,2024-04-04,Reliable Suppliers Co,Europe,Control Systems,Electronics,336,217.44,73059.84,1.752,7,1,rail,325.11,341.31
+ORD-00131,2024-04-04,Acme Corp,Africa,Drive Belts,Materials,18,142.66,2567.88,4.565,23,0,air,842.47,89.96
+ORD-00132,2024-04-05,Reliable Suppliers Co,North America,Steel Fasteners,Hardware,353,63.46,22401.38,1.699,44,0,air,681.78,235.73
+ORD-00133,2024-04-06,Acme Corp,Latin America,Steel Fasteners,Assembly,138,171.56,23675.28,2.278,32,0,sea,219.5,302.18
+ORD-00134,2024-04-07,Superior Materials,Asia Pacific,Plastic Components,Hardware,145,186.28,27010.6,3.391,11,1,truck,1284.82,475.32
+ORD-00135,2024-04-07,Global Parts Ltd,North America,Aluminum Extrusions,Hardware,481,63.37,30480.97,2.715,22,0,rail,1485.01,141.21
+ORD-00136,2024-04-08,Global Parts Ltd,Europe,Control Systems,Hardware,72,97.54,7022.88,1.734,22,0,sea,1703.85,192.44
+ORD-00137,2024-04-09,BuildRight Inc,Africa,Rubber Seals,Electronics,148,135.91,20114.68,2.178,43,0,air,289.41,202.09
+ORD-00138,2024-04-10,Reliable Suppliers Co,Africa,Drive Belts,Hardware,90,126.66,11399.4,3.972,25,0,air,1759.07,310.66
+ORD-00139,2024-04-10,Reliable Suppliers Co,Asia Pacific,Drive Belts,Electronics,401,100.46,40284.46,1.391,22,0,truck,1303.7,191.23
+ORD-00140,2024-04-11,Reliable Suppliers Co,Africa,Drive Belts,Assembly,172,77.92,13402.24,0.711,28,0,rail,1422.69,276.09
+ORD-00141,2024-04-12,Superior Materials,Africa,Rubber Seals,Electronics,428,29.5,12626.0,1.566,29,0,truck,1825.72,395.26
+ORD-00142,2024-04-12,Reliable Suppliers Co,North America,Aluminum Extrusions,Assembly,298,18.1,5393.8,4.248,13,1,rail,1268.28,358.59
+ORD-00143,2024-04-13,Global Parts Ltd,Latin America,Steel Fasteners,Assembly,388,239.84,93057.92,0.445,18,0,rail,704.94,234.26
+ORD-00144,2024-04-14,Superior Materials,Asia Pacific,Plastic Components,Electronics,270,212.55,57388.5,4.958,2,1,truck,1658.96,434.82
+ORD-00145,2024-04-15,Acme Corp,North America,Plastic Components,Materials,499,91.95,45883.05,2.705,29,0,sea,757.97,287.91
+ORD-00146,2024-04-15,Reliable Suppliers Co,Latin America,Rubber Seals,Mechanical,240,239.42,57460.8,4.924,21,0,truck,116.74,279.15
+ORD-00147,2024-04-16,Reliable Suppliers Co,North America,Plastic Components,Hardware,50,170.81,8540.5,4.695,15,0,truck,1669.78,36.41
+ORD-00148,2024-04-17,Acme Corp,North America,Drive Belts,Mechanical,37,123.22,4559.14,2.264,27,0,air,723.12,493.61
+ORD-00149,2024-04-18,Reliable Suppliers Co,Africa,Hydraulic Cylinders,Hardware,144,125.79,18113.76,0.992,31,0,air,1558.98,79.03
+ORD-00150,2024-04-18,Acme Corp,Latin America,Aluminum Extrusions,Hardware,210,25.4,5334.0,0.824,15,0,truck,757.38,130.94
+ORD-00151,2024-04-19,Superior Materials,Asia Pacific,Steel Fasteners,Assembly,337,27.47,9257.39,1.2,23,0,truck,1729.08,44.81
+ORD-00152,2024-04-20,Global Parts Ltd,Asia Pacific,Hydraulic Cylinders,Hardware,277,152.6,42270.2,3.551,24,0,air,478.05,327.2
+ORD-00153,2024-04-20,Acme Corp,Latin America,Aluminum Extrusions,Hardware,427,140.66,60061.82,1.365,44,0,rail,1950.37,127.86
+ORD-00154,2024-04-21,BuildRight Inc,Africa,Electronic Sensors,Electronics,42,57.12,2399.04,1.707,13,1,truck,1570.53,106.41
+ORD-00155,2024-04-22,Acme Corp,Europe,Control Systems,Mechanical,57,236.82,13498.74,2.244,22,0,sea,272.76,62.51
+ORD-00156,2024-04-23,Reliable Suppliers Co,North America,Rubber Seals,Electronics,416,196.42,81710.72,4.566,43,0,sea,1153.26,69.59
+ORD-00157,2024-04-23,Superior Materials,Africa,Drive Belts,Hardware,71,32.8,2328.8,0.947,37,0,sea,1971.47,300.64
+ORD-00158,2024-04-24,Superior Materials,Latin America,Plastic Components,Assembly,225,233.08,52443.0,0.025,33,0,truck,968.58,350.34
+ORD-00159,2024-04-25,Acme Corp,North America,Electronic Sensors,Electronics,302,243.69,73594.38,0.3,3,1,rail,405.11,210.74
+ORD-00160,2024-04-26,Global Parts Ltd,Asia Pacific,Plastic Components,Electronics,108,249.0,26892.0,4.524,19,0,rail,995.32,250.35
+ORD-00161,2024-04-26,BuildRight Inc,Europe,Hydraulic Cylinders,Materials,181,18.69,3382.89,3.238,23,0,air,1049.29,349.26
+ORD-00162,2024-04-27,Superior Materials,Asia Pacific,Steel Fasteners,Hardware,369,185.57,68475.33,1.365,29,0,truck,1496.29,28.34
+ORD-00163,2024-04-28,Reliable Suppliers Co,Latin America,Steel Fasteners,Assembly,223,138.75,30941.25,0.886,30,0,rail,1412.75,175.1
+ORD-00164,2024-04-28,Reliable Suppliers Co,North America,Steel Fasteners,Electronics,484,177.93,86118.12,1.471,39,0,truck,834.97,487.09
+ORD-00165,2024-04-29,Global Parts Ltd,Latin America,Drive Belts,Electronics,44,242.32,10662.08,0.574,44,0,air,475.15,298.45
+ORD-00166,2024-04-30,Superior Materials,North America,Plastic Components,Assembly,458,173.57,79495.06,4.708,25,0,air,1307.86,142.03
+ORD-00167,2024-05-01,Acme Corp,Africa,Electronic Sensors,Hardware,236,210.06,49574.16,3.921,37,0,air,872.32,270.43
+ORD-00168,2024-05-01,Reliable Suppliers Co,Europe,Steel Fasteners,Materials,110,217.38,23911.8,2.312,8,1,sea,307.94,184.47
+ORD-00169,2024-05-02,Global Parts Ltd,Africa,Electronic Sensors,Electronics,440,210.43,92589.2,4.325,42,0,truck,1806.12,275.48
+ORD-00170,2024-05-03,Superior Materials,Africa,Plastic Components,Materials,471,109.39,51522.69,1.247,16,0,air,1397.88,80.36
+ORD-00171,2024-05-04,Superior Materials,Latin America,Drive Belts,Mechanical,140,59.53,8334.2,3.586,8,1,truck,1382.21,83.7
+ORD-00172,2024-05-04,Superior Materials,Europe,Hydraulic Cylinders,Hardware,266,102.18,27179.88,4.281,1,1,sea,1654.04,88.9
+ORD-00173,2024-05-05,Superior Materials,North America,Drive Belts,Mechanical,14,223.51,3129.14,1.784,44,0,sea,1082.84,471.11
+ORD-00174,2024-05-06,Superior Materials,North America,Electronic Sensors,Mechanical,227,40.92,9288.84,3.787,5,1,air,1639.36,371.79
+ORD-00175,2024-05-07,Reliable Suppliers Co,Asia Pacific,Drive Belts,Mechanical,264,130.76,34520.64,1.475,3,1,air,1021.28,97.94
+ORD-00176,2024-05-07,Global Parts Ltd,North America,Drive Belts,Hardware,407,62.14,25290.98,1.494,1,1,rail,180.99,110.41
+ORD-00177,2024-05-08,Superior Materials,Latin America,Hydraulic Cylinders,Hardware,368,147.42,54250.56,0.535,4,1,truck,840.23,370.8
+ORD-00178,2024-05-09,BuildRight Inc,Africa,Plastic Components,Assembly,292,216.47,63209.24,2.2,40,0,air,1020.06,94.96
+ORD-00179,2024-05-09,BuildRight Inc,Africa,Plastic Components,Materials,402,220.69,88717.38,3.649,35,0,rail,1454.4,132.59
+ORD-00180,2024-05-10,Global Parts Ltd,Africa,Rubber Seals,Materials,216,62.99,13605.84,4.701,32,0,truck,257.83,482.41
+ORD-00181,2024-05-11,Acme Corp,Europe,Drive Belts,Assembly,24,227.38,5457.12,3.019,42,0,air,323.04,142.55
+ORD-00182,2024-05-12,Acme Corp,North America,Plastic Components,Assembly,355,150.01,53253.55,4.316,34,0,rail,564.18,337.58
+ORD-00183,2024-05-12,Acme Corp,Latin America,Plastic Components,Mechanical,51,90.8,4630.8,4.112,43,0,rail,569.67,489.74
+ORD-00184,2024-05-13,BuildRight Inc,Europe,Aluminum Extrusions,Assembly,389,178.5,69436.5,0.867,25,0,truck,1477.76,199.66
+ORD-00185,2024-05-14,Acme Corp,Asia Pacific,Steel Fasteners,Electronics,470,123.01,57814.7,2.429,10,1,rail,538.92,28.41
+ORD-00186,2024-05-15,Reliable Suppliers Co,Latin America,Rubber Seals,Materials,188,97.61,18350.68,0.585,21,0,truck,1284.54,137.19
+ORD-00187,2024-05-15,Superior Materials,Latin America,Control Systems,Assembly,72,177.75,12798.0,3.411,39,0,truck,1013.83,418.82
+ORD-00188,2024-05-16,BuildRight Inc,Latin America,Rubber Seals,Electronics,361,65.94,23804.34,4.749,27,0,truck,1167.92,435.01
+ORD-00189,2024-05-17,Global Parts Ltd,Africa,Rubber Seals,Electronics,240,85.91,20618.4,0.685,27,0,sea,1684.31,388.89
+ORD-00190,2024-05-17,Global Parts Ltd,Latin America,Control Systems,Electronics,250,111.44,27860.0,3.669,2,1,rail,838.54,74.29
+ORD-00191,2024-05-18,Superior Materials,North America,Aluminum Extrusions,Electronics,61,67.15,4096.15,3.161,41,0,truck,1553.28,401.84
+ORD-00192,2024-05-19,BuildRight Inc,Latin America,Drive Belts,Mechanical,105,104.27,10948.35,2.918,13,1,air,872.97,460.97
+ORD-00193,2024-05-20,Acme Corp,Africa,Hydraulic Cylinders,Electronics,397,145.01,57568.97,1.951,9,1,sea,740.05,308.29
+ORD-00194,2024-05-20,Acme Corp,Latin America,Plastic Components,Mechanical,231,186.54,43090.74,1.776,36,0,sea,1919.32,471.62
+ORD-00195,2024-05-21,Reliable Suppliers Co,Asia Pacific,Steel Fasteners,Mechanical,494,192.96,95322.24,0.226,22,0,rail,409.52,416.88
+ORD-00196,2024-05-22,Reliable Suppliers Co,Asia Pacific,Electronic Sensors,Electronics,416,206.58,85937.28,1.09,42,0,truck,226.16,340.15
+ORD-00197,2024-05-23,Acme Corp,Africa,Drive Belts,Materials,240,187.33,44959.2,0.076,26,0,rail,1553.42,297.05
+ORD-00198,2024-05-23,Global Parts Ltd,North America,Control Systems,Electronics,246,171.85,42275.1,2.907,12,1,sea,183.09,187.32
+ORD-00199,2024-05-24,Global Parts Ltd,North America,Hydraulic Cylinders,Electronics,152,63.19,9604.88,0.529,17,0,truck,1682.3,96.46
+ORD-00200,2024-05-25,Reliable Suppliers Co,Europe,Drive Belts,Electronics,180,103.05,18549.0,4.365,14,1,air,902.53,310.38
+ORD-00201,2024-05-26,Superior Materials,Africa,Control Systems,Materials,38,122.04,4637.52,2.616,14,1,truck,1835.25,172.69
+ORD-00202,2024-05-26,Acme Corp,Latin America,Plastic Components,Hardware,45,25.31,1138.95,3.498,34,0,sea,1456.99,435.89
+ORD-00203,2024-05-27,Reliable Suppliers Co,Africa,Aluminum Extrusions,Hardware,22,134.45,2957.9,2.054,20,0,air,1240.29,496.8
+ORD-00204,2024-05-28,Reliable Suppliers Co,Europe,Drive Belts,Mechanical,169,111.9,18911.1,2.803,11,1,truck,1901.15,381.17
+ORD-00205,2024-05-28,Acme Corp,Africa,Control Systems,Mechanical,336,201.52,67710.72,4.713,16,0,air,823.47,63.43
+ORD-00206,2024-05-29,Acme Corp,Africa,Plastic Components,Materials,196,244.59,47939.64,0.414,31,0,air,1910.47,158.57
+ORD-00207,2024-05-30,Global Parts Ltd,Europe,Plastic Components,Assembly,252,141.22,35587.44,1.27,6,1,sea,313.25,72.37
+ORD-00208,2024-05-31,Superior Materials,North America,Aluminum Extrusions,Hardware,95,84.06,7985.7,3.9,19,0,air,993.32,332.25
+ORD-00209,2024-05-31,Superior Materials,Latin America,Rubber Seals,Mechanical,293,15.63,4579.59,0.494,37,0,rail,576.33,387.29
+ORD-00210,2024-06-01,Acme Corp,Europe,Drive Belts,Hardware,75,231.54,17365.5,0.378,4,1,sea,1102.69,464.32
+ORD-00211,2024-06-02,BuildRight Inc,Asia Pacific,Drive Belts,Materials,179,230.18,41202.22,1.808,4,1,rail,365.93,230.32
+ORD-00212,2024-06-03,Reliable Suppliers Co,North America,Rubber Seals,Materials,54,66.98,3616.92,0.461,20,0,air,1690.98,452.66
+ORD-00213,2024-06-03,Reliable Suppliers Co,Asia Pacific,Steel Fasteners,Assembly,71,175.38,12451.98,2.925,10,1,rail,1700.5,441.39
+ORD-00214,2024-06-04,Acme Corp,North America,Steel Fasteners,Assembly,450,23.48,10566.0,1.131,24,0,truck,1912.71,172.25
+ORD-00215,2024-06-05,BuildRight Inc,Latin America,Rubber Seals,Materials,143,45.72,6537.96,4.478,35,0,air,351.61,437.07
+ORD-00216,2024-06-05,Global Parts Ltd,Latin America,Hydraulic Cylinders,Mechanical,293,58.12,17029.16,3.918,26,0,truck,1265.5,200.32
+ORD-00217,2024-06-06,Acme Corp,Africa,Electronic Sensors,Hardware,37,77.15,2854.55,3.499,37,0,rail,974.76,162.5
+ORD-00218,2024-06-07,Acme Corp,Asia Pacific,Plastic Components,Electronics,117,248.98,29130.66,3.085,38,0,truck,721.55,331.56
+ORD-00219,2024-06-08,Reliable Suppliers Co,North America,Electronic Sensors,Assembly,53,175.75,9314.75,4.317,21,0,air,735.5,177.62
+ORD-00220,2024-06-08,Acme Corp,Latin America,Plastic Components,Electronics,349,99.13,34596.37,1.115,40,0,truck,854.95,322.5
+ORD-00221,2024-06-09,Acme Corp,Europe,Rubber Seals,Mechanical,295,185.59,54749.05,4.366,39,0,rail,1424.6,312.72
+ORD-00222,2024-06-10,Acme Corp,Latin America,Steel Fasteners,Assembly,455,229.24,104304.2,3.947,21,0,rail,1216.66,290.45
+ORD-00223,2024-06-11,Reliable Suppliers Co,Europe,Hydraulic Cylinders,Electronics,340,239.88,81559.2,3.741,10,1,rail,946.38,202.6
+ORD-00224,2024-06-11,Global Parts Ltd,North America,Steel Fasteners,Mechanical,137,19.18,2627.66,2.806,38,0,air,198.07,283.28
+ORD-00225,2024-06-12,Global Parts Ltd,Latin America,Electronic Sensors,Hardware,357,101.66,36292.62,1.231,4,1,rail,201.64,306.31
+ORD-00226,2024-06-13,Acme Corp,Latin America,Steel Fasteners,Mechanical,482,31.16,15019.12,2.118,20,0,air,54.56,281.93
+ORD-00227,2024-06-13,Reliable Suppliers Co,North America,Rubber Seals,Assembly,240,87.24,20937.6,3.968,17,0,truck,1937.01,233.32
+ORD-00228,2024-06-14,Global Parts Ltd,Latin America,Hydraulic Cylinders,Materials,199,46.57,9267.43,0.159,7,1,rail,60.24,27.04
+ORD-00229,2024-06-15,Global Parts Ltd,Europe,Electronic Sensors,Hardware,234,163.48,38254.32,3.91,4,1,truck,251.03,301.79
+ORD-00230,2024-06-16,Global Parts Ltd,Latin America,Hydraulic Cylinders,Electronics,394,100.13,39451.22,1.2,29,0,sea,663.46,100.85
+ORD-00231,2024-06-16,Reliable Suppliers Co,Asia Pacific,Drive Belts,Assembly,386,61.2,23623.2,0.722,14,1,truck,1624.49,328.44
+ORD-00232,2024-06-17,Reliable Suppliers Co,Africa,Plastic Components,Materials,292,70.15,20483.8,0.579,3,1,sea,1926.09,384.49
+ORD-00233,2024-06-18,Acme Corp,Europe,Steel Fasteners,Mechanical,455,93.28,42442.4,0.136,24,0,truck,1590.53,260.21
+ORD-00234,2024-06-19,Superior Materials,Asia Pacific,Hydraulic Cylinders,Materials,130,68.69,8929.7,2.618,37,0,air,1396.59,280.33
+ORD-00235,2024-06-19,Global Parts Ltd,North America,Aluminum Extrusions,Assembly,125,116.04,14505.0,1.091,16,0,truck,1066.54,476.71
+ORD-00236,2024-06-20,Superior Materials,Europe,Drive Belts,Assembly,470,12.92,6072.4,4.947,4,1,air,219.08,426.64
+ORD-00237,2024-06-21,Reliable Suppliers Co,Africa,Steel Fasteners,Materials,242,73.54,17796.68,2.872,24,0,air,1918.43,458.83
+ORD-00238,2024-06-22,Reliable Suppliers Co,Africa,Plastic Components,Mechanical,268,105.75,28341.0,0.689,34,0,rail,1528.87,410.61
+ORD-00239,2024-06-22,Reliable Suppliers Co,North America,Hydraulic Cylinders,Materials,368,152.68,56186.24,3.444,30,0,air,1295.95,72.28
+ORD-00240,2024-06-23,Superior Materials,North America,Electronic Sensors,Assembly,207,71.38,14775.66,4.489,18,0,sea,1530.12,91.52
+ORD-00241,2024-06-24,Reliable Suppliers Co,Europe,Plastic Components,Assembly,465,37.63,17497.95,3.726,19,0,rail,1462.0,272.78
+ORD-00242,2024-06-24,Acme Corp,Latin America,Aluminum Extrusions,Electronics,420,23.67,9941.4,0.382,31,0,rail,1292.6,138.11
+ORD-00243,2024-06-25,Reliable Suppliers Co,North America,Hydraulic Cylinders,Electronics,146,235.43,34372.78,4.479,19,0,truck,1962.12,248.81
+ORD-00244,2024-06-26,BuildRight Inc,Latin America,Control Systems,Hardware,327,107.08,35015.16,3.97,19,0,air,1811.56,209.3
+ORD-00245,2024-06-27,Superior Materials,Asia Pacific,Control Systems,Assembly,174,147.38,25644.12,0.792,22,0,air,1311.0,283.72
+ORD-00246,2024-06-27,BuildRight Inc,Africa,Rubber Seals,Electronics,234,230.2,53866.8,0.259,24,0,sea,1401.69,378.5
+ORD-00247,2024-06-28,Reliable Suppliers Co,Latin America,Steel Fasteners,Materials,316,25.27,7985.32,2.787,12,1,truck,150.61,363.44
+ORD-00248,2024-06-29,Acme Corp,Africa,Electronic Sensors,Mechanical,243,219.78,53406.54,0.78,30,0,truck,1356.34,270.19
+ORD-00249,2024-06-30,Global Parts Ltd,Latin America,Rubber Seals,Materials,181,140.14,25365.34,4.173,38,0,rail,136.12,414.75
+ORD-00250,2024-06-30,Reliable Suppliers Co,Asia Pacific,Hydraulic Cylinders,Mechanical,161,45.38,7306.18,1.792,31,0,rail,1197.11,226.81
+ORD-00251,2024-07-01,Acme Corp,North America,Control Systems,Electronics,472,105.76,49918.72,4.564,36,0,rail,1998.74,450.42
+ORD-00252,2024-07-02,Superior Materials,Asia Pacific,Control Systems,Hardware,324,195.51,63345.24,2.828,19,0,sea,1133.82,54.21
+ORD-00253,2024-07-02,BuildRight Inc,North America,Control Systems,Materials,383,122.69,46990.27,0.913,36,0,sea,972.76,478.24
+ORD-00254,2024-07-03,BuildRight Inc,North America,Hydraulic Cylinders,Materials,169,246.4,41641.6,0.698,30,0,rail,660.07,334.25
+ORD-00255,2024-07-04,BuildRight Inc,Africa,Control Systems,Materials,105,97.3,10216.5,2.882,33,0,truck,285.02,202.44
+ORD-00256,2024-07-05,Superior Materials,Asia Pacific,Plastic Components,Mechanical,481,188.65,90740.65,3.809,18,0,sea,1475.5,114.63
+ORD-00257,2024-07-05,Acme Corp,Latin America,Drive Belts,Electronics,242,101.28,24509.76,3.908,28,0,truck,425.57,250.01
+ORD-00258,2024-07-06,Superior Materials,Asia Pacific,Hydraulic Cylinders,Materials,189,208.15,39340.35,1.379,11,1,truck,274.8,113.39
+ORD-00259,2024-07-07,BuildRight Inc,Africa,Electronic Sensors,Materials,122,144.42,17619.24,1.021,33,0,air,872.44,99.84
+ORD-00260,2024-07-08,Reliable Suppliers Co,North America,Drive Belts,Hardware,327,20.56,6723.12,0.084,17,0,rail,1600.92,316.33
+ORD-00261,2024-07-08,Global Parts Ltd,Africa,Rubber Seals,Hardware,451,14.02,6323.02,3.396,6,1,air,1502.88,271.08
+ORD-00262,2024-07-09,Superior Materials,Europe,Electronic Sensors,Electronics,61,37.79,2305.19,0.383,4,1,rail,157.02,341.65
+ORD-00263,2024-07-10,Superior Materials,Europe,Drive Belts,Electronics,277,8.35,2312.95,2.104,20,0,rail,937.53,466.21
+ORD-00264,2024-07-10,Acme Corp,Latin America,Aluminum Extrusions,Assembly,304,23.46,7131.84,3.008,27,0,truck,1068.75,275.48
+ORD-00265,2024-07-11,Acme Corp,Africa,Control Systems,Hardware,395,174.47,68915.65,4.686,15,0,rail,1306.87,298.85
+ORD-00266,2024-07-12,Superior Materials,Latin America,Aluminum Extrusions,Assembly,396,135.91,53820.36,1.559,6,1,truck,1317.83,63.02
+ORD-00267,2024-07-13,BuildRight Inc,Latin America,Steel Fasteners,Mechanical,122,188.73,23025.06,1.249,14,1,truck,761.16,364.47
+ORD-00268,2024-07-13,Global Parts Ltd,Europe,Steel Fasteners,Assembly,110,228.73,25160.3,3.271,11,1,rail,1143.32,211.95
+ORD-00269,2024-07-14,Acme Corp,Latin America,Drive Belts,Materials,122,148.36,18099.92,3.096,39,0,truck,988.07,488.83
+ORD-00270,2024-07-15,BuildRight Inc,Europe,Aluminum Extrusions,Assembly,449,182.9,82122.1,1.661,9,1,truck,1775.75,415.12
+ORD-00271,2024-07-16,Reliable Suppliers Co,North America,Hydraulic Cylinders,Electronics,90,190.48,17143.2,4.641,26,0,truck,1084.02,270.79
+ORD-00272,2024-07-16,Acme Corp,Africa,Electronic Sensors,Mechanical,196,97.57,19123.72,4.224,16,0,sea,910.01,79.15
+ORD-00273,2024-07-17,BuildRight Inc,Latin America,Aluminum Extrusions,Materials,122,64.07,7816.54,1.12,5,1,truck,838.75,432.52
+ORD-00274,2024-07-18,BuildRight Inc,Europe,Steel Fasteners,Assembly,11,55.24,607.64,1.196,10,1,sea,1166.23,403.89
+ORD-00275,2024-07-19,Global Parts Ltd,Asia Pacific,Aluminum Extrusions,Mechanical,139,66.6,9257.4,2.562,3,1,sea,1617.76,108.6
+ORD-00276,2024-07-19,Global Parts Ltd,Latin America,Hydraulic Cylinders,Mechanical,229,72.31,16558.99,3.868,13,1,truck,1099.88,161.73
+ORD-00277,2024-07-20,Reliable Suppliers Co,North America,Aluminum Extrusions,Materials,63,55.77,3513.51,0.22,43,0,truck,1340.23,400.84
+ORD-00278,2024-07-21,BuildRight Inc,North America,Electronic Sensors,Assembly,352,220.16,77496.32,3.467,30,0,sea,1488.82,108.91
+ORD-00279,2024-07-21,BuildRight Inc,Asia Pacific,Rubber Seals,Mechanical,494,190.46,94087.24,3.241,6,1,sea,1064.33,460.52
+ORD-00280,2024-07-22,Global Parts Ltd,Europe,Hydraulic Cylinders,Mechanical,233,16.49,3842.17,1.157,17,0,truck,882.29,223.77
+ORD-00281,2024-07-23,Acme Corp,Latin America,Steel Fasteners,Hardware,234,70.82,16571.88,3.407,19,0,truck,1759.5,61.78
+ORD-00282,2024-07-24,Acme Corp,Europe,Electronic Sensors,Mechanical,394,10.44,4113.36,4.701,42,0,rail,864.14,411.56
+ORD-00283,2024-07-24,Superior Materials,North America,Aluminum Extrusions,Hardware,412,127.05,52344.6,0.234,35,0,sea,950.79,199.28
+ORD-00284,2024-07-25,Global Parts Ltd,Europe,Aluminum Extrusions,Assembly,135,121.67,16425.45,1.598,26,0,sea,1981.17,272.72
+ORD-00285,2024-07-26,Superior Materials,North America,Rubber Seals,Assembly,139,208.69,29007.91,2.191,5,1,rail,50.46,73.91
+ORD-00286,2024-07-27,Global Parts Ltd,Europe,Steel Fasteners,Assembly,62,80.41,4985.42,4.496,29,0,sea,411.67,21.24
+ORD-00287,2024-07-27,Reliable Suppliers Co,Asia Pacific,Steel Fasteners,Electronics,181,205.01,37106.81,4.811,37,0,air,798.73,326.23
+ORD-00288,2024-07-28,BuildRight Inc,Africa,Plastic Components,Assembly,227,242.15,54968.05,2.221,20,0,sea,1868.55,267.28
+ORD-00289,2024-07-29,Reliable Suppliers Co,Asia Pacific,Steel Fasteners,Mechanical,169,26.66,4505.54,3.75,21,0,rail,186.56,304.9
+ORD-00290,2024-07-29,Global Parts Ltd,Asia Pacific,Rubber Seals,Materials,207,199.0,41193.0,2.658,10,1,air,68.5,401.0
+ORD-00291,2024-07-30,BuildRight Inc,Africa,Control Systems,Hardware,425,149.54,63554.5,2.689,5,1,truck,152.73,330.37
+ORD-00292,2024-07-31,Acme Corp,Africa,Plastic Components,Electronics,256,122.61,31388.16,1.39,36,0,rail,222.66,103.89
+ORD-00293,2024-08-01,Acme Corp,Latin America,Plastic Components,Assembly,333,108.03,35973.99,1.085,6,1,rail,123.31,193.17
+ORD-00294,2024-08-01,Superior Materials,Latin America,Aluminum Extrusions,Assembly,448,197.24,88363.52,1.44,26,0,truck,985.57,454.83
+ORD-00295,2024-08-02,Global Parts Ltd,Asia Pacific,Aluminum Extrusions,Materials,212,161.64,34267.68,2.782,4,1,rail,1182.48,389.57
+ORD-00296,2024-08-03,Global Parts Ltd,Asia Pacific,Steel Fasteners,Materials,193,202.24,39032.32,0.146,39,0,sea,579.79,287.19
+ORD-00297,2024-08-04,Acme Corp,North America,Plastic Components,Electronics,132,226.27,29867.64,4.536,39,0,truck,826.66,142.71
+ORD-00298,2024-08-04,Reliable Suppliers Co,North America,Drive Belts,Hardware,410,156.23,64054.3,0.781,35,0,rail,228.81,164.99
+ORD-00299,2024-08-05,BuildRight Inc,Latin America,Aluminum Extrusions,Assembly,264,245.21,64735.44,1.1,1,1,truck,705.92,371.34
+ORD-00300,2024-08-06,Reliable Suppliers Co,Latin America,Rubber Seals,Electronics,303,153.98,46655.94,2.591,24,0,truck,1068.91,428.56
+ORD-00301,2024-08-07,Reliable Suppliers Co,North America,Drive Belts,Mechanical,289,160.98,46523.22,3.551,36,0,truck,1477.93,342.28
+ORD-00302,2024-08-07,Acme Corp,North America,Aluminum Extrusions,Mechanical,334,140.93,47070.62,0.479,6,1,air,56.53,408.57
+ORD-00303,2024-08-08,Acme Corp,Europe,Hydraulic Cylinders,Electronics,381,27.3,10401.3,1.588,41,0,rail,961.26,387.99
+ORD-00304,2024-08-09,Acme Corp,Europe,Hydraulic Cylinders,Assembly,107,182.97,19577.79,4.843,44,0,air,629.16,91.86
+ORD-00305,2024-08-09,Superior Materials,North America,Aluminum Extrusions,Electronics,207,139.12,28797.84,1.312,31,0,rail,1713.0,223.49
+ORD-00306,2024-08-10,Reliable Suppliers Co,Europe,Plastic Components,Assembly,479,115.47,55310.13,1.565,20,0,sea,1445.33,93.43
+ORD-00307,2024-08-11,Global Parts Ltd,Africa,Control Systems,Materials,404,228.07,92140.28,4.182,24,0,sea,1198.76,132.91
+ORD-00308,2024-08-12,BuildRight Inc,Latin America,Control Systems,Electronics,249,78.0,19422.0,0.251,25,0,sea,590.67,437.24
+ORD-00309,2024-08-12,Superior Materials,Latin America,Plastic Components,Assembly,153,133.28,20391.84,2.323,36,0,rail,1825.16,246.99
+ORD-00310,2024-08-13,Global Parts Ltd,North America,Electronic Sensors,Electronics,106,175.92,18647.52,1.898,21,0,truck,137.95,276.97
+ORD-00311,2024-08-14,Reliable Suppliers Co,Asia Pacific,Control Systems,Electronics,210,200.14,42029.4,1.583,30,0,truck,263.46,105.65
+ORD-00312,2024-08-15,Acme Corp,North America,Hydraulic Cylinders,Assembly,133,117.54,15632.82,1.428,24,0,air,813.68,169.89
+ORD-00313,2024-08-15,Reliable Suppliers Co,Europe,Rubber Seals,Assembly,196,211.31,41416.76,0.457,44,0,air,292.65,130.52
+ORD-00314,2024-08-16,BuildRight Inc,Asia Pacific,Plastic Components,Hardware,335,193.38,64782.3,1.574,42,0,sea,1915.01,118.97
+ORD-00315,2024-08-17,Superior Materials,Europe,Steel Fasteners,Electronics,473,21.23,10041.79,0.215,30,0,air,1606.08,326.22
+ORD-00316,2024-08-17,Superior Materials,Africa,Hydraulic Cylinders,Mechanical,358,16.24,5813.92,3.905,22,0,rail,555.02,143.3
+ORD-00317,2024-08-18,BuildRight Inc,Europe,Rubber Seals,Electronics,268,157.1,42102.8,1.991,28,0,rail,1197.68,323.37
+ORD-00318,2024-08-19,Global Parts Ltd,Africa,Rubber Seals,Electronics,157,90.12,14148.84,2.22,7,1,air,1965.54,48.06
+ORD-00319,2024-08-20,Global Parts Ltd,Africa,Plastic Components,Assembly,261,56.24,14678.64,4.468,35,0,air,1774.19,88.05
+ORD-00320,2024-08-20,Superior Materials,Europe,Rubber Seals,Electronics,452,147.01,66448.52,3.29,28,0,air,1221.56,151.78
+ORD-00321,2024-08-21,Superior Materials,Europe,Plastic Components,Electronics,429,88.68,38043.72,0.04,14,1,air,1812.26,306.58
+ORD-00322,2024-08-22,Acme Corp,Africa,Control Systems,Mechanical,412,136.63,56291.56,4.716,10,1,sea,1978.91,344.4
+ORD-00323,2024-08-23,Global Parts Ltd,Asia Pacific,Aluminum Extrusions,Assembly,355,117.73,41794.15,1.186,16,0,sea,1499.54,232.5
+ORD-00324,2024-08-23,BuildRight Inc,Africa,Hydraulic Cylinders,Electronics,460,148.27,68204.2,0.538,16,0,air,176.72,233.98
+ORD-00325,2024-08-24,Global Parts Ltd,Latin America,Electronic Sensors,Materials,156,103.07,16078.92,3.841,31,0,rail,833.08,367.77
+ORD-00326,2024-08-25,Acme Corp,Africa,Aluminum Extrusions,Hardware,157,175.93,27621.01,2.502,42,0,sea,1683.76,27.59
+ORD-00327,2024-08-25,Superior Materials,Asia Pacific,Hydraulic Cylinders,Mechanical,361,49.12,17732.32,2.169,25,0,rail,499.61,183.72
+ORD-00328,2024-08-26,Superior Materials,Latin America,Plastic Components,Electronics,208,175.64,36533.12,1.248,13,1,truck,1669.75,412.98
+ORD-00329,2024-08-27,Acme Corp,North America,Hydraulic Cylinders,Materials,317,105.86,33557.62,2.737,6,1,rail,284.66,309.55
+ORD-00330,2024-08-28,BuildRight Inc,North America,Control Systems,Electronics,498,219.21,109166.58,1.372,44,0,air,141.54,181.87
+ORD-00331,2024-08-28,Superior Materials,Asia Pacific,Plastic Components,Electronics,426,131.23,55903.98,4.508,9,1,truck,798.98,454.65
+ORD-00332,2024-08-29,Reliable Suppliers Co,Africa,Aluminum Extrusions,Assembly,433,243.41,105396.53,1.076,36,0,sea,121.63,390.86
+ORD-00333,2024-08-30,Superior Materials,Europe,Steel Fasteners,Assembly,137,152.47,20888.39,4.422,43,0,sea,1916.68,147.15
+ORD-00334,2024-08-31,Reliable Suppliers Co,Asia Pacific,Steel Fasteners,Assembly,48,59.84,2872.32,2.797,20,0,truck,1661.1,329.74
+ORD-00335,2024-08-31,Acme Corp,Latin America,Drive Belts,Materials,347,206.34,71599.98,4.142,18,0,rail,1611.5,305.96
+ORD-00336,2024-09-01,Acme Corp,Latin America,Drive Belts,Electronics,369,89.55,33043.95,3.564,43,0,sea,1278.07,212.57
+ORD-00337,2024-09-02,Superior Materials,North America,Hydraulic Cylinders,Hardware,138,90.17,12443.46,3.483,21,0,air,471.83,196.14
+ORD-00338,2024-09-03,Global Parts Ltd,Latin America,Steel Fasteners,Mechanical,276,12.79,3530.04,1.622,4,1,truck,1060.61,184.91
+ORD-00339,2024-09-03,Reliable Suppliers Co,Asia Pacific,Plastic Components,Assembly,485,139.44,67628.4,1.169,33,0,air,1214.68,316.23
+ORD-00340,2024-09-04,BuildRight Inc,Latin America,Rubber Seals,Assembly,450,135.93,61168.5,1.054,27,0,truck,1073.81,232.36
+ORD-00341,2024-09-05,Superior Materials,Asia Pacific,Plastic Components,Electronics,482,92.22,44450.04,4.286,7,1,sea,557.46,419.29
+ORD-00342,2024-09-05,BuildRight Inc,Europe,Rubber Seals,Electronics,443,224.08,99267.44,4.102,6,1,rail,1054.73,341.41
+ORD-00343,2024-09-06,Superior Materials,North America,Aluminum Extrusions,Materials,160,36.54,5846.4,2.203,15,0,truck,1007.81,53.57
+ORD-00344,2024-09-07,Global Parts Ltd,Latin America,Electronic Sensors,Materials,424,85.87,36408.88,0.662,18,0,truck,1992.85,327.28
+ORD-00345,2024-09-08,Global Parts Ltd,Asia Pacific,Rubber Seals,Assembly,487,83.79,40805.73,1.911,32,0,air,1800.0,150.15
+ORD-00346,2024-09-08,Global Parts Ltd,Africa,Steel Fasteners,Electronics,307,27.61,8476.27,3.097,11,1,sea,953.59,304.55
+ORD-00347,2024-09-09,Global Parts Ltd,North America,Plastic Components,Hardware,108,122.88,13271.04,2.272,20,0,air,1264.73,346.46
+ORD-00348,2024-09-10,Acme Corp,Europe,Aluminum Extrusions,Mechanical,272,173.51,47194.72,3.901,24,0,sea,1508.35,130.8
+ORD-00349,2024-09-11,Acme Corp,Asia Pacific,Steel Fasteners,Electronics,261,130.36,34023.96,4.988,15,0,air,117.99,239.29
+ORD-00350,2024-09-11,Reliable Suppliers Co,Europe,Aluminum Extrusions,Electronics,153,43.46,6649.38,0.956,7,1,truck,1795.1,111.36
+ORD-00351,2024-09-12,BuildRight Inc,Europe,Electronic Sensors,Materials,355,97.44,34591.2,2.298,21,0,air,1727.25,45.12
+ORD-00352,2024-09-13,Superior Materials,Latin America,Control Systems,Mechanical,121,5.64,682.44,2.155,42,0,rail,941.99,201.67
+ORD-00353,2024-09-13,Superior Materials,Latin America,Plastic Components,Assembly,69,217.73,15023.37,1.522,26,0,sea,812.78,194.21
+ORD-00354,2024-09-14,Acme Corp,Asia Pacific,Hydraulic Cylinders,Electronics,378,25.71,9718.38,0.99,44,0,sea,582.27,497.83
+ORD-00355,2024-09-15,Superior Materials,Africa,Plastic Components,Assembly,11,151.33,1664.63,0.328,14,1,truck,979.52,234.25
+ORD-00356,2024-09-16,Acme Corp,Asia Pacific,Drive Belts,Electronics,394,246.63,97172.22,4.436,37,0,sea,136.53,180.11
+ORD-00357,2024-09-16,Reliable Suppliers Co,Africa,Electronic Sensors,Assembly,313,136.46,42711.98,2.099,21,0,rail,1711.78,298.63
+ORD-00358,2024-09-17,BuildRight Inc,Europe,Plastic Components,Mechanical,263,231.39,60855.57,2.484,18,0,air,119.07,62.61
+ORD-00359,2024-09-18,Reliable Suppliers Co,North America,Drive Belts,Materials,149,62.85,9364.65,4.585,5,1,truck,691.65,481.6
+ORD-00360,2024-09-19,Global Parts Ltd,Asia Pacific,Hydraulic Cylinders,Mechanical,462,191.19,88329.78,3.881,3,1,rail,1866.6,324.78
+ORD-00361,2024-09-19,Global Parts Ltd,Asia Pacific,Rubber Seals,Hardware,46,135.16,6217.36,0.653,23,0,sea,1483.66,382.32
+ORD-00362,2024-09-20,Global Parts Ltd,Africa,Aluminum Extrusions,Materials,169,181.53,30678.57,2.827,26,0,sea,598.71,101.83
+ORD-00363,2024-09-21,Reliable Suppliers Co,Europe,Hydraulic Cylinders,Mechanical,18,20.27,364.86,2.211,37,0,rail,542.67,216.55
+ORD-00364,2024-09-21,Superior Materials,Europe,Steel Fasteners,Hardware,242,41.2,9970.4,3.986,24,0,air,59.91,222.89
+ORD-00365,2024-09-22,BuildRight Inc,Africa,Electronic Sensors,Electronics,108,37.61,4061.88,3.621,19,0,air,1406.64,414.47
+ORD-00366,2024-09-23,Global Parts Ltd,Europe,Rubber Seals,Electronics,156,173.36,27044.16,3.452,25,0,truck,145.13,20.59
+ORD-00367,2024-09-24,Global Parts Ltd,Latin America,Steel Fasteners,Assembly,313,211.89,66321.57,1.703,21,0,sea,1088.57,164.41
+ORD-00368,2024-09-24,Global Parts Ltd,North America,Steel Fasteners,Materials,217,188.66,40939.22,4.025,12,1,rail,1926.14,490.99
+ORD-00369,2024-09-25,BuildRight Inc,Asia Pacific,Electronic Sensors,Electronics,140,12.47,1745.8,0.262,41,0,air,263.46,247.95
+ORD-00370,2024-09-26,Global Parts Ltd,North America,Rubber Seals,Materials,413,217.47,89815.11,0.798,33,0,truck,1794.24,203.61
+ORD-00371,2024-09-27,BuildRight Inc,Asia Pacific,Control Systems,Electronics,161,91.77,14774.97,1.678,4,1,sea,1983.38,77.52
+ORD-00372,2024-09-27,Global Parts Ltd,Latin America,Steel Fasteners,Assembly,63,102.31,6445.53,0.384,42,0,sea,169.96,487.6
+ORD-00373,2024-09-28,Reliable Suppliers Co,Europe,Steel Fasteners,Mechanical,129,30.69,3959.01,1.175,7,1,truck,1771.67,29.61
+ORD-00374,2024-09-29,Reliable Suppliers Co,Africa,Rubber Seals,Assembly,170,185.66,31562.2,4.151,22,0,truck,1056.35,373.85
+ORD-00375,2024-09-30,BuildRight Inc,Latin America,Plastic Components,Hardware,417,49.66,20708.22,4.741,33,0,air,1817.7,388.93
+ORD-00376,2024-09-30,Reliable Suppliers Co,North America,Steel Fasteners,Electronics,125,143.17,17896.25,1.523,17,0,rail,1164.07,136.96
+ORD-00377,2024-10-01,BuildRight Inc,Africa,Aluminum Extrusions,Hardware,84,210.97,17721.48,1.323,24,0,sea,1341.12,342.35
+ORD-00378,2024-10-02,Reliable Suppliers Co,Europe,Rubber Seals,Hardware,122,26.86,3276.92,1.399,34,0,rail,1110.37,64.61
+ORD-00379,2024-10-02,Reliable Suppliers Co,Latin America,Steel Fasteners,Materials,465,136.16,63314.4,1.389,28,0,sea,1735.76,143.38
+ORD-00380,2024-10-03,BuildRight Inc,Africa,Electronic Sensors,Electronics,429,62.14,26658.06,0.18,43,0,sea,1481.12,398.19
+ORD-00381,2024-10-04,Superior Materials,Latin America,Hydraulic Cylinders,Hardware,431,89.02,38367.62,4.635,41,0,rail,1066.46,435.05
+ORD-00382,2024-10-05,Reliable Suppliers Co,Latin America,Aluminum Extrusions,Mechanical,113,121.12,13686.56,1.068,39,0,truck,1742.91,312.07
+ORD-00383,2024-10-05,Global Parts Ltd,Europe,Drive Belts,Hardware,349,92.0,32108.0,2.1,22,0,air,528.31,263.28
+ORD-00384,2024-10-06,Superior Materials,Asia Pacific,Drive Belts,Mechanical,263,163.96,43121.48,0.048,17,0,sea,356.81,96.47
+ORD-00385,2024-10-07,BuildRight Inc,Africa,Hydraulic Cylinders,Materials,236,122.5,28910.0,4.29,34,0,truck,362.78,50.29
+ORD-00386,2024-10-08,Superior Materials,Europe,Drive Belts,Hardware,121,148.13,17923.73,3.656,6,1,sea,701.32,76.47
+ORD-00387,2024-10-08,Acme Corp,Latin America,Hydraulic Cylinders,Assembly,482,185.52,89420.64,4.734,6,1,air,515.45,129.13
+ORD-00388,2024-10-09,Acme Corp,Europe,Steel Fasteners,Materials,108,141.65,15298.2,3.908,34,0,sea,1863.68,184.0
+ORD-00389,2024-10-10,Reliable Suppliers Co,Asia Pacific,Aluminum Extrusions,Mechanical,162,148.7,24089.4,1.569,1,1,air,256.38,202.84
+ORD-00390,2024-10-10,Reliable Suppliers Co,Africa,Aluminum Extrusions,Materials,358,143.29,51297.82,1.239,10,1,air,1413.03,186.23
+ORD-00391,2024-10-11,Global Parts Ltd,Asia Pacific,Plastic Components,Hardware,411,97.8,40195.8,3.489,21,0,sea,418.98,134.75
+ORD-00392,2024-10-12,Superior Materials,North America,Hydraulic Cylinders,Electronics,393,87.67,34454.31,1.821,5,1,sea,1769.19,264.67
+ORD-00393,2024-10-13,Acme Corp,Africa,Aluminum Extrusions,Electronics,375,225.41,84528.75,2.831,2,1,air,1924.56,416.14
+ORD-00394,2024-10-13,Reliable Suppliers Co,Asia Pacific,Plastic Components,Mechanical,347,153.85,53385.95,0.031,22,0,truck,957.67,154.26
+ORD-00395,2024-10-14,Superior Materials,Latin America,Rubber Seals,Mechanical,203,64.87,13168.61,0.309,2,1,rail,1764.19,472.35
+ORD-00396,2024-10-15,Reliable Suppliers Co,Africa,Plastic Components,Electronics,319,127.07,40535.33,2.677,10,1,air,60.03,439.2
+ORD-00397,2024-10-16,Reliable Suppliers Co,Africa,Electronic Sensors,Mechanical,172,85.94,14781.68,2.83,34,0,sea,1648.9,97.65
+ORD-00398,2024-10-16,Acme Corp,Europe,Control Systems,Materials,217,233.75,50723.75,3.757,16,0,sea,495.82,397.41
+ORD-00399,2024-10-17,Acme Corp,Latin America,Steel Fasteners,Assembly,454,6.85,3109.9,0.66,39,0,truck,1821.97,295.8
+ORD-00400,2024-10-18,Reliable Suppliers Co,North America,Rubber Seals,Assembly,178,60.21,10717.38,2.566,22,0,rail,52.18,291.96
+ORD-00401,2024-10-19,BuildRight Inc,Asia Pacific,Control Systems,Materials,493,94.51,46593.43,0.972,12,1,air,1134.55,207.7
+ORD-00402,2024-10-19,Reliable Suppliers Co,Europe,Control Systems,Assembly,170,124.51,21166.7,0.466,24,0,air,1525.44,260.55
+ORD-00403,2024-10-20,Reliable Suppliers Co,Asia Pacific,Rubber Seals,Hardware,77,213.45,16435.65,2.052,40,0,rail,554.44,210.65
+ORD-00404,2024-10-21,Global Parts Ltd,North America,Electronic Sensors,Materials,298,26.53,7905.94,0.817,38,0,air,426.61,279.07
+ORD-00405,2024-10-21,Global Parts Ltd,North America,Plastic Components,Mechanical,407,202.44,82393.08,1.109,10,1,rail,213.99,321.42
+ORD-00406,2024-10-22,Global Parts Ltd,Africa,Steel Fasteners,Materials,286,18.64,5331.04,1.588,35,0,sea,686.55,343.67
+ORD-00407,2024-10-23,BuildRight Inc,North America,Plastic Components,Electronics,313,211.37,66158.81,1.297,32,0,rail,1141.7,275.59
+ORD-00408,2024-10-24,BuildRight Inc,Asia Pacific,Aluminum Extrusions,Mechanical,413,17.65,7289.45,0.438,7,1,air,275.9,366.28
+ORD-00409,2024-10-24,Reliable Suppliers Co,Latin America,Plastic Components,Electronics,393,9.47,3721.71,0.45,21,0,rail,784.56,87.81
+ORD-00410,2024-10-25,Global Parts Ltd,Latin America,Drive Belts,Mechanical,401,175.76,70479.76,0.966,20,0,truck,67.69,121.75
+ORD-00411,2024-10-26,BuildRight Inc,Africa,Rubber Seals,Assembly,144,249.33,35903.52,0.253,26,0,sea,1646.42,412.99
+ORD-00412,2024-10-27,Acme Corp,Asia Pacific,Steel Fasteners,Materials,204,224.67,45832.68,3.132,4,1,sea,300.48,174.81
+ORD-00413,2024-10-27,Reliable Suppliers Co,Asia Pacific,Plastic Components,Hardware,410,146.12,59909.2,1.437,22,0,rail,602.52,30.99
+ORD-00414,2024-10-28,Superior Materials,North America,Steel Fasteners,Mechanical,137,229.76,31477.12,1.399,15,0,air,85.93,93.82
+ORD-00415,2024-10-29,Reliable Suppliers Co,Asia Pacific,Steel Fasteners,Mechanical,42,6.3,264.6,1.66,40,0,truck,892.87,127.33
+ORD-00416,2024-10-29,Superior Materials,Europe,Aluminum Extrusions,Electronics,185,243.89,45119.65,3.314,21,0,sea,1688.24,479.51
+ORD-00417,2024-10-30,Global Parts Ltd,North America,Aluminum Extrusions,Assembly,469,125.23,58732.87,4.353,15,0,sea,814.69,295.06
+ORD-00418,2024-10-31,Superior Materials,Europe,Rubber Seals,Electronics,452,182.11,82313.72,3.795,22,0,air,400.02,467.71
+ORD-00419,2024-11-01,Global Parts Ltd,Africa,Electronic Sensors,Electronics,380,206.11,78321.8,3.638,28,0,air,1519.71,296.08
+ORD-00420,2024-11-01,Acme Corp,Latin America,Drive Belts,Assembly,479,181.02,86708.58,2.422,14,1,truck,1588.17,250.09
+ORD-00421,2024-11-02,Superior Materials,Africa,Control Systems,Hardware,384,136.08,52254.72,3.469,27,0,rail,388.82,170.59
+ORD-00422,2024-11-03,Reliable Suppliers Co,Latin America,Steel Fasteners,Electronics,31,121.77,3774.87,2.764,41,0,air,1553.17,311.06
+ORD-00423,2024-11-04,Global Parts Ltd,Africa,Electronic Sensors,Electronics,247,210.45,51981.15,1.081,40,0,rail,1897.23,86.82
+ORD-00424,2024-11-04,Reliable Suppliers Co,Asia Pacific,Control Systems,Mechanical,167,55.24,9225.08,1.043,28,0,truck,374.44,451.17
+ORD-00425,2024-11-05,BuildRight Inc,Europe,Control Systems,Assembly,47,242.16,11381.52,1.482,26,0,rail,1553.42,418.08
+ORD-00426,2024-11-06,Global Parts Ltd,Latin America,Drive Belts,Materials,239,179.18,42824.02,4.554,2,1,sea,1431.72,172.42
+ORD-00427,2024-11-06,Superior Materials,North America,Rubber Seals,Hardware,374,53.88,20151.12,2.737,25,0,rail,973.47,477.34
+ORD-00428,2024-11-07,Global Parts Ltd,Europe,Control Systems,Hardware,60,185.38,11122.8,3.67,3,1,truck,162.94,416.1
+ORD-00429,2024-11-08,Reliable Suppliers Co,North America,Drive Belts,Assembly,447,134.81,60260.07,1.733,8,1,truck,195.65,339.83
+ORD-00430,2024-11-09,Acme Corp,Europe,Control Systems,Mechanical,273,178.27,48667.71,2.039,44,0,truck,1712.21,78.45
+ORD-00431,2024-11-09,Global Parts Ltd,Europe,Steel Fasteners,Mechanical,292,193.11,56388.12,0.628,33,0,rail,1980.79,249.55
+ORD-00432,2024-11-10,Superior Materials,Africa,Steel Fasteners,Assembly,36,26.39,950.04,0.856,42,0,sea,1368.3,262.93
+ORD-00433,2024-11-11,BuildRight Inc,Latin America,Hydraulic Cylinders,Mechanical,235,129.0,30315.0,4.137,35,0,air,919.62,131.62
+ORD-00434,2024-11-12,Acme Corp,Latin America,Electronic Sensors,Hardware,286,233.34,66735.24,2.924,6,1,sea,1312.77,58.38
+ORD-00435,2024-11-12,BuildRight Inc,Europe,Plastic Components,Hardware,295,83.56,24650.2,1.688,39,0,rail,1209.07,392.83
+ORD-00436,2024-11-13,Global Parts Ltd,Asia Pacific,Drive Belts,Materials,106,150.5,15953.0,4.014,23,0,rail,798.04,78.58
+ORD-00437,2024-11-14,Reliable Suppliers Co,Asia Pacific,Aluminum Extrusions,Assembly,293,95.46,27969.78,1.233,25,0,air,177.97,305.26
+ORD-00438,2024-11-15,Reliable Suppliers Co,North America,Drive Belts,Electronics,376,116.3,43728.8,4.88,43,0,rail,1651.95,469.5
+ORD-00439,2024-11-15,Superior Materials,North America,Plastic Components,Electronics,457,139.41,63710.37,1.724,19,0,truck,775.08,440.53
+ORD-00440,2024-11-16,Reliable Suppliers Co,Africa,Electronic Sensors,Materials,490,139.49,68350.1,1.687,5,1,truck,1646.63,153.32
+ORD-00441,2024-11-17,Acme Corp,Europe,Aluminum Extrusions,Materials,462,54.42,25142.04,1.56,11,1,truck,542.39,428.7
+ORD-00442,2024-11-17,Reliable Suppliers Co,North America,Plastic Components,Mechanical,326,172.72,56306.72,0.611,12,1,truck,52.01,20.16
+ORD-00443,2024-11-18,Superior Materials,North America,Hydraulic Cylinders,Materials,313,26.53,8303.89,0.556,10,1,truck,359.93,28.49
+ORD-00444,2024-11-19,Global Parts Ltd,Europe,Aluminum Extrusions,Materials,156,39.01,6085.56,3.241,8,1,rail,963.65,309.23
+ORD-00445,2024-11-20,Global Parts Ltd,Africa,Steel Fasteners,Electronics,13,5.66,73.58,4.376,24,0,air,1891.39,195.1
+ORD-00446,2024-11-20,Reliable Suppliers Co,North America,Plastic Components,Mechanical,44,33.59,1477.96,3.953,28,0,air,249.28,205.5
+ORD-00447,2024-11-21,BuildRight Inc,Africa,Drive Belts,Materials,201,120.93,24306.93,0.706,41,0,truck,1715.71,290.93
+ORD-00448,2024-11-22,Global Parts Ltd,Latin America,Aluminum Extrusions,Materials,58,153.49,8902.42,2.728,36,0,rail,1077.7,112.06
+ORD-00449,2024-11-23,Reliable Suppliers Co,Africa,Hydraulic Cylinders,Mechanical,26,199.6,5189.6,0.528,37,0,sea,1660.55,121.64
+ORD-00450,2024-11-23,Superior Materials,Asia Pacific,Drive Belts,Assembly,181,31.14,5636.34,0.226,21,0,sea,631.83,252.61
+ORD-00451,2024-11-24,Reliable Suppliers Co,Asia Pacific,Control Systems,Mechanical,229,213.43,48875.47,3.282,8,1,rail,1687.9,382.04
+ORD-00452,2024-11-25,Global Parts Ltd,Africa,Aluminum Extrusions,Electronics,167,187.76,31355.92,2.676,9,1,truck,1557.0,317.36
+ORD-00453,2024-11-25,Superior Materials,Asia Pacific,Aluminum Extrusions,Assembly,486,105.09,51073.74,0.41,15,0,air,498.6,162.73
+ORD-00454,2024-11-26,Reliable Suppliers Co,Latin America,Hydraulic Cylinders,Hardware,55,233.57,12846.35,0.175,40,0,rail,306.1,226.56
+ORD-00455,2024-11-27,Acme Corp,Europe,Control Systems,Mechanical,382,247.78,94651.96,4.949,18,0,sea,1742.71,101.92
+ORD-00456,2024-11-28,Superior Materials,Asia Pacific,Plastic Components,Electronics,15,55.23,828.45,0.15,42,0,sea,1928.31,55.82
+ORD-00457,2024-11-28,Acme Corp,Asia Pacific,Rubber Seals,Assembly,108,97.91,10574.28,2.223,20,0,sea,111.04,395.69
+ORD-00458,2024-11-29,BuildRight Inc,Africa,Plastic Components,Mechanical,389,231.98,90240.22,2.523,6,1,truck,1475.98,147.39
+ORD-00459,2024-11-30,Superior Materials,Latin America,Control Systems,Materials,242,181.79,43993.18,0.586,12,1,sea,1823.57,105.33
+ORD-00460,2024-12-01,Acme Corp,Europe,Electronic Sensors,Mechanical,46,16.78,771.88,0.845,2,1,rail,1721.85,351.98
+ORD-00461,2024-12-01,Global Parts Ltd,Africa,Drive Belts,Hardware,289,196.47,56779.83,1.759,7,1,rail,1930.81,316.66
+ORD-00462,2024-12-02,Global Parts Ltd,Africa,Hydraulic Cylinders,Mechanical,358,207.85,74410.3,3.808,16,0,sea,1532.18,323.93
+ORD-00463,2024-12-03,BuildRight Inc,Latin America,Plastic Components,Assembly,311,188.87,58738.57,2.535,3,1,rail,912.48,129.87
+ORD-00464,2024-12-03,Superior Materials,Europe,Aluminum Extrusions,Assembly,190,200.89,38169.1,3.19,3,1,sea,658.31,131.67
+ORD-00465,2024-12-04,Superior Materials,Latin America,Hydraulic Cylinders,Mechanical,104,207.16,21544.64,4.926,27,0,sea,675.45,125.99
+ORD-00466,2024-12-05,Superior Materials,Europe,Steel Fasteners,Assembly,108,50.67,5472.36,3.84,43,0,air,1462.62,103.4
+ORD-00467,2024-12-06,BuildRight Inc,Latin America,Control Systems,Materials,197,62.74,12359.78,2.172,40,0,truck,1504.38,334.75
+ORD-00468,2024-12-06,Superior Materials,Africa,Drive Belts,Mechanical,490,160.27,78532.3,2.232,38,0,truck,440.7,427.05
+ORD-00469,2024-12-07,Global Parts Ltd,Africa,Plastic Components,Materials,125,227.43,28428.75,3.094,33,0,air,1742.84,367.67
+ORD-00470,2024-12-08,Acme Corp,North America,Hydraulic Cylinders,Materials,200,82.47,16494.0,3.327,28,0,air,1444.1,400.2
+ORD-00471,2024-12-09,Global Parts Ltd,Asia Pacific,Drive Belts,Electronics,262,149.14,39074.68,2.504,1,1,truck,1147.36,214.3
+ORD-00472,2024-12-09,Global Parts Ltd,Latin America,Plastic Components,Mechanical,478,172.33,82373.74,3.224,8,1,sea,969.49,333.96
+ORD-00473,2024-12-10,Acme Corp,North America,Hydraulic Cylinders,Assembly,425,115.73,49185.25,0.118,37,0,sea,1109.3,190.03
+ORD-00474,2024-12-11,Global Parts Ltd,Asia Pacific,Aluminum Extrusions,Materials,480,179.88,86342.4,2.148,32,0,truck,360.53,272.24
+ORD-00475,2024-12-12,BuildRight Inc,Latin America,Steel Fasteners,Electronics,170,225.42,38321.4,1.395,43,0,sea,447.22,251.18
+ORD-00476,2024-12-12,Acme Corp,Europe,Steel Fasteners,Mechanical,265,157.9,41843.5,0.646,37,0,air,227.77,104.91
+ORD-00477,2024-12-13,Global Parts Ltd,Asia Pacific,Electronic Sensors,Mechanical,332,137.25,45567.0,0.498,4,1,sea,349.63,205.8
+ORD-00478,2024-12-14,Reliable Suppliers Co,Africa,Hydraulic Cylinders,Hardware,137,112.49,15411.13,3.016,30,0,sea,934.7,482.63
+ORD-00479,2024-12-14,Global Parts Ltd,North America,Plastic Components,Hardware,27,146.48,3954.96,2.618,6,1,rail,1084.19,139.32
+ORD-00480,2024-12-15,BuildRight Inc,Asia Pacific,Steel Fasteners,Materials,290,92.06,26697.4,1.268,19,0,rail,84.83,84.23
+ORD-00481,2024-12-16,Superior Materials,Asia Pacific,Control Systems,Hardware,499,100.91,50354.09,2.355,32,0,rail,1603.76,220.92
+ORD-00482,2024-12-17,Global Parts Ltd,Africa,Steel Fasteners,Materials,232,135.31,31391.92,2.461,9,1,sea,623.63,399.36
+ORD-00483,2024-12-17,Superior Materials,Latin America,Rubber Seals,Assembly,63,21.32,1343.16,0.975,12,1,truck,1828.08,299.43
+ORD-00484,2024-12-18,Reliable Suppliers Co,Europe,Rubber Seals,Materials,67,61.11,4094.37,3.26,11,1,air,1936.65,346.87
+ORD-00485,2024-12-19,Global Parts Ltd,Africa,Steel Fasteners,Hardware,332,138.0,45816.0,3.905,16,0,sea,411.64,111.05
+ORD-00486,2024-12-20,Acme Corp,Europe,Hydraulic Cylinders,Assembly,369,110.72,40855.68,3.957,1,1,truck,951.09,317.1
+ORD-00487,2024-12-20,Superior Materials,Latin America,Electronic Sensors,Hardware,183,86.54,15836.82,3.012,21,0,sea,52.4,175.28
+ORD-00488,2024-12-21,Reliable Suppliers Co,Asia Pacific,Steel Fasteners,Materials,289,183.98,53170.22,2.558,30,0,air,1216.74,420.47
+ORD-00489,2024-12-22,Acme Corp,Europe,Aluminum Extrusions,Electronics,123,174.96,21520.08,0.305,13,1,sea,1234.25,322.06
+ORD-00490,2024-12-22,Acme Corp,North America,Drive Belts,Mechanical,297,45.85,13617.45,1.439,34,0,air,532.7,115.45
+ORD-00491,2024-12-23,Acme Corp,North America,Plastic Components,Hardware,440,220.26,96914.4,0.466,4,1,sea,1138.9,51.02
+ORD-00492,2024-12-24,Acme Corp,Africa,Electronic Sensors,Materials,351,126.38,44359.38,4.819,28,0,air,489.8,40.46
+ORD-00493,2024-12-25,Global Parts Ltd,Latin America,Aluminum Extrusions,Assembly,160,186.66,29865.6,0.675,38,0,sea,363.61,198.28
+ORD-00494,2024-12-25,Global Parts Ltd,Africa,Electronic Sensors,Hardware,459,145.42,66747.78,0.759,31,0,air,1320.46,147.61
+ORD-00495,2024-12-26,Global Parts Ltd,Africa,Aluminum Extrusions,Hardware,136,249.43,33922.48,4.448,27,0,rail,685.55,330.12
+ORD-00496,2024-12-27,Reliable Suppliers Co,Africa,Plastic Components,Mechanical,164,189.34,31051.76,4.72,5,1,sea,1201.01,259.68
+ORD-00497,2024-12-28,Reliable Suppliers Co,North America,Plastic Components,Materials,499,178.21,88926.79,3.829,25,0,sea,894.83,147.69
+ORD-00498,2024-12-28,Reliable Suppliers Co,North America,Rubber Seals,Electronics,395,195.75,77321.25,0.027,3,1,truck,1969.49,91.63
+ORD-00499,2024-12-29,BuildRight Inc,Africa,Hydraulic Cylinders,Assembly,483,40.07,19353.81,0.007,33,0,truck,341.68,81.06
+ORD-00500,2024-12-30,Reliable Suppliers Co,North America,Aluminum Extrusions,Materials,282,55.11,15541.02,1.891,4,1,air,955.97,435.04

@@ -1,7 +1,7 @@
 import logging
 from typing import Optional, Dict, Any
 
-from data.sample_data_loader import get_connection, get_table_schema, get_sample_data
+from data.sample_data_loader import get_connection, get_table_schema, get_all_sample_data
 from engine.intent_parser import parse_intent
 from engine.executor import execute_app_components
 from engine.validator import validate_and_explain
@@ -46,7 +46,7 @@ def run_pipeline(
         user_message,
         existing_app=existing_app,
         table_schema=get_table_schema(conn),
-        sample_data=get_sample_data(conn),
+        sample_data=get_all_sample_data(conn),
     )
 
     # 2. PRE-EXECUTION GOVERNANCE GATE

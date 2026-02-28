@@ -102,17 +102,26 @@ ROLES = {
 COLUMN_SENSITIVITY = {
     # Public — all roles can see
     "public": [
+        # Supply chain columns
         "order_id", "order_date", "region", "product", "category",
         "shipping_mode", "quantity",
+        # Customer columns
+        "customer_id", "customer_name", "industry", "company_size",
+        "region", "account_manager", "last_order_date",
     ],
     # Internal — analyst and admin only
     "internal": [
+        # Supply chain columns
         "unit_cost", "total_cost", "shipping_cost", "warehouse_cost",
         "defect_rate",
+        # Customer columns
+        "revenue_category", "satisfaction_score",
     ],
     # Restricted — admin only
     "restricted": [
+        # Supply chain columns
         "supplier",  # Supplier names are business-sensitive
+        # Customer columns (none currently marked as restricted)
     ],
 }
 

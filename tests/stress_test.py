@@ -11,6 +11,12 @@ load_dotenv()
 
 logging.basicConfig(level=logging.WARNING)
 
+# Check for API key
+if not os.getenv("OPENAI_API_KEY"):
+    print("Skipping stress test - OPENAI_API_KEY not set")
+    print("This test requires a valid OpenAI API key to run against live GPT API.")
+    sys.exit(0)
+
 from engine.pipeline import run_pipeline
 from data.sample_data_loader import get_connection
 from engine.executor import execute_app_components

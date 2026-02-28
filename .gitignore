@@ -1,3 +1,7 @@
+# Python
+__pycache__/
+*.pyc
+
 # environment variables
 .env
 .env.local

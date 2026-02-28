@@ -1,0 +1,277 @@
+{
+  "app_definition": {
+    "app_title": "Sales Trend Dashboard",
+    "app_description": "This dashboard visualizes the sales trend over time based on the supply chain dataset.",
+    "components": [
+      {
+        "id": "line_chart_1",
+        "type": "line_chart",
+        "title": "Sales Trend Over Time",
+        "sql_query": "SELECT strftime(order_date, '%Y-%m') AS month, SUM(total_cost) AS total_sales FROM supply_chain GROUP BY month ORDER BY month",
+        "config": {
+          "x_axis": "month",
+          "y_axis": "total_sales",
+          "format": "currency"
+        }
+      },
+      {
+        "id": "kpi_card_1",
+        "type": "kpi_card",
+        "title": "Total Sales",
+        "sql_query": "SELECT SUM(total_cost) AS total_sales FROM supply_chain",
+        "config": {
+          "value_column": "total_sales",
+          "metric_name": "Total Sales",
+          "format": "currency"
+        }
+      }
+    ],
+    "filters": [
+      {
+        "id": "filter_supplier",
+        "name": "Supplier",
+        "column": "supplier",
+        "type": "multiselect"
+      },
+      {
+        "id": "filter_region",
+        "name": "Region",
+        "column": "region",
+        "type": "multiselect"
+      },
+      {
+        "id": "filter_product",
+        "name": "Product",
+        "column": "product",
+        "type": "multiselect"
+      },
+      {
+        "id": "filter_category",
+        "name": "Category",
+        "column": "category",
+        "type": "multiselect"
+      },
+      {
+        "id": "filter_date",
+        "name": "Order Date",
+        "column": "order_date",
+        "type": "date_range"
+      }
+    ]
+  },
+  "execution_results": {
+    "line_chart_1": {
+      "status": "success",
+      "data": [
+        {
+          "month": "2024-01",
+          "total_sales": 572685.78
+        },
+        {
+          "month": "2024-02",
+          "total_sales": 448626.75999999995
+        },
+        {
+          "month": "2024-03",
+          "total_sales": 694919.5999999999
+        },
+        {
+          "month": "2024-04",
+          "total_sales": 538919.5299999999
+        },
+        {
+          "month": "2024-05",
+          "total_sales": 560910.78
+        },
+        {
+          "month": "2024-06",
+          "total_sales": 438542.47000000003
+        },
+        {
+          "month": "2024-07",
+          "total_sales": 618051.25
+        },
+        {
+          "month": "2024-08",
+          "total_sales": 462182.8900000001
+        },
+        {
+          "month": "2024-09",
+          "total_sales": 562108.5700000001
+        },
+        {
+          "month": "2024-10",
+          "total_sales": 484601.3000000001
+        },
+        {
+          "month": "2024-11",
+          "total_sales": 714016.68
+        },
+        {
+          "month": "2024-12",
+          "total_sales": 530555.85
+        }
+      ],
+      "row_count": 12
+    },
+    "kpi_card_1": {
+      "status": "success",
+      "data": [
+        {
+          "total_sales": 6626121.460000003
+        }
+      ],
+      "row_count": 1
+    }
+  },
+  "validation": {
+    "overall_status": "success",
+    "components": [
+      {
+        "id": "line_chart_1",
+        "title": "Sales Trend Over Time",
+        "type": "line_chart",
+        "status": "success",
+        "warnings": [],
+        "explanation": "Sales Trend Over Time: Shows trend across 12 time points"
+      },
+      {
+        "id": "kpi_card_1",
+        "title": "Total Sales",
+        "type": "kpi_card",
+        "status": "success",
+        "warnings": [],
+        "explanation": "Total Sales: Displays a single metric value (1 data point)"
+      }
+    ],
+    "total_warnings": 0
+  },
+  "governance": {
+    "overall_status": "pass",
+    "passed": true,
+    "role": "analyst",
+    "role_display_name": "Data Analyst",
+    "checks": [
+      {
+        "name": "sql_sanitization",
+        "status": "pass",
+        "details": "All queries passed sanitization"
+      },
+      {
+        "name": "column_access",
+        "status": "pass",
+        "details": "All columns accessible"
+      },
+      {
+        "name": "component_permissions",
+        "status": "pass",
+        "details": "All component types allowed"
+      },
+      {
+        "name": "pii_detection",
+        "status": "pass",
+        "details": "No PII detected"
+      },
+      {
+        "name": "access_control",
+        "status": "pass",
+        "details": "Role 'analyst' granted create_app"
+      },
+      {
+        "name": "query_complexity",
+        "status": "pass",
+        "details": "Analyzed 2 queries"
+      },
+      {
+        "name": "data_quality",
+        "status": "pass",
+        "details": "good"
+      },
+      {
+        "name": "export_control",
+        "status": "pass",
+        "details": "13 rows (limit: 100000)"
+      }
+    ],
+    "sql_safety": {
+      "safe": true,
+      "blocked_keywords": [],
+      "query_length_ok": true,
+      "details": ""
+    },
+    "column_access": {
+      "allowed": true,
+      "blocked_columns": [],
+      "column_details": [
+        {
+          "column": "order_date",
+          "sensitivity": "public",
+          "allowed": true
+        },
+        {
+          "column": "total_cost",
+          "sensitivity": "internal",
+          "allowed": true
+        },
+        {
+          "column": "total_cost",
+          "sensitivity": "internal",
+          "allowed": true
+        }
+      ],
+      "redaction_needed": false
+    },
+    "component_permissions": {
+      "allowed": true,
+      "blocked_components": [],
+      "component_count_ok": true,
+      "max_allowed": 6
+    },
+    "pii_detected": [],
+    "pii_redacted": false,
+    "access_granted": true,
+    "query_complexity": {
+      "line_chart_1": {
+        "join_count": 0,
+        "subquery_count": 0,
+        "has_aggregation": true,
+        "is_complex": false
+      },
+      "kpi_card_1": {
+        "join_count": 0,
+        "subquery_count": 0,
+        "has_aggregation": true,
+        "is_complex": false
+      }
+    },
+    "data_quality": {
+      "overall_quality": "good",
+      "null_count": 0,
+      "duplicate_count": 0,
+      "outlier_count": 0,
+      "issues": [],
+      "per_component": {
+        "line_chart_1": {
+          "null_count": 0,
+          "duplicate_count": 0,
+          "outlier_count": 0,
+          "quality": "good"
+        },
+        "kpi_card_1": {
+          "null_count": 0,
+          "duplicate_count": 0,
+          "outlier_count": 0,
+          "quality": "good"
+        }
+      }
+    },
+    "export_allowed": true,
+    "export_formats": [
+      "csv",
+      "json"
+    ],
+    "warnings": [],
+    "blocked_reasons": [],
+    "audit_entry_id": "4eedcb95"
+  }
+}

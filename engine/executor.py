@@ -77,17 +77,34 @@ def execute_query(
     where_clause = _build_filter_where_clause(filters)
 
     if where_clause:
-        # Inject filters into the FROM supply_chain clause directly
+        # Inject filters by finding the first FROM clause
         # This handles cases where the filter column isn't in the SELECT
         upper_query = sql_query.upper()
         if "WHERE" in upper_query:
             # Append to existing WHERE clause
             where_conditions = where_clause.replace("WHERE ", "")
             wrapped_query = sql_query + " AND " + where_conditions
-        elif "FROM SUPPLY_CHAIN" in upper_query:
-            # Insert WHERE clause after FROM supply_chain
-            idx = upper_query.index("FROM SUPPLY_CHAIN") + len("FROM SUPPLY_CHAIN")
-            wrapped_query = sql_query[:idx] + " " + where_clause + " " + sql_query[idx:]
+        elif "FROM " in upper_query:
+            # Insert WHERE clause after the first FROM clause
+            from_idx = upper_query.index("FROM ")
+            # Find the end of the FROM clause (next keyword or end of string)
+            after_from = upper_query[from_idx + 5:]  # Skip "FROM "
+            # Look for common SQL keywords that might follow FROM
+            keywords = ["WHERE", "GROUP BY", "ORDER BY", "HAVING", "LIMIT", "UNION"]
+            min_keyword_idx = len(upper_query)
+            for keyword in keywords:
+                keyword_idx = after_from.find(keyword)
+                if keyword_idx != -1:
+                    min_keyword_idx = min(min_keyword_idx, from_idx + 5 + keyword_idx)
+
+            if min_keyword_idx < len(upper_query):
+                # Insert before the next keyword
+                insert_idx = min_keyword_idx
+            else:
+                # Insert at the end
+                insert_idx = len(sql_query)
+
+            wrapped_query = sql_query[:insert_idx] + " " + where_clause + " " + sql_query[insert_idx:]
         else:
             # Fallback: wrap as subquery
             wrapped_query = f"SELECT * FROM ({sql_query}) AS filtered_data {where_clause}"

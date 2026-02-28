@@ -2,7 +2,9 @@ import duckdb
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
-from typing import Optional, Tuple
+from typing import Optional, Tuple, List, Dict, Any
+import os
+import glob
 
 # ============================================================================
 # GLOBAL CONNECTION (singleton pattern)
@@ -30,10 +32,30 @@ def get_connection() -> duckdb.DuckDBPyConnection:
 
 
 def _initialize_tables(conn: duckdb.DuckDBPyConnection) -> None:
-    """Initialize sample data tables in DuckDB."""
-    df = _generate_sample_data()
-    conn.register("supply_chain", df)
-    print(f"✓ Loaded {len(df)} rows into supply_chain table")
+    """Initialize tables from all CSV files in the data directory."""
+    # Get the directory where this file is located
+    data_dir = os.path.dirname(os.path.abspath(__file__))
+
+    # Find all CSV files in the data directory
+    csv_files = glob.glob(os.path.join(data_dir, "*.csv"))
+
+    if not csv_files:
+        print("⚠️  No CSV files found in data directory. Using synthetic data as fallback.")
+        # Fallback to synthetic data if no CSVs found
+        df = _generate_sample_data()
+        conn.register("supply_chain", df)
+        print(f"✓ Loaded {len(df)} rows into supply_chain table (synthetic)")
+        return
+
+    # Load each CSV file as a table
+    for csv_file in csv_files:
+        table_name = os.path.splitext(os.path.basename(csv_file))[0]  # Remove .csv extension
+        try:
+            df = pd.read_csv(csv_file)
+            conn.register(table_name, df)
+            print(f"✓ Loaded {len(df)} rows into {table_name} table from {os.path.basename(csv_file)}")
+        except Exception as e:
+            print(f"❌ Failed to load {csv_file}: {e}")
 
 
 def _generate_sample_data() -> pd.DataFrame:
@@ -121,65 +143,134 @@ def _generate_sample_data() -> pd.DataFrame:
 
 def get_table_schema(conn: Optional[duckdb.DuckDBPyConnection] = None) -> str:
     """
-    Returns a formatted schema string describing the supply_chain table.
+    Returns a formatted schema string describing all available tables.
     Used by intent_parser to inject schema into GPT-5.1 prompt.
 
     Args:
         conn: Optional DuckDB connection. Uses singleton if not provided.
 
     Returns:
-        str: Human-readable schema description
+        str: Human-readable schema description for all tables
     """
     if conn is None:
         conn = get_connection()
-    result = conn.execute("DESCRIBE supply_chain").fetchall()
 
-    schema_lines = ["Table: supply_chain", ""]
-    for col_name, col_type, *_ in result:
-        schema_lines.append(f"  - {col_name} ({col_type})")
+    # Get all table names
+    try:
+        tables_result = conn.execute("SHOW TABLES").fetchall()
+        table_names = [row[0] for row in tables_result]
+    except Exception:
+        # Fallback for older DuckDB versions
+        table_names = ["supply_chain"]  # Assume default table exists
 
-    return "\n".join(schema_lines)
+    schema_lines = []
+
+    for table_name in table_names:
+        try:
+            result = conn.execute(f"DESCRIBE {table_name}").fetchall()
+            schema_lines.append(f"Table: {table_name}")
+            schema_lines.append("")
+            for col_name, col_type, *_ in result:
+                schema_lines.append(f"  - {col_name} ({col_type})")
+            schema_lines.append("")
+        except Exception as e:
+            schema_lines.append(f"Table: {table_name} (Error reading schema: {e})")
+            schema_lines.append("")
+
+    return "\n".join(schema_lines).strip()
 
 
-def get_sample_rows(conn: Optional[duckdb.DuckDBPyConnection] = None, n: int = 5) -> pd.DataFrame:
+def get_sample_rows_from_all_tables(conn: Optional[duckdb.DuckDBPyConnection] = None, n: int = 3) -> Dict[str, pd.DataFrame]:
     """
-    Returns first N rows of supply_chain table as DataFrame.
-    CRITICAL: Used by intent_parser to inject sample data into GPT-5.1 prompt.
-    This helps the AI understand data distribution and available values.
+    Returns sample rows from all available tables.
+    Useful for providing comprehensive sample data to LLMs.
 
     Args:
         conn: Optional DuckDB connection. Uses singleton if not provided.
-        n: Number of rows to return (default 5)
+        n: Number of rows to return per table (default 3)
 
     Returns:
-        pd.DataFrame: Sample rows from supply_chain table
+        Dict[str, pd.DataFrame]: Dictionary mapping table names to sample DataFrames
     """
     if conn is None:
         conn = get_connection()
-    df = conn.execute(f"SELECT * FROM supply_chain LIMIT {n}").df()
-    return df
+
+    samples = {}
+
+    try:
+        tables_result = conn.execute("SHOW TABLES").fetchall()
+        table_names = [row[0] for row in tables_result]
+    except Exception:
+        # Fallback
+        table_names = ["supply_chain"]
+
+    for table_name in table_names:
+        try:
+            df = conn.execute(f"SELECT * FROM {table_name} LIMIT {n}").df()
+            samples[table_name] = df
+        except Exception as e:
+            print(f"Warning: Could not get samples from {table_name}: {e}")
+
+    return samples
 
 
-def get_sample_data(conn: Optional[duckdb.DuckDBPyConnection] = None, n: int = 5) -> str:
+def get_all_sample_data(conn: Optional[duckdb.DuckDBPyConnection] = None, n: int = 3) -> str:
     """
-    Returns sample rows as a formatted string for prompt injection.
-    Alias for get_sample_rows().to_string() used by pipeline.py.
+    Returns sample rows from all tables as a formatted string.
+    Useful for providing comprehensive sample data to LLMs.
 
     Args:
         conn: Optional DuckDB connection. Uses singleton if not provided.
-        n: Number of rows to return (default 5)
+        n: Number of rows to return per table (default 3)
 
     Returns:
-        str: Formatted sample data string
+        str: Formatted sample data string for all tables
     """
-    df = get_sample_rows(conn=conn, n=n)
-    return df.to_string()
+    samples = get_sample_rows_from_all_tables(conn=conn, n=n)
+
+    output_lines = []
+    for table_name, df in samples.items():
+        output_lines.append(f"=== {table_name.upper()} TABLE ===")
+        output_lines.append(df.to_string())
+        output_lines.append("")
+
+    return "\n".join(output_lines).strip()
+
+
+def get_available_tables(conn: Optional[duckdb.DuckDBPyConnection] = None) -> List[str]:
+    """
+    Returns a list of all available table names.
+
+    Args:
+        conn: Optional DuckDB connection. Uses singleton if not provided.
+
+    Returns:
+        List[str]: List of table names
+    """
+    if conn is None:
+        conn = get_connection()
+
+    try:
+        tables_result = conn.execute("SHOW TABLES").fetchall()
+        return [row[0] for row in tables_result]
+    except Exception:
+        return ["supply_chain"]  # Fallback
 
 
 if __name__ == "__main__":
     # Quick test
     conn = get_connection()
-    schema = get_table_schema()
+
+    print("=== AVAILABLE TABLES ===")
+    tables = get_available_tables(conn)
+    print(f"Found tables: {tables}")
+    print()
+
+    print("=== SCHEMA INFORMATION ===")
+    schema = get_table_schema(conn)
     print(schema)
-    print("\nSample rows:")
-    print(get_sample_rows(3))
+    print()
+
+    print("=== SAMPLE DATA FROM ALL TABLES ===")
+    all_samples = get_all_sample_data(conn, n=3)
+    print(all_samples)
