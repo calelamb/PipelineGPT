@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import json
+from pathlib import Path
 from datetime import datetime
 
 from ui.styles import inject_custom_css, LUCIDE
@@ -23,6 +25,7 @@ DEFAULTS = {
     "active_filters": None,
     "messages": [],
     "show_engine": False,
+    "current_page": "chat",
 }
 
 # ─── Templates ───
@@ -790,6 +793,19 @@ def main():
             "Show Engine", value=st.session_state.show_engine
         )
 
+        # ── Admin: Audit History ──
+        if role == "admin":
+            st.markdown("<hr>", unsafe_allow_html=True)
+            st.markdown('<div class="section-label">Admin</div>', unsafe_allow_html=True)
+            if st.session_state.current_page == "audit_history":
+                if st.button("Back to Chat", key="back_to_chat", use_container_width=True):
+                    st.session_state.current_page = "chat"
+                    st.rerun()
+            else:
+                if st.button("Audit History", key="audit_history_btn", use_container_width=True):
+                    st.session_state.current_page = "audit_history"
+                    st.rerun()
+
         # ── Sign out at bottom (subtle) ──
         st.markdown('<div style="height:24px"></div>', unsafe_allow_html=True)
         if st.button("Sign out", key="logout_btn"):
@@ -803,35 +819,166 @@ def main():
             unsafe_allow_html=True,
         )
 
-    # ── Layout: chat + optional engine right panel ──
-    _engine_on = st.session_state.show_engine and st.session_state.get("pipeline_result")
-    if _engine_on:
-        st.markdown("""<style>
-        .stMainBlockContainer { max-width: 100% !important; padding-left: 1rem !important; padding-right: 1rem !important; }
-        </style>""", unsafe_allow_html=True)
-        _chat_col, _engine_col = st.columns([3, 2], gap="medium")
+    # ── Page routing ──
+    if st.session_state.current_page == "audit_history" and role == "admin":
+        _render_audit_history()
     else:
-        _chat_col, _engine_col = st.container(), None
+        # ── Layout: chat + optional engine right panel ──
+        _engine_on = st.session_state.show_engine and st.session_state.get("pipeline_result")
+        if _engine_on:
+            st.markdown("""<style>
+            .stMainBlockContainer { max-width: 100% !important; padding-left: 1rem !important; padding-right: 1rem !important; }
+            </style>""", unsafe_allow_html=True)
+            _chat_col, _engine_col = st.columns([3, 2], gap="medium")
+        else:
+            _chat_col, _engine_col = st.container(), None
 
-    with _chat_col:
-        _render_main_content()
+        with _chat_col:
+            _render_main_content()
 
-    # ── Right engine panel ──
-    if _engine_col is not None:
-        with _engine_col:
-            st.markdown(
-                f'<div class="engine-panel-header">{LUCIDE["sparkles"]} &nbsp;'
-                f'<strong>Engine View</strong></div>',
-                unsafe_allow_html=True,
-            )
-            _render_engine_panel(st.session_state.pipeline_result)
+        # ── Right engine panel ──
+        if _engine_col is not None:
+            with _engine_col:
+                st.markdown(
+                    f'<div class="engine-panel-header">{LUCIDE["sparkles"]} &nbsp;'
+                    f'<strong>Engine View</strong></div>',
+                    unsafe_allow_html=True,
+                )
+                _render_engine_panel(st.session_state.pipeline_result)
 
-    # ── Chat input (always at bottom) ──
-    user_input = st.chat_input("Describe the app you want to build...")
-    if user_input:
-        with st.spinner("Building..."):
-            process_prompt(user_input)
-        st.rerun()
+        # ── Chat input (always at bottom) ──
+        user_input = st.chat_input("Describe the app you want to build...")
+        if user_input:
+            with st.spinner("Building..."):
+                process_prompt(user_input)
+            st.rerun()
+
+
+def _render_audit_history():
+    """Admin-only: render full audit trail from the JSONL file."""
+    st.markdown(
+        f'<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">'
+        f'{LUCIDE["shield-check"]}'
+        f'<span style="font-size:22px;font-weight:700;letter-spacing:-0.02em">Audit History</span>'
+        f'</div>'
+        f'<p style="color:#6b7280;font-size:13px;margin-bottom:20px">'
+        f'Persistent governance log — every check the system has run.</p>',
+        unsafe_allow_html=True,
+    )
+
+    audit_path = Path("audit_trail.jsonl")
+    if not audit_path.exists():
+        st.info("No audit trail file found yet.")
+        return
+
+    # Read all entries
+    entries = []
+    with open(audit_path, "r") as f:
+        for line in f:
+            line = line.strip()
+            if line:
+                try:
+                    entries.append(json.loads(line))
+                except json.JSONDecodeError:
+                    continue
+
+    if not entries:
+        st.info("Audit trail is empty.")
+        return
+
+    # Newest first
+    entries.reverse()
+
+    # ── Summary KPIs ──
+    total = len(entries)
+    passed = sum(1 for e in entries if e.get("details", {}).get("passed") is True)
+    failed = sum(1 for e in entries if e.get("details", {}).get("passed") is False)
+    unique_sessions = len(set(e.get("session_id", "") for e in entries))
+
+    k1, k2, k3, k4 = st.columns(4)
+    k1.metric("Total Events", total)
+    k2.metric("Passed", passed)
+    k3.metric("Blocked", failed)
+    k4.metric("Sessions", unique_sessions)
+
+    st.markdown('<div style="height:12px"></div>', unsafe_allow_html=True)
+
+    # ── Filters ──
+    col_action, col_status, col_role = st.columns(3)
+    actions = sorted(set(e.get("action", "unknown") for e in entries))
+    with col_action:
+        filter_action = st.selectbox("Action", ["All"] + actions, key="audit_filter_action")
+    with col_status:
+        filter_status = st.selectbox("Status", ["All", "Passed", "Blocked"], key="audit_filter_status")
+    roles_in_log = sorted(set(e.get("details", {}).get("role", "") for e in entries if e.get("details", {}).get("role")))
+    with col_role:
+        filter_role = st.selectbox("Role", ["All"] + roles_in_log, key="audit_filter_role")
+
+    # Apply filters
+    filtered = entries
+    if filter_action != "All":
+        filtered = [e for e in filtered if e.get("action") == filter_action]
+    if filter_status == "Passed":
+        filtered = [e for e in filtered if e.get("details", {}).get("passed") is True]
+    elif filter_status == "Blocked":
+        filtered = [e for e in filtered if e.get("details", {}).get("passed") is False]
+    if filter_role != "All":
+        filtered = [e for e in filtered if e.get("details", {}).get("role") == filter_role]
+
+    st.markdown(f'<p style="color:#6b7280;font-size:12px;margin:8px 0 12px 0">'
+                f'Showing {len(filtered)} of {total} entries</p>',
+                unsafe_allow_html=True)
+
+    # ── Table view ──
+    if filtered:
+        rows = []
+        for e in filtered:
+            d = e.get("details", {})
+            ts = e.get("timestamp", "")
+            # Format timestamp nicely
+            try:
+                dt = datetime.fromisoformat(ts)
+                ts_display = dt.strftime("%b %d, %H:%M:%S")
+            except Exception:
+                ts_display = ts[:19] if len(ts) > 19 else ts
+
+            status = "Pass" if d.get("passed") is True else ("Blocked" if d.get("passed") is False else "—")
+            blocked_reasons = d.get("blocked_reasons", [])
+            reason_str = "; ".join(blocked_reasons) if blocked_reasons else ""
+
+            rows.append({
+                "Time": ts_display,
+                "Session": e.get("session_id", "")[:6],
+                "Action": e.get("action", ""),
+                "Role": d.get("role", "—"),
+                "App": d.get("app_id", "—"),
+                "Status": status,
+                "Reasons": reason_str,
+            })
+
+        df = pd.DataFrame(rows)
+        st.dataframe(
+            df,
+            use_container_width=True,
+            height=min(len(rows) * 35 + 38, 600),
+            column_config={
+                "Time": st.column_config.TextColumn(width="small"),
+                "Session": st.column_config.TextColumn(width="small"),
+                "Action": st.column_config.TextColumn(width="small"),
+                "Role": st.column_config.TextColumn(width="small"),
+                "App": st.column_config.TextColumn(width="medium"),
+                "Status": st.column_config.TextColumn(width="small"),
+                "Reasons": st.column_config.TextColumn(width="large"),
+            },
+        )
+
+        # ── Expandable detail view for latest entries ──
+        st.markdown('<div style="height:8px"></div>', unsafe_allow_html=True)
+        with st.expander(f"Raw JSON — latest {min(10, len(filtered))} entries"):
+            for e in filtered[:10]:
+                st.json(e)
+    else:
+        st.info("No entries match the current filters.")
 
 
 def _render_main_content():

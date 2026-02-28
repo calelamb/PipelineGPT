@@ -33,8 +33,8 @@ VALIDATION_CONFIG = {
         "max_points": 500,
     },
     "pie_chart": {
-        "min_slices": 2,
-        "max_slices": 12,
+        "min_categories": 2,
+        "max_categories": 12,
     },
     "scatter_plot": {
         "min_points": 3,
