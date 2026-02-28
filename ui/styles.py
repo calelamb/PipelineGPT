@@ -5,7 +5,7 @@ All CSS in one place. Called via inject_custom_css(st) at the top of app.py.
 
 CUSTOM_CSS = """
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap');
 
 :root {
     --bg-page: #fafafa;
@@ -22,7 +22,7 @@ CUSTOM_CSS = """
     --text-secondary: #6b7280;
     --text-tertiary: #9ca3af;
     --text-body: #374151;
-    --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --radius-sm: 6px;
     --radius-md: 8px;
     --radius-lg: 12px;
@@ -60,6 +60,9 @@ div[data-testid="stDecoration"],
 div[data-testid="stToolbar"],
 .reportview-container .main footer {
     display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden !important;
 }
 
 [data-testid="stHeader"] { background-color: var(--bg-page) !important; height: 0 !important; }
@@ -87,14 +90,25 @@ section[data-testid="stSidebar"] > div {
     padding-top: 16px !important;
     padding-bottom: 48px !important;
 }
+/* Force all sidebar content left-aligned */
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] {
+    align-items: flex-start !important;
+}
+section[data-testid="stSidebar"] .stMarkdown {
+    width: 100% !important;
+}
 section[data-testid="stSidebar"] .stMarkdown p,
 section[data-testid="stSidebar"] .stMarkdown span,
 section[data-testid="stSidebar"] label {
     color: var(--text-primary) !important;
     font-family: var(--font) !important;
+    text-align: left !important;
 }
 
 /* Sidebar template buttons — look like nav items */
+section[data-testid="stSidebar"] .stButton {
+    width: 100% !important;
+}
 section[data-testid="stSidebar"] .stButton > button {
     background-color: transparent !important;
     border: none !important;
@@ -106,11 +120,13 @@ section[data-testid="stSidebar"] .stButton > button {
     padding: 6px 10px !important;
     text-align: left !important;
     justify-content: flex-start !important;
+    display: flex !important;
     transition: background-color var(--transition), color var(--transition) !important;
     transform: none !important;
     box-shadow: none !important;
     min-height: 32px !important;
     line-height: 1.4 !important;
+    width: 100% !important;
 }
 section[data-testid="stSidebar"] .stButton > button:hover {
     background-color: var(--bg-hover) !important;
@@ -123,6 +139,9 @@ section[data-testid="stSidebar"] .stButton > button:hover {
 [data-testid="stToggle"] label span {
     color: var(--text-secondary) !important;
     font-size: 12px !important;
+}
+[data-testid="stToggle"] [role="switch"][aria-checked="true"] {
+    background-color: var(--accent) !important;
 }
 
 /* Sidebar brand */
@@ -280,13 +299,73 @@ section[data-testid="stSidebar"] .stButton > button:hover {
 }
 
 /* ══════════════════════════════════════
-   INLINE DASHBOARD CARD
+   CHAT-DOMINANT LAYOUT
    ══════════════════════════════════════ */
+
+/* Main content — constrain width like ChatGPT for readability */
+.stMainBlockContainer {
+    max-width: 780px !important;
+    margin: 0 auto !important;
+    padding-bottom: 100px !important;
+}
+
+/* Dashboard cards */
 [data-testid="stVerticalBlockBorderWrapper"] {
     border-color: var(--border) !important;
     border-radius: var(--radius-lg) !important;
     background-color: var(--bg-card) !important;
     box-shadow: var(--shadow-sm) !important;
+}
+
+/* Dashboard expander — compact, looks like an embedded card */
+.stExpander,
+[data-testid="stExpander"] {
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius-lg) !important;
+    background-color: var(--bg-card) !important;
+    box-shadow: var(--shadow-sm) !important;
+    margin: 8px 0 16px 0 !important;
+    overflow: hidden !important;
+}
+/* Kill the dark expander header — AGGRESSIVE override */
+.stExpander details,
+.stExpander summary,
+.stExpander [data-testid="stExpanderToggleDetails"],
+[data-testid="stExpander"] details,
+[data-testid="stExpander"] summary,
+[data-testid="stExpander"] > details > summary,
+details[data-testid="stExpanderDetails"] > summary,
+.streamlit-expanderHeader {
+    background-color: var(--bg-card) !important;
+    background: var(--bg-card) !important;
+    color: var(--text-primary) !important;
+    font-family: var(--font) !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    border: none !important;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0 !important;
+    padding: 12px 16px !important;
+}
+.stExpander summary:hover,
+[data-testid="stExpander"] summary:hover {
+    background-color: var(--bg-hover) !important;
+    background: var(--bg-hover) !important;
+}
+/* Expander content area */
+.stExpander [data-testid="stExpanderDetails"],
+[data-testid="stExpander"] [data-testid="stExpanderDetails"] {
+    padding: 4px 12px 12px 12px !important;
+    border-top: 1px solid var(--border-subtle) !important;
+    background-color: var(--bg-card) !important;
+    background: var(--bg-card) !important;
+}
+/* Override any dark child divs inside expander */
+.stExpander div,
+[data-testid="stExpander"] div {
+    background-color: transparent !important;
+}
+.stExpander [data-testid="stExpanderDetails"] div {
+    background-color: transparent !important;
 }
 
 /* ══════════════════════════════════════
@@ -399,27 +478,31 @@ div[data-testid="stBottom"] > div {
     overflow: hidden !important;
     animation: fadeInUp 0.3s ease forwards;
 }
+/* Legacy expander classes (older Streamlit versions) */
 .streamlit-expanderHeader {
     background-color: var(--bg-card) !important;
-    border: 1px solid var(--border) !important;
+    background: var(--bg-card) !important;
+    border: none !important;
     border-radius: var(--radius-md) !important;
     color: var(--text-primary) !important;
     font-family: var(--font) !important;
     font-weight: 500 !important;
     font-size: 13px !important;
-    transition: background-color var(--transition) !important;
 }
 .streamlit-expanderHeader:hover {
     background-color: var(--bg-hover) !important;
+    background: var(--bg-hover) !important;
 }
 .streamlit-expanderContent {
-    background-color: #f9fafb !important;
-    border: 1px solid var(--border) !important;
-    border-top: none !important;
-    border-radius: 0 0 var(--radius-md) var(--radius-md) !important;
+    background-color: var(--bg-card) !important;
+    background: var(--bg-card) !important;
+    border: none !important;
+    border-top: 1px solid var(--border-subtle) !important;
 }
 details summary {
     color: var(--text-primary) !important;
+    background-color: var(--bg-card) !important;
+    background: var(--bg-card) !important;
     cursor: pointer;
 }
 .stCodeBlock, pre, code {
@@ -643,6 +726,37 @@ hr {
     font-family: var(--font);
 }
 .check-row strong { color: var(--text-primary); font-weight: 500; }
+
+/* Sign-out button — subtle text link, not a nav item */
+section[data-testid="stSidebar"] .stButton:last-of-type > button {
+    font-size: 11px !important;
+    color: var(--text-tertiary) !important;
+    padding: 4px 10px !important;
+    min-height: 28px !important;
+}
+section[data-testid="stSidebar"] .stButton:last-of-type > button:hover {
+    color: var(--text-secondary) !important;
+    background-color: transparent !important;
+}
+
+/* "Try" example button on welcome screen — subtle outline pill */
+.welcome-container + div .stButton > button,
+.stMainBlockContainer > div > div > .stColumns .stButton > button {
+    border: 1px solid var(--border) !important;
+    border-radius: 20px !important;
+    color: var(--text-secondary) !important;
+    font-size: 13px !important;
+    padding: 8px 20px !important;
+    background-color: var(--bg-card) !important;
+    transition: all var(--transition) !important;
+}
+.welcome-container + div .stButton > button:hover,
+.stMainBlockContainer > div > div > .stColumns .stButton > button:hover {
+    border-color: #d1d5db !important;
+    color: var(--text-primary) !important;
+    background-color: var(--bg-card) !important;
+    box-shadow: var(--shadow-sm) !important;
+}
 
 /* Spinner */
 .stSpinner > div {

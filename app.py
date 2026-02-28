@@ -114,14 +114,23 @@ def process_prompt(prompt: str):
     app_def = result.get("app_definition", {})
     if gov.get("passed", True):
         n = len(app_def.get("components", []))
-        msg = f"Built **{app_def.get('app_title', 'dashboard')}** with {n} components."
+        title = app_def.get("app_title", "dashboard")
+        comps = app_def.get("components", [])
+        comp_types = [c.get("type", "").replace("_", " ") for c in comps]
+        type_summary = ", ".join(dict.fromkeys(comp_types))  # unique, ordered
+        msg = (
+            f"I've built <strong>{title}</strong> with {n} components — "
+            f"including {type_summary}. "
+            f"Expand the dashboard below to explore the data interactively."
+        )
     else:
-        msg = "Governance blocked this request. See details below."
+        msg = "Governance blocked this request. See the details below for more information."
 
     st.session_state.messages.append({
         "role": "assistant", "content": msg,
         "timestamp": datetime.now().strftime("%H:%M:%S"),
         "pipeline_result": result,
+        "stream": True,  # flag for streaming animation
     })
 
 
@@ -159,6 +168,33 @@ def _get_data(comp_result):
 # ============================================================================
 
 
+def _format_kpi_value(val, fmt):
+    """Format a KPI value, handling None/NaN gracefully."""
+    import math
+    if val is None:
+        return "—"
+    try:
+        val = float(val)
+        if math.isnan(val) or math.isinf(val):
+            return "—"
+    except (TypeError, ValueError):
+        return str(val)
+    if fmt == "percentage":
+        return f"{val:.1f}%"
+    elif fmt == "currency":
+        if abs(val) >= 1_000_000:
+            return f"${val/1_000_000:,.1f}M"
+        elif abs(val) >= 1_000:
+            return f"${val/1_000:,.1f}K"
+        return f"${val:,.2f}"
+    else:
+        if abs(val) >= 1_000_000:
+            return f"{val/1_000_000:,.1f}M"
+        elif abs(val) >= 10_000:
+            return f"{val/1_000:,.1f}K"
+        return f"{val:,.2f}"
+
+
 def render_kpi(component, data):
     cfg = component.get("config", {})
     value_col = cfg.get("value_column", "")
@@ -167,17 +203,9 @@ def render_kpi(component, data):
     if data:
         row = data[0]
         val = row.get(value_col) if value_col and value_col in row else list(row.values())[0]
-        if val is not None:
-            if fmt == "percentage":
-                display = f"{val:.2f}%"
-            elif fmt == "currency":
-                display = f"${val:,.2f}"
-            else:
-                display = f"{val:,.2f}"
-        else:
-            display = "N/A"
+        display = _format_kpi_value(val, fmt)
     else:
-        display = "N/A"
+        display = "—"
     st.metric(label=label, value=display)
 
 
@@ -276,17 +304,9 @@ def render_metric_highlight(component, data):
         row = data[0]
         value_col = cfg.get("value_column", "")
         val = row.get(value_col) if value_col and value_col in row else list(row.values())[0]
-        if val is not None:
-            if fmt == "percentage":
-                display = f"{val:.2f}%"
-            elif fmt == "currency":
-                display = f"${val:,.2f}"
-            else:
-                display = f"{val:,.2f}"
-        else:
-            display = "N/A"
+        display = _format_kpi_value(val, fmt)
     else:
-        display = "N/A"
+        display = "—"
     st.metric(label=label, value=display)
 
 
@@ -493,14 +513,16 @@ def _render_inline_dashboard(result):
     charts = [c for c in components if c.get("type") not in ("kpi_card", "metric_highlight")]
 
     if kpis:
-        kpi_cols = st.columns(len(kpis))
-        for col, comp in zip(kpi_cols, kpis):
-            with col:
-                cid = comp.get("id", "")
-                data = _get_data(exec_results.get(cid, {}))
-                renderer = RENDERERS.get(comp.get("type"))
-                if renderer:
-                    renderer(comp, data)
+        for row_start in range(0, len(kpis), 4):
+            row_kpis = kpis[row_start : row_start + 4]
+            kpi_cols = st.columns(len(row_kpis))
+            for col, comp in zip(kpi_cols, row_kpis):
+                with col:
+                    cid = comp.get("id", "")
+                    data = _get_data(exec_results.get(cid, {}))
+                    renderer = RENDERERS.get(comp.get("type"))
+                    if renderer:
+                        renderer(comp, data)
 
     if charts:
         for i in range(0, len(charts), 2):
@@ -528,34 +550,52 @@ def _render_inline_dashboard(result):
 
 
 def render_login_screen():
-    """Premium login screen — shadcn select + button, CSS-styled password input."""
-    import streamlit_shadcn_ui as shadcn
-
-    # Data Analyst first so ui.select defaults to it
+    """Premium login screen — pure Streamlit widgets, no third-party components."""
     ROLE_OPTIONS = ["Data Analyst", "Administrator", "Viewer"]
     ROLE_KEY_MAP = {"Administrator": "admin", "Data Analyst": "analyst", "Viewer": "viewer"}
 
     # ── Scoped CSS: only injected during login state ──
     st.markdown("""<style>
-    /* Hide all chrome */
+    /* Hide ALL chrome aggressively */
     section[data-testid="stSidebar"],
     [data-testid="stSidebarCollapsedControl"],
     div[data-testid="stBottom"],
     div[data-testid="stDecoration"],
     header[data-testid="stHeader"],
-    #MainMenu, footer { display: none !important; }
+    div[data-testid="stToolbar"],
+    #MainMenu, footer {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
 
     /* Center the main block */
     .stMainBlockContainer {
-        max-width: 440px !important;
+        max-width: 380px !important;
         margin: 0 auto !important;
-        padding-top: 10vh !important;
+        padding-top: 12vh !important;
     }
 
-    /* Password field (native st.text_input — aggressively restyled) */
+    /* Selectbox — light border, not black */
+    .stSelectbox > div > div {
+        border-radius: 8px !important;
+        min-height: 42px !important;
+        font-size: 14px !important;
+        border: 1px solid #e5e7eb !important;
+        background: #ffffff !important;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+    }
+    .stSelectbox > div > div:focus-within {
+        border-color: #9ca3af !important;
+        box-shadow: 0 0 0 3px rgba(0,0,0,0.03) !important;
+    }
+    .stSelectbox label { display: none !important; }
+
+    /* Password field */
     .stTextInput input {
         border-radius: 8px !important;
-        height: 40px !important;
+        height: 42px !important;
         font-size: 14px !important;
         padding: 0 12px !important;
         border: 1px solid #e5e7eb !important;
@@ -565,52 +605,72 @@ def render_login_screen():
         transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
     }
     .stTextInput input:focus {
-        border-color: #111111 !important;
-        box-shadow: 0 0 0 3px rgba(0,0,0,0.06) !important;
+        border-color: #9ca3af !important;
+        box-shadow: 0 0 0 3px rgba(0,0,0,0.03) !important;
         outline: none !important;
     }
     .stTextInput input::placeholder { color: #9ca3af !important; }
     .stTextInput label { display: none !important; }
-    .stTextInput button { display: none !important; }  /* hide password eye */
+    .stTextInput button { display: none !important; }
+
+    /* Sign-in button — proportional, not massive */
+    [data-testid="baseButton-primary"] {
+        width: 100% !important;
+        height: 42px !important;
+        background-color: #111111 !important;
+        color: #ffffff !important;
+        border-radius: 8px !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        border: none !important;
+        transition: background-color 0.15s ease !important;
+        margin-top: 4px !important;
+    }
+    [data-testid="baseButton-primary"]:hover {
+        background-color: #333333 !important;
+    }
     </style>""", unsafe_allow_html=True)
 
     # ── Logo + wordmark ──
     st.markdown("""
-    <div style="text-align:center;margin-bottom:32px">
-        <div style="width:48px;height:48px;background:#111111;border-radius:12px;
-                    display:inline-flex;align-items:center;justify-content:center;margin-bottom:16px">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+    <div style="text-align:center;margin-bottom:28px">
+        <div style="width:44px;height:44px;background:#111111;border-radius:11px;
+                    display:inline-flex;align-items:center;justify-content:center;margin-bottom:14px">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                 <path d="M12 2L21 7V17L12 22L3 17V7L12 2Z" stroke="white" stroke-width="1.5"/>
             </svg>
         </div>
-        <div style="font-size:28px;font-weight:700;color:#111111;letter-spacing:-0.5px;
+        <div style="font-size:24px;font-weight:700;color:#111111;letter-spacing:-0.5px;
                     font-family:'Inter',-apple-system,sans-serif">StackForge</div>
-        <div style="font-size:14px;color:#6b7280;margin-top:6px;
+        <div style="font-size:13px;color:#9ca3af;margin-top:4px;
                     font-family:'Inter',-apple-system,sans-serif">Sign in to continue</div>
     </div>
     """, unsafe_allow_html=True)
 
-    # ── Role — shadcn select ──
+    # ── Role — native selectbox ──
     st.markdown(
-        '<p style="font-size:12px;font-weight:500;color:#6b7280;text-transform:uppercase;'
-        'letter-spacing:0.05em;margin:0 0 6px 2px;font-family:Inter,-apple-system,sans-serif">ROLE</p>',
+        '<p style="font-size:11px;font-weight:500;color:#9ca3af;text-transform:uppercase;'
+        'letter-spacing:0.06em;margin:0 0 4px 2px;font-family:Inter,-apple-system,sans-serif">Role</p>',
         unsafe_allow_html=True,
     )
-    selected_display = shadcn.select(
+    selected_display = st.selectbox(
+        "Role",
         options=ROLE_OPTIONS,
+        index=0,
         key="login_role_select",
+        label_visibility="collapsed",
     )
     role_key = ROLE_KEY_MAP.get(selected_display, "analyst")
     st.markdown(
-        f'<p style="font-size:13px;color:#9ca3af;font-style:italic;margin:4px 0 20px 2px;'
+        f'<p style="font-size:12px;color:#9ca3af;margin:2px 0 16px 2px;'
         f'line-height:1.4;font-family:Inter,-apple-system,sans-serif">{ROLE_DESC[role_key]}</p>',
         unsafe_allow_html=True,
     )
 
-    # ── Password — native st.text_input (restyled via CSS above) ──
+    # ── Password ──
     st.markdown(
-        '<p style="font-size:12px;font-weight:500;color:#6b7280;text-transform:uppercase;'
-        'letter-spacing:0.05em;margin:0 0 6px 2px;font-family:Inter,-apple-system,sans-serif">PASSWORD</p>',
+        '<p style="font-size:11px;font-weight:500;color:#9ca3af;text-transform:uppercase;'
+        'letter-spacing:0.06em;margin:0 0 4px 2px;font-family:Inter,-apple-system,sans-serif">Password</p>',
         unsafe_allow_html=True,
     )
     pwd = st.text_input(
@@ -618,18 +678,17 @@ def render_login_screen():
         type="password",
         key="login_pwd",
         label_visibility="collapsed",
-        placeholder="Enter your password",
+        placeholder="Enter password",
     )
     if st.session_state.get("login_error"):
         st.markdown(
-            '<p style="color:#dc2626;font-size:12px;margin:6px 0 0 2px;'
+            '<p style="color:#dc2626;font-size:12px;margin:4px 0 0 2px;'
             'font-family:Inter,-apple-system,sans-serif">Incorrect password</p>',
             unsafe_allow_html=True,
         )
 
-    # ── Sign in — shadcn button ──
-    st.markdown('<div style="margin-top:12px"></div>', unsafe_allow_html=True)
-    if shadcn.button("Sign in", variant="default", key="login_btn"):
+    # ── Sign in — native primary button ──
+    if st.button("Sign in", key="login_btn", type="primary", use_container_width=True):
         if pwd == PASSWORDS.get(role_key, ""):
             st.session_state.logged_in = True
             st.session_state.user_role = role_key
@@ -643,8 +702,8 @@ def render_login_screen():
             st.rerun()
 
     st.markdown(
-        '<p style="text-align:center;color:#c0c0c0;font-size:12px;margin-top:32px;'
-        'font-family:Inter,-apple-system,sans-serif">StackForge v1.0 &middot; HackUSU 2026</p>',
+        '<p style="text-align:center;color:#c0c0c0;font-size:11px;margin-top:28px;'
+        'font-family:Inter,-apple-system,sans-serif">StackForge v1.0 · HackUSU 2026</p>',
         unsafe_allow_html=True,
     )
 
@@ -678,9 +737,10 @@ def main():
     with st.sidebar:
         st.markdown('''
         <div class="sidebar-brand">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="flex-shrink:0">
                 <path d="M12 2L21 7V17L12 22L3 17V7L12 2Z" stroke="#111111" stroke-width="1.5"/>
-            </svg>StackForge
+            </svg>
+            <span>StackForge</span>
         </div>
         ''', unsafe_allow_html=True)
         role = st.session_state["user_role"]
@@ -692,10 +752,7 @@ def main():
             f'{ROLE_DISPLAY.get(role, role)}</div>',
             unsafe_allow_html=True,
         )
-        if st.button("Sign out", key="logout_btn", use_container_width=True):
-            st.session_state["logged_in"] = False
-            st.session_state["user_role"] = None
-            st.rerun()
+
         st.markdown("<hr>", unsafe_allow_html=True)
 
         # ── Templates ──
@@ -712,6 +769,13 @@ def main():
         st.session_state.show_engine = st.toggle(
             "Show Engine", value=st.session_state.show_engine
         )
+
+        # ── Sign out at bottom (subtle) ──
+        st.markdown('<div style="height:24px"></div>', unsafe_allow_html=True)
+        if st.button("Sign out", key="logout_btn"):
+            st.session_state["logged_in"] = False
+            st.session_state["user_role"] = None
+            st.rerun()
 
         # ── Footer ──
         st.markdown(
@@ -756,7 +820,7 @@ def main():
         _, btn_col, _ = st.columns([1.5, 2, 1.5])
         with btn_col:
             if st.button(
-                "Try: Supplier defect rates by region",
+                "Try: Supplier defect rates by region →",
                 key="example-btn",
                 use_container_width=True,
             ):
@@ -769,7 +833,7 @@ def main():
                 st.rerun()
     else:
         # ── Chat messages ──
-        for msg in st.session_state.messages:
+        for idx, msg in enumerate(st.session_state.messages):
             ts = msg.get("timestamp", "")
             if msg["role"] == "user":
                 st.markdown(
@@ -780,17 +844,48 @@ def main():
                     unsafe_allow_html=True,
                 )
             else:
-                st.markdown(
-                    f'<div class="msg-asst-wrap">'
-                    f'<div class="msg-label">StackForge · {ts}</div>'
-                    f'<div class="msg-asst">{msg["content"]}</div>'
-                    f"</div>",
-                    unsafe_allow_html=True,
-                )
-                # ── Inline dashboard ──
+                # ── Streaming text effect for the latest assistant message ──
+                is_latest = (idx == len(st.session_state.messages) - 1)
+                should_stream = msg.get("stream", False) and is_latest
+
+                if should_stream:
+                    import time
+                    st.markdown(
+                        f'<div class="msg-asst-wrap">'
+                        f'<div class="msg-label">StackForge · {ts}</div>',
+                        unsafe_allow_html=True,
+                    )
+                    placeholder = st.empty()
+                    full_text = msg["content"]
+                    streamed = ""
+                    # Stream 3 chars at a time for smooth flow
+                    for i in range(0, len(full_text), 3):
+                        streamed = full_text[:i+3]
+                        placeholder.markdown(
+                            f'<div class="msg-asst">{streamed}</div></div>',
+                            unsafe_allow_html=True,
+                        )
+                        time.sleep(0.012)
+                    placeholder.markdown(
+                        f'<div class="msg-asst">{full_text}</div></div>',
+                        unsafe_allow_html=True,
+                    )
+                    # Mark as already streamed so it doesn't re-animate on rerun
+                    msg["stream"] = False
+                else:
+                    st.markdown(
+                        f'<div class="msg-asst-wrap">'
+                        f'<div class="msg-label">StackForge · {ts}</div>'
+                        f'<div class="msg-asst">{msg["content"]}</div>'
+                        f"</div>",
+                        unsafe_allow_html=True,
+                    )
+
+                # ── Dashboard in collapsible expander ──
                 pipeline_result = msg.get("pipeline_result")
                 if pipeline_result:
-                    with st.container(border=True):
+                    app_title = pipeline_result.get("app_definition", {}).get("app_title", "Dashboard")
+                    with st.expander(f"View: {app_title}", expanded=is_latest):
                         _render_inline_dashboard(pipeline_result)
 
         # ── Engine panel (if toggled) ──
