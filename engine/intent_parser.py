@@ -190,6 +190,7 @@ IMPORTANT SQL RULES:
 - NEVER use parameterized placeholders (?, $1, :param) — always use literal values or omit conditions
 - When using CASE WHEN with aggregates like AVG(), the CASE must wrap the aggregate (e.g., CASE WHEN AVG(x) < 2 THEN 'Good' END) and must appear in SELECT only, NOT in GROUP BY. Group by non-aggregate columns instead.
 - For date operations, use DuckDB functions: strftime, date_trunc, extract. Example: strftime(order_date, '%Y-%m') for monthly grouping.
+- DuckDB does NOT support %q for quarters. For quarterly grouping use: 'Q' || CAST(EXTRACT(QUARTER FROM order_date) AS VARCHAR) || ' ' || CAST(EXTRACT(YEAR FROM order_date) AS VARCHAR) — e.g. produces "Q1 2024". Or use CONCAT('Q', EXTRACT(QUARTER FROM order_date), ' ', EXTRACT(YEAR FROM order_date)).
 
 Return the app definition as a JSON object via the create_data_app function.
 """
