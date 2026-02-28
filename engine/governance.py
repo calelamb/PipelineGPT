@@ -129,7 +129,7 @@ def _check_export_control(role: str, data_size: int) -> Dict[str, Any]:
     max_rows = role_config.get("max_rows_per_query", EXPORT_ROW_LIMIT)
 
     return {
-        "can_export": data_size <= max_rows,
+        "can_export": max_rows is None or data_size <= max_rows,
         "max_rows": max_rows,
         "requested_rows": data_size,
     }
@@ -183,8 +183,10 @@ def run_governance_checks(
     Returns:
         Dict[str, Any]:
             {
+                "overall_status": str ("pass", "warning", "fail"),
                 "passed": bool,
                 "role": str,
+                "checks": List[Dict],
                 "pii_detected": List,
                 "access_granted": bool,
                 "query_complexity": Dict,
@@ -195,6 +197,7 @@ def run_governance_checks(
     """
     passed = True
     warnings = []
+    checks = []
 
     # 1. PII Detection
     pii_detected = []
@@ -205,30 +208,56 @@ def run_governance_checks(
             pii_detected.extend(pii)
             warnings.append(f"PII detected in component {component.get('id')}")
 
+    pii_status = "fail" if pii_detected else "pass"
+    checks.append({
+        "name": "pii_detection",
+        "status": pii_status,
+        "details": f"Found {len(pii_detected)} PII items" if pii_detected else "No PII detected",
+    })
     if pii_detected:
         passed = False
 
     # 2. Access Control
     access_granted = _check_access_control(role, "create_app")
+    access_status = "pass" if access_granted else "fail"
+    checks.append({
+        "name": "access_control",
+        "status": access_status,
+        "details": f"Role '{role}' {'granted' if access_granted else 'denied'} create_app",
+    })
     if not access_granted:
         warnings.append(f"Role '{role}' not allowed to create apps")
         passed = False
 
     # 3. Query Complexity
     query_complexity = {}
+    has_complex = False
     for component in app_definition.get("components", []):
         sql_query = component.get("sql_query", "")
         complexity = _check_query_complexity(sql_query)
         query_complexity[component.get("id")] = complexity
         if complexity["is_complex"]:
+            has_complex = True
             warnings.append(
                 f"Component {component.get('id')} has complex query"
             )
+
+    checks.append({
+        "name": "query_complexity",
+        "status": "warning" if has_complex else "pass",
+        "details": f"Analyzed {len(query_complexity)} queries",
+    })
 
     # 4. Data Quality (if results provided)
     data_quality = {}
     if execution_results:
         data_quality = _check_data_quality(execution_results)
+
+    checks.append({
+        "name": "data_quality",
+        "status": "pass",
+        "details": data_quality.get("overall_quality", "not checked") if data_quality else "not checked",
+    })
 
     # 5. Export Control
     total_rows = 0
@@ -239,11 +268,25 @@ def run_governance_checks(
     export_check = _check_export_control(role, total_rows)
     export_allowed = export_check["can_export"]
 
+    checks.append({
+        "name": "export_control",
+        "status": "pass" if export_allowed else "warning",
+        "details": f"{total_rows} rows (limit: {export_check['max_rows']})",
+    })
+
     if not export_allowed:
         warnings.append(
             f"Role '{role}' cannot export {total_rows} rows "
             f"(limit: {export_check['max_rows']})"
         )
+
+    # Determine overall_status
+    if not passed:
+        overall_status = "fail"
+    elif warnings:
+        overall_status = "warning"
+    else:
+        overall_status = "pass"
 
     # 6. Audit Trail
     _log_audit_trail(
@@ -257,8 +300,10 @@ def run_governance_checks(
     )
 
     return {
+        "overall_status": overall_status,
         "passed": passed,
         "role": role,
+        "checks": checks,
         "pii_detected": pii_detected,
         "access_granted": access_granted,
         "query_complexity": query_complexity,

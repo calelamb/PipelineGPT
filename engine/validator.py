@@ -137,6 +137,8 @@ def _generate_explanation(
         return f"{component_title}: Failed to load data ({result.get('error')})"
 
     df = result.get("data")
+    if df is None:
+        return f"{component_title}: No data available"
     row_count = len(df)
 
     explanations = {

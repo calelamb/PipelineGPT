@@ -15,8 +15,14 @@ def get_connection() -> duckdb.DuckDBPyConnection:
     """
     Returns a DuckDB connection. Creates and initializes tables on first call.
     Uses in-memory database (:memory:) for the hackathon.
+    Re-creates connection if previously closed.
     """
     global _conn
+    if _conn is not None:
+        try:
+            _conn.execute("SELECT 1")
+        except Exception:
+            _conn = None
     if _conn is None:
         _conn = duckdb.connect(":memory:")
         _initialize_tables(_conn)
@@ -87,12 +93,10 @@ def _generate_sample_data() -> pd.DataFrame:
 
     data = {
         "order_id": [f"ORD-{i:05d}" for i in range(1, n_rows + 1)],
-        "order_date": [
-            (datetime(2024, 1, 1) + timedelta(days=int(i * 365 / n_rows))).strftime(
-                "%Y-%m-%d"
-            )
+        "order_date": pd.to_datetime([
+            (datetime(2024, 1, 1) + timedelta(days=int(i * 365 / n_rows)))
             for i in range(n_rows)
-        ],
+        ]),
         "supplier": np.random.choice(suppliers, n_rows),
         "region": np.random.choice(regions, n_rows),
         "product": np.random.choice(products, n_rows),
@@ -115,15 +119,19 @@ def _generate_sample_data() -> pd.DataFrame:
     return df
 
 
-def get_table_schema() -> str:
+def get_table_schema(conn: Optional[duckdb.DuckDBPyConnection] = None) -> str:
     """
     Returns a formatted schema string describing the supply_chain table.
     Used by intent_parser to inject schema into GPT-5.1 prompt.
 
+    Args:
+        conn: Optional DuckDB connection. Uses singleton if not provided.
+
     Returns:
         str: Human-readable schema description
     """
-    conn = get_connection()
+    if conn is None:
+        conn = get_connection()
     result = conn.execute("DESCRIBE supply_chain").fetchall()
 
     schema_lines = ["Table: supply_chain", ""]
@@ -133,19 +141,21 @@ def get_table_schema() -> str:
     return "\n".join(schema_lines)
 
 
-def get_sample_rows(n: int = 5) -> pd.DataFrame:
+def get_sample_rows(conn: Optional[duckdb.DuckDBPyConnection] = None, n: int = 5) -> pd.DataFrame:
     """
     Returns first N rows of supply_chain table as DataFrame.
     CRITICAL: Used by intent_parser to inject sample data into GPT-5.1 prompt.
     This helps the AI understand data distribution and available values.
 
     Args:
+        conn: Optional DuckDB connection. Uses singleton if not provided.
         n: Number of rows to return (default 5)
 
     Returns:
         pd.DataFrame: Sample rows from supply_chain table
     """
-    conn = get_connection()
+    if conn is None:
+        conn = get_connection()
     df = conn.execute(f"SELECT * FROM supply_chain LIMIT {n}").df()
     return df
 

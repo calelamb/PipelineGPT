@@ -77,9 +77,21 @@ def execute_query(
     where_clause = _build_filter_where_clause(filters)
 
     if where_clause:
-        # Wrap original query as subquery and apply filters
-        wrapped_query = f"SELECT * FROM ({sql_query}) AS filtered_data {where_clause}"
-        logger.info(f"Applied filters. Wrapped query: {wrapped_query[:100]}...")
+        # Inject filters into the FROM supply_chain clause directly
+        # This handles cases where the filter column isn't in the SELECT
+        upper_query = sql_query.upper()
+        if "WHERE" in upper_query:
+            # Append to existing WHERE clause
+            where_conditions = where_clause.replace("WHERE ", "")
+            wrapped_query = sql_query + " AND " + where_conditions
+        elif "FROM SUPPLY_CHAIN" in upper_query:
+            # Insert WHERE clause after FROM supply_chain
+            idx = upper_query.index("FROM SUPPLY_CHAIN") + len("FROM SUPPLY_CHAIN")
+            wrapped_query = sql_query[:idx] + " " + where_clause + " " + sql_query[idx:]
+        else:
+            # Fallback: wrap as subquery
+            wrapped_query = f"SELECT * FROM ({sql_query}) AS filtered_data {where_clause}"
+        logger.info(f"Applied filters. Query: {wrapped_query[:100]}...")
     else:
         wrapped_query = sql_query
 
