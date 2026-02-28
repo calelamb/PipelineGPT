@@ -468,7 +468,25 @@ SYSTEM_PROMPT = """You are StackForge, an AI data app architect. Your job is to 
 
 The user is a non-technical business person. They describe what they want to see, and you design a complete interactive dashboard application.
 
-IMPORTANT: The actual table schema and sample data will be provided at runtime via a separate system message. Use that schema to generate accurate SQL — do NOT assume column names. Look at the sample rows to understand the actual data values so you can write accurate WHERE clauses and aggregations. For example, if a user asks about "fire resistant materials" and the sample rows show a column `material_type` with values like "Fire Resistant Drywall", generate: WHERE material_type ILIKE '%fire resistant%'
+You have access to a supply chain database with this schema:
+
+Table: supply_chain
+Columns:
+  - order_id (VARCHAR) — unique order identifier
+  - order_date (DATE) — order date
+  - supplier (VARCHAR) — supplier company name
+  - region (VARCHAR) — geographic region (North America, Europe, Asia Pacific, Latin America, Middle East)
+  - product (VARCHAR) — product name
+  - category (VARCHAR) — product category (Raw Materials, Components, Finished Goods, Packaging, Equipment)
+  - quantity (INTEGER) — order quantity
+  - unit_cost (DOUBLE) — cost per unit
+  - total_cost (DOUBLE) — total order cost
+  - defect_rate (DOUBLE) — defect rate as percentage (0-12)
+  - delivery_days (INTEGER) — days to deliver
+  - on_time_delivery (INTEGER) — 1 if on time, 0 if late
+  - shipping_mode (VARCHAR) — shipping method (Air, Sea, Rail, Truck, Express)
+  - shipping_cost (DOUBLE) — cost of shipping
+  - warehouse_cost (DOUBLE) — warehousing cost
 
 Rules for generating app definitions:
 1. Always include at least one KPI card row at the top showing key metrics
@@ -1531,7 +1549,7 @@ Sponsored by Koch Industries, Databricks, and AWS
 
 import streamlit as st
 from config import APP_NAME, TEMPLATES, ROLES
-from data.sample_data_loader import get_connection, get_table_schema, get_sample_rows
+from data.sample_data_loader import get_connection, get_table_schema
 from engine.intent_parser import parse_intent
 from engine.executor import execute_app_components
 from engine.validator import validate_and_explain
@@ -1636,20 +1654,14 @@ def _process_prompt(prompt: str):
         add_audit_entry("Intent parsing started", f"Prompt: {prompt[:80]}...")
 
         try:
-            # Get table schema AND sample rows for full data context
-            # This is critical: the AI needs to see actual column names, types,
-            # AND real data values to generate accurate SQL queries.
-            # e.g., if a column has values like "Fire Resistant Drywall",
-            # the AI can map "fire resistant material" → WHERE material_type ILIKE '%fire resistant%'
+            # Get table schema for context
             schema = get_table_schema(st.session_state.db_conn)
-            sample_df = get_sample_rows(st.session_state.db_conn, n=5)
-            schema_with_samples = schema + "\n\nSample rows (first 5):\n" + sample_df.to_string(index=False)
 
             # Parse intent (with existing app for refinement)
             app_def = parse_intent(
                 prompt,
                 existing_app=st.session_state.current_app,
-                table_schema=schema_with_samples,
+                table_schema=schema,
             )
             st.session_state.current_app = app_def
             add_audit_entry("App definition generated", f"{len(app_def.get('components', []))} components")
