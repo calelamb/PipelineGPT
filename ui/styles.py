@@ -436,7 +436,7 @@ details summary {
     font-family: var(--font) !important;
     font-weight: 500 !important;
 }
-/* Hide the Material Icons toggle icon span (we use ::before instead) */
+/* Hide the Material Icons toggle icon span */
 .stExpander summary > span:first-child,
 [data-testid="stExpander"] summary > span:first-child,
 .stExpander summary [data-testid="stExpanderToggleIcon"],
@@ -952,52 +952,13 @@ hr {
     color: var(--text-secondary);
 }
 
-/* ── Sidebar expander overrides ── */
+/* ── Sidebar expander overrides (minimal) ── */
 section[data-testid="stSidebar"] .stExpander,
 section[data-testid="stSidebar"] [data-testid="stExpander"] {
     border: none !important;
     box-shadow: none !important;
     background-color: transparent !important;
     margin: 0 !important;
-}
-/* Summary bar — keep font-size:0 inherited from nuclear fix (hides icon ligature text) */
-section[data-testid="stSidebar"] .stExpander summary,
-section[data-testid="stSidebar"] [data-testid="stExpander"] summary,
-section[data-testid="stSidebar"] details summary {
-    background-color: transparent !important;
-    background: transparent !important;
-    border: none !important;
-    padding: 8px 10px !important;
-    border-radius: var(--radius-sm) !important;
-}
-/* Restore font on ALL children inside sidebar summary.
-   DO NOT set display — icon spans must keep display:none from global rules. */
-section[data-testid="stSidebar"] .stExpander summary *,
-section[data-testid="stSidebar"] [data-testid="stExpander"] summary *,
-section[data-testid="stSidebar"] details summary * {
-    font-size: 11px !important;
-    line-height: 1.4 !important;
-    color: var(--text-tertiary) !important;
-    font-family: var(--font) !important;
-    font-weight: 500 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.8px !important;
-}
-/* Re-enforce hiding of icon/toggle spans (cascade after wildcard above) */
-section[data-testid="stSidebar"] .stExpander summary > span:first-child,
-section[data-testid="stSidebar"] [data-testid="stExpander"] summary > span:first-child,
-section[data-testid="stSidebar"] details summary > span:first-child,
-section[data-testid="stSidebar"] .stExpander summary [data-testid="stExpanderToggleIcon"],
-section[data-testid="stSidebar"] [data-testid="stExpander"] summary [data-testid="stExpanderToggleIcon"],
-section[data-testid="stSidebar"] .stExpander summary svg,
-section[data-testid="stSidebar"] [data-testid="stExpander"] summary svg,
-section[data-testid="stSidebar"] details summary svg {
-    display: none !important;
-    width: 0 !important;
-    height: 0 !important;
-    overflow: hidden !important;
-    visibility: hidden !important;
-    font-size: 0 !important;
 }
 section[data-testid="stSidebar"] .stExpander [data-testid="stExpanderDetails"],
 section[data-testid="stSidebar"] [data-testid="stExpander"] [data-testid="stExpanderDetails"] {
@@ -1106,6 +1067,7 @@ LUCIDE = {
     "sparkles": '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></svg>',
     "database": '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>',
     "upload": '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>',
+    "home": '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>',
 }
 
 

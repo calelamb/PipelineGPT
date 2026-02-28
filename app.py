@@ -873,6 +873,12 @@ def main():
 
         st.markdown("<hr>", unsafe_allow_html=True)
 
+        # ── Home ──
+        if st.button("Home", key="home_btn", use_container_width=True):
+            if st.session_state.current_page != "chat":
+                st.session_state.current_page = "chat"
+                st.rerun()
+
         # ── Templates ──
         st.markdown('<div class="section-label">Quick start</div>', unsafe_allow_html=True)
         for idx, tmpl in enumerate(TEMPLATES):
@@ -949,24 +955,15 @@ def main():
             "Show Engine", value=st.session_state.show_engine
         )
 
-        # ── History ──
-        st.markdown('<div class="section-label">History</div>', unsafe_allow_html=True)
-        if st.session_state.current_page == "graph_history":
-            if st.button("Back to Chat", key="back_from_history", use_container_width=True):
-                st.session_state.current_page = "chat"
-                st.rerun()
-        else:
-            if st.button("Graph History", key="graph_history_btn", use_container_width=True):
+        # ── Navigation ──
+        st.markdown('<div class="section-label">Navigation</div>', unsafe_allow_html=True)
+        if st.button("Graph History", key="graph_history_btn", use_container_width=True):
+            if st.session_state.current_page != "graph_history":
                 st.session_state.current_page = "graph_history"
                 st.rerun()
-
         if role == "admin":
-            if st.session_state.current_page == "audit_history":
-                if st.button("Back to Chat", key="back_to_chat", use_container_width=True):
-                    st.session_state.current_page = "chat"
-                    st.rerun()
-            else:
-                if st.button("Audit History", key="audit_history_btn", use_container_width=True):
+            if st.button("Audit History", key="audit_history_btn", use_container_width=True):
+                if st.session_state.current_page != "audit_history":
                     st.session_state.current_page = "audit_history"
                     st.rerun()
 

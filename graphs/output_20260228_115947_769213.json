@@ -1,0 +1,338 @@
+{
+  "saved_at": "2026-02-28T11:59:47.769321",
+  "prompt": "Create a supplier performance dashboard with KPIs for total orders, average defect rate, and on-time delivery percentage. Include a bar chart of defect rate by supplier, a line chart of delivery trends over time, a pie chart of orders by region, and a supplier details table. Add filters for region and category.",
+  "result": {
+    "app_definition": {
+      "app_title": "Supplier Performance Dashboard",
+      "app_description": "Monitor supplier performance with key KPIs, defect rates, delivery trends, and regional order distribution.",
+      "components": [
+        {
+          "id": "kpi_total_orders",
+          "type": "kpi_card",
+          "title": "Total Orders",
+          "sql_query": "SELECT COUNT(DISTINCT order_id) AS total_orders FROM supply_chain;",
+          "config": {
+            "value_column": "total_orders",
+            "metric_name": "Total Orders",
+            "format": "number"
+          }
+        },
+        {
+          "id": "kpi_avg_defect_rate",
+          "type": "kpi_card",
+          "title": "Average Defect Rate",
+          "sql_query": "SELECT AVG(defect_rate) AS avg_defect_rate FROM supply_chain;",
+          "config": {
+            "value_column": "avg_defect_rate",
+            "metric_name": "Average Defect Rate",
+            "format": "percentage"
+          }
+        },
+        {
+          "id": "kpi_on_time_delivery",
+          "type": "kpi_card",
+          "title": "On-Time Delivery Percentage",
+          "sql_query": "SELECT CASE WHEN COUNT(*) = 0 THEN 0 ELSE 100.0 * SUM(on_time_delivery) * 1.0 / COUNT(*) END AS on_time_delivery_pct FROM supply_chain;",
+          "config": {
+            "value_column": "on_time_delivery_pct",
+            "metric_name": "On-Time Delivery %",
+            "format": "percentage"
+          }
+        },
+        {
+          "id": "bar_defect_by_supplier",
+          "type": "bar_chart",
+          "title": "Defect Rate by Supplier",
+          "sql_query": "SELECT supplier, AVG(defect_rate) AS avg_defect_rate FROM supply_chain GROUP BY supplier ORDER BY avg_defect_rate DESC;",
+          "config": {
+            "x_axis": "supplier",
+            "y_axis": "avg_defect_rate",
+            "format": "percentage",
+            "sort_column": "avg_defect_rate",
+            "sort_order": "desc"
+          }
+        },
+        {
+          "id": "line_delivery_trend",
+          "type": "line_chart",
+          "title": "Delivery Days Trend Over Time",
+          "sql_query": "SELECT strftime(order_date, '%Y-%m') AS order_month, AVG(delivery_days) AS avg_delivery_days FROM supply_chain GROUP BY order_month ORDER BY order_month;",
+          "config": {
+            "x_axis": "order_month",
+            "y_axis": "avg_delivery_days",
+            "format": "number",
+            "sort_column": "order_month",
+            "sort_order": "asc"
+          }
+        },
+        {
+          "id": "pie_orders_by_region",
+          "type": "pie_chart",
+          "title": "Orders by Region",
+          "sql_query": "SELECT region, COUNT(DISTINCT order_id) AS total_orders FROM supply_chain GROUP BY region ORDER BY total_orders DESC;",
+          "config": {
+            "x_axis": "region",
+            "y_axis": "total_orders",
+            "format": "number"
+          }
+        },
+        {
+          "id": "table_supplier_details",
+          "type": "table",
+          "title": "Supplier Details",
+          "sql_query": "SELECT supplier, region, category, COUNT(DISTINCT order_id) AS total_orders, SUM(quantity) AS total_quantity, AVG(defect_rate) AS avg_defect_rate, AVG(delivery_days) AS avg_delivery_days, SUM(on_time_delivery) AS on_time_deliveries, CASE WHEN COUNT(*) = 0 THEN 0 ELSE 100.0 * SUM(on_time_delivery) * 1.0 / COUNT(*) END AS on_time_delivery_pct, SUM(total_cost) AS total_cost, SUM(shipping_cost) AS total_shipping_cost, SUM(warehouse_cost) AS total_warehouse_cost FROM supply_chain GROUP BY supplier, region, category ORDER BY total_orders DESC;",
+          "config": {
+            "columns": [
+              "supplier",
+              "region",
+              "category",
+              "total_orders",
+              "total_quantity",
+              "avg_defect_rate",
+              "avg_delivery_days",
+              "on_time_deliveries",
+              "on_time_delivery_pct",
+              "total_cost",
+              "total_shipping_cost",
+              "total_warehouse_cost"
+            ],
+            "sort_column": "total_orders",
+            "sort_order": "desc",
+            "format": "number"
+          }
+        }
+      ],
+      "filters": [
+        {
+          "id": "filter_region",
+          "name": "Region",
+          "column": "region",
+          "type": "multiselect",
+          "default_values": []
+        },
+        {
+          "id": "filter_category",
+          "name": "Category",
+          "column": "category",
+          "type": "multiselect",
+          "default_values": []
+        }
+      ]
+    },
+    "execution_results": {},
+    "validation": {
+      "overall_status": "blocked",
+      "components": [],
+      "total_warnings": 0
+    },
+    "governance": {
+      "overall_status": "fail",
+      "passed": false,
+      "role": "analyst",
+      "role_display_name": "Data Analyst",
+      "checks": [
+        {
+          "name": "sql_sanitization",
+          "status": "pass",
+          "details": "All queries passed sanitization"
+        },
+        {
+          "name": "column_access",
+          "status": "fail",
+          "details": "Blocked columns: ['supplier']"
+        },
+        {
+          "name": "component_permissions",
+          "status": "fail",
+          "details": "Blocked: []"
+        },
+        {
+          "name": "pii_detection",
+          "status": "pass",
+          "details": "No PII detected"
+        },
+        {
+          "name": "access_control",
+          "status": "pass",
+          "details": "Role 'analyst' granted create_app"
+        },
+        {
+          "name": "query_complexity",
+          "status": "pass",
+          "details": "Analyzed 7 queries"
+        },
+        {
+          "name": "data_quality",
+          "status": "pass",
+          "details": "not checked"
+        },
+        {
+          "name": "export_control",
+          "status": "pass",
+          "details": "0 rows (limit: 100000)"
+        }
+      ],
+      "sql_safety": {
+        "safe": true,
+        "blocked_keywords": [],
+        "query_length_ok": true,
+        "details": ""
+      },
+      "column_access": {
+        "allowed": false,
+        "blocked_columns": [
+          "supplier"
+        ],
+        "column_details": [
+          {
+            "column": "order_id",
+            "sensitivity": "public",
+            "allowed": true
+          },
+          {
+            "column": "defect_rate",
+            "sensitivity": "internal",
+            "allowed": true
+          },
+          {
+            "column": "defect_rate",
+            "sensitivity": "internal",
+            "allowed": true
+          },
+          {
+            "column": "supplier",
+            "sensitivity": "restricted",
+            "allowed": false
+          },
+          {
+            "column": "order_date",
+            "sensitivity": "public",
+            "allowed": true
+          },
+          {
+            "column": "order_id",
+            "sensitivity": "public",
+            "allowed": true
+          },
+          {
+            "column": "region",
+            "sensitivity": "public",
+            "allowed": true
+          },
+          {
+            "column": "order_id",
+            "sensitivity": "public",
+            "allowed": true
+          },
+          {
+            "column": "region",
+            "sensitivity": "public",
+            "allowed": true
+          },
+          {
+            "column": "category",
+            "sensitivity": "public",
+            "allowed": true
+          },
+          {
+            "column": "quantity",
+            "sensitivity": "public",
+            "allowed": true
+          },
+          {
+            "column": "total_cost",
+            "sensitivity": "internal",
+            "allowed": true
+          },
+          {
+            "column": "shipping_cost",
+            "sensitivity": "internal",
+            "allowed": true
+          },
+          {
+            "column": "warehouse_cost",
+            "sensitivity": "internal",
+            "allowed": true
+          },
+          {
+            "column": "defect_rate",
+            "sensitivity": "internal",
+            "allowed": true
+          },
+          {
+            "column": "supplier",
+            "sensitivity": "restricted",
+            "allowed": false
+          }
+        ],
+        "redaction_needed": true
+      },
+      "component_permissions": {
+        "allowed": false,
+        "blocked_components": [],
+        "component_count_ok": false,
+        "max_allowed": 6
+      },
+      "pii_detected": [],
+      "pii_redacted": false,
+      "access_granted": true,
+      "query_complexity": {
+        "kpi_total_orders": {
+          "join_count": 0,
+          "subquery_count": 0,
+          "has_aggregation": true,
+          "is_complex": false
+        },
+        "kpi_avg_defect_rate": {
+          "join_count": 0,
+          "subquery_count": 0,
+          "has_aggregation": true,
+          "is_complex": false
+        },
+        "kpi_on_time_delivery": {
+          "join_count": 0,
+          "subquery_count": 0,
+          "has_aggregation": true,
+          "is_complex": false
+        },
+        "bar_defect_by_supplier": {
+          "join_count": 0,
+          "subquery_count": 0,
+          "has_aggregation": true,
+          "is_complex": false
+        },
+        "line_delivery_trend": {
+          "join_count": 0,
+          "subquery_count": 0,
+          "has_aggregation": true,
+          "is_complex": false
+        },
+        "pie_orders_by_region": {
+          "join_count": 0,
+          "subquery_count": 0,
+          "has_aggregation": true,
+          "is_complex": false
+        },
+        "table_supplier_details": {
+          "join_count": 0,
+          "subquery_count": 0,
+          "has_aggregation": true,
+          "is_complex": false
+        }
+      },
+      "data_quality": {},
+      "export_allowed": true,
+      "export_formats": [
+        "csv",
+        "json"
+      ],
+      "warnings": [],
+      "blocked_reasons": [
+        "Column access denied for role 'analyst': ['supplier']",
+        "Column access denied for role 'analyst': ['supplier']",
+        "Too many components for role 'analyst' (max 6)"
+      ],
+      "audit_entry_id": "f8f46084"
+    }
+  }
+}

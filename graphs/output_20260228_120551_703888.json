@@ -1,0 +1,349 @@
+{
+  "saved_at": "2026-02-28T12:05:51.703957",
+  "prompt": "Create a cost analysis dashboard with KPIs for total cost, average unit cost, and total shipping cost. Include a bar chart of costs by region, a pie chart of cost distribution by category, and a detailed cost table. Add filters for region and shipping mode.",
+  "result": {
+    "app_definition": {
+      "app_title": "Supply Chain Cost Analysis Dashboard",
+      "app_description": "Analyze supply chain costs with key KPIs, regional breakdowns, and detailed cost views.",
+      "components": [
+        {
+          "id": "kpi_total_cost",
+          "type": "kpi_card",
+          "title": "Total Cost",
+          "sql_query": "SELECT SUM(total_cost) AS total_cost FROM supply_chain;",
+          "config": {
+            "value_column": "total_cost",
+            "metric_name": "Total Cost",
+            "format": "currency"
+          }
+        },
+        {
+          "id": "kpi_avg_unit_cost",
+          "type": "kpi_card",
+          "title": "Average Unit Cost",
+          "sql_query": "SELECT AVG(unit_cost) AS avg_unit_cost FROM supply_chain;",
+          "config": {
+            "value_column": "avg_unit_cost",
+            "metric_name": "Average Unit Cost",
+            "format": "currency"
+          }
+        },
+        {
+          "id": "kpi_total_shipping_cost",
+          "type": "kpi_card",
+          "title": "Total Shipping Cost",
+          "sql_query": "SELECT SUM(shipping_cost) AS total_shipping_cost FROM supply_chain;",
+          "config": {
+            "value_column": "total_shipping_cost",
+            "metric_name": "Total Shipping Cost",
+            "format": "currency"
+          }
+        },
+        {
+          "id": "bar_cost_by_region",
+          "type": "bar_chart",
+          "title": "Total Cost by Region",
+          "sql_query": "SELECT region, SUM(total_cost) AS total_cost FROM supply_chain GROUP BY region ORDER BY total_cost DESC;",
+          "config": {
+            "x_axis": "region",
+            "y_axis": "total_cost",
+            "format": "currency",
+            "sort_column": "total_cost",
+            "sort_order": "desc"
+          }
+        },
+        {
+          "id": "pie_cost_by_category",
+          "type": "pie_chart",
+          "title": "Cost Distribution by Category",
+          "sql_query": "SELECT category, SUM(total_cost) AS total_cost FROM supply_chain GROUP BY category ORDER BY total_cost DESC;",
+          "config": {
+            "x_axis": "category",
+            "y_axis": "total_cost",
+            "format": "currency"
+          }
+        },
+        {
+          "id": "table_cost_details",
+          "type": "table",
+          "title": "Detailed Cost Table",
+          "sql_query": "SELECT order_id, order_date, supplier, region, product, category, quantity, unit_cost, total_cost, shipping_mode, shipping_cost, warehouse_cost FROM supply_chain ORDER BY order_date ASC;",
+          "config": {
+            "columns": [
+              "order_id",
+              "order_date",
+              "supplier",
+              "region",
+              "product",
+              "category",
+              "quantity",
+              "unit_cost",
+              "total_cost",
+              "shipping_mode",
+              "shipping_cost",
+              "warehouse_cost"
+            ],
+            "sort_column": "order_date",
+            "sort_order": "asc",
+            "format": "number"
+          }
+        }
+      ],
+      "filters": [
+        {
+          "id": "filter_region",
+          "name": "Region",
+          "column": "region",
+          "type": "multiselect",
+          "default_values": []
+        },
+        {
+          "id": "filter_shipping_mode",
+          "name": "Shipping Mode",
+          "column": "shipping_mode",
+          "type": "multiselect",
+          "default_values": []
+        }
+      ]
+    },
+    "execution_results": {},
+    "validation": {
+      "overall_status": "blocked",
+      "components": [],
+      "total_warnings": 0
+    },
+    "governance": {
+      "overall_status": "fail",
+      "passed": false,
+      "role": "viewer",
+      "role_display_name": "Viewer",
+      "checks": [
+        {
+          "name": "sql_sanitization",
+          "status": "pass",
+          "details": "All queries passed sanitization"
+        },
+        {
+          "name": "column_access",
+          "status": "fail",
+          "details": "Blocked columns: ['total_cost', 'unit_cost', 'shipping_cost', 'warehouse_cost', 'supplier']"
+        },
+        {
+          "name": "component_permissions",
+          "status": "fail",
+          "details": "Blocked: ['table']"
+        },
+        {
+          "name": "pii_detection",
+          "status": "pass",
+          "details": "No PII detected"
+        },
+        {
+          "name": "access_control",
+          "status": "fail",
+          "details": "Role 'viewer' denied create_app"
+        },
+        {
+          "name": "query_complexity",
+          "status": "pass",
+          "details": "Analyzed 6 queries"
+        },
+        {
+          "name": "data_quality",
+          "status": "pass",
+          "details": "not checked"
+        },
+        {
+          "name": "export_control",
+          "status": "warning",
+          "details": "0 rows (limit: 10000)"
+        }
+      ],
+      "sql_safety": {
+        "safe": true,
+        "blocked_keywords": [],
+        "query_length_ok": true,
+        "details": ""
+      },
+      "column_access": {
+        "allowed": false,
+        "blocked_columns": [
+          "total_cost",
+          "unit_cost",
+          "shipping_cost",
+          "warehouse_cost",
+          "supplier"
+        ],
+        "column_details": [
+          {
+            "column": "total_cost",
+            "sensitivity": "internal",
+            "allowed": false
+          },
+          {
+            "column": "unit_cost",
+            "sensitivity": "internal",
+            "allowed": false
+          },
+          {
+            "column": "shipping_cost",
+            "sensitivity": "internal",
+            "allowed": false
+          },
+          {
+            "column": "region",
+            "sensitivity": "public",
+            "allowed": true
+          },
+          {
+            "column": "total_cost",
+            "sensitivity": "internal",
+            "allowed": false
+          },
+          {
+            "column": "category",
+            "sensitivity": "public",
+            "allowed": true
+          },
+          {
+            "column": "total_cost",
+            "sensitivity": "internal",
+            "allowed": false
+          },
+          {
+            "column": "order_id",
+            "sensitivity": "public",
+            "allowed": true
+          },
+          {
+            "column": "order_date",
+            "sensitivity": "public",
+            "allowed": true
+          },
+          {
+            "column": "region",
+            "sensitivity": "public",
+            "allowed": true
+          },
+          {
+            "column": "product",
+            "sensitivity": "public",
+            "allowed": true
+          },
+          {
+            "column": "category",
+            "sensitivity": "public",
+            "allowed": true
+          },
+          {
+            "column": "shipping_mode",
+            "sensitivity": "public",
+            "allowed": true
+          },
+          {
+            "column": "quantity",
+            "sensitivity": "public",
+            "allowed": true
+          },
+          {
+            "column": "unit_cost",
+            "sensitivity": "internal",
+            "allowed": false
+          },
+          {
+            "column": "total_cost",
+            "sensitivity": "internal",
+            "allowed": false
+          },
+          {
+            "column": "shipping_cost",
+            "sensitivity": "internal",
+            "allowed": false
+          },
+          {
+            "column": "warehouse_cost",
+            "sensitivity": "internal",
+            "allowed": false
+          },
+          {
+            "column": "supplier",
+            "sensitivity": "restricted",
+            "allowed": false
+          }
+        ],
+        "redaction_needed": true
+      },
+      "component_permissions": {
+        "allowed": false,
+        "blocked_components": [
+          {
+            "id": "table_cost_details",
+            "type": "table",
+            "reason": "Component type 'table' not allowed for role 'viewer'"
+          }
+        ],
+        "component_count_ok": false,
+        "max_allowed": 4
+      },
+      "pii_detected": [],
+      "pii_redacted": false,
+      "access_granted": false,
+      "query_complexity": {
+        "kpi_total_cost": {
+          "join_count": 0,
+          "subquery_count": 0,
+          "has_aggregation": true,
+          "is_complex": false
+        },
+        "kpi_avg_unit_cost": {
+          "join_count": 0,
+          "subquery_count": 0,
+          "has_aggregation": true,
+          "is_complex": false
+        },
+        "kpi_total_shipping_cost": {
+          "join_count": 0,
+          "subquery_count": 0,
+          "has_aggregation": true,
+          "is_complex": false
+        },
+        "bar_cost_by_region": {
+          "join_count": 0,
+          "subquery_count": 0,
+          "has_aggregation": true,
+          "is_complex": false
+        },
+        "pie_cost_by_category": {
+          "join_count": 0,
+          "subquery_count": 0,
+          "has_aggregation": true,
+          "is_complex": false
+        },
+        "table_cost_details": {
+          "join_count": 0,
+          "subquery_count": 0,
+          "has_aggregation": false,
+          "is_complex": false
+        }
+      },
+      "data_quality": {},
+      "export_allowed": false,
+      "export_formats": [],
+      "warnings": [
+        "Role 'viewer' cannot export 0 rows (limit: 10000)"
+      ],
+      "blocked_reasons": [
+        "Column access denied for role 'viewer': ['total_cost']",
+        "Column access denied for role 'viewer': ['unit_cost']",
+        "Column access denied for role 'viewer': ['shipping_cost']",
+        "Column access denied for role 'viewer': ['total_cost']",
+        "Column access denied for role 'viewer': ['total_cost']",
+        "Column access denied for role 'viewer': ['unit_cost', 'total_cost', 'shipping_cost', 'warehouse_cost', 'supplier']",
+        "Component type 'table' not allowed for role 'viewer'",
+        "Too many components for role 'viewer' (max 4)",
+        "Role 'viewer' does not have 'create_app' capability"
+      ],
+      "audit_entry_id": "4710db78"
+    }
+  }
+}
