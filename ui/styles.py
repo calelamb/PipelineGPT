@@ -360,8 +360,8 @@ section[data-testid="stSidebar"] .stButton > button:hover {
 [data-testid="stExpander"] > details > summary,
 details[data-testid="stExpanderDetails"] > summary,
 .streamlit-expanderHeader {
-    background-color: var(--bg-card) !important;
-    background: var(--bg-card) !important;
+    background-color: #f3f4f6 !important;
+    background: #f3f4f6 !important;
     color: var(--text-primary) !important;
     font-family: var(--font) !important;
     font-size: 13px !important;
@@ -369,6 +369,7 @@ details[data-testid="stExpanderDetails"] > summary,
     border: none !important;
     border-radius: var(--radius-lg) var(--radius-lg) 0 0 !important;
     padding: 12px 16px !important;
+    cursor: pointer !important;
 }
 /* Fix the expander toggle — kill ALL markers and Material Icon spans */
 .stExpander summary::marker,
@@ -382,6 +383,25 @@ details summary::marker {
 [data-testid="stExpander"] summary::-webkit-details-marker,
 details summary::-webkit-details-marker {
     display: none !important;
+}
+/* Custom chevron arrow via ::before pseudo-element */
+.stExpander summary::before,
+[data-testid="stExpander"] summary::before {
+    content: "›" !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 20px !important;
+    line-height: 1 !important;
+    color: var(--text-secondary) !important;
+    margin-right: 8px !important;
+    transition: transform 0.2s ease !important;
+    transform: rotate(0deg) !important;
+    flex-shrink: 0 !important;
+}
+.stExpander details[open] summary::before,
+[data-testid="stExpander"] details[open] summary::before {
+    transform: rotate(90deg) !important;
 }
 /*
  * NUCLEAR FIX for garbled expander text.
@@ -416,7 +436,7 @@ details summary {
     font-family: var(--font) !important;
     font-weight: 500 !important;
 }
-/* Hide the Material Icons toggle icon span */
+/* Hide the Material Icons toggle icon span (we use ::before instead) */
 .stExpander summary > span:first-child,
 [data-testid="stExpander"] summary > span:first-child,
 .stExpander summary [data-testid="stExpanderToggleIcon"],
@@ -425,15 +445,19 @@ details summary {
     width: 0 !important;
     overflow: hidden !important;
 }
-/* Hide SVG arrows */
+/* Hide SVG arrows (we use CSS ::before chevron) */
 .stExpander summary svg,
 [data-testid="stExpander"] summary svg {
     display: none !important;
 }
 .stExpander summary:hover,
 [data-testid="stExpander"] summary:hover {
-    background-color: var(--bg-hover) !important;
-    background: var(--bg-hover) !important;
+    background-color: #e9eaec !important;
+    background: #e9eaec !important;
+}
+.stExpander summary:hover::before,
+[data-testid="stExpander"] summary:hover::before {
+    color: var(--text-primary) !important;
 }
 /* Expander content area */
 .stExpander [data-testid="stExpanderDetails"],
