@@ -27,7 +27,7 @@ You are building the **ENGINE LAYER** of StackForge — an AI Data App Factory t
 - `engine/governance.py` — You create a complete working skeleton here. **Person 3 owns deepening this** but it must be functional and integrated.
 
 **FILES YOU DO NOT TOUCH:**
-- Anything in `ui/` folder — **Person 2 owns the React frontend entirely**
+- Anything in `ui/` folder — **Person 2 owns the Streamlit UI entirely**
 
 **THE CONTRACT:**
 The `app_definition` JSON is the interface between your engine and Person 2's UI. It must match the schema exactly (defined in SECTION 3 of your PRD). Person 2 will receive this JSON and render it. Person 3 will consume it for governance checks.
@@ -64,7 +64,7 @@ StackForge/
 ├── .gitignore                    (standard Python)
 ├── requirements.txt              (Person 1 specifies all deps)
 ├── config.py                     (Person 1: Core configuration)
-├── main.py                       (Person 1: FastAPI endpoint)
+├── app.py                        (Person 2: Streamlit main app — DO NOT TOUCH)
 ├── data/
 │   └── sample_data_loader.py     (Person 1: DuckDB + sample data)
 ├── engine/
@@ -73,13 +73,10 @@ StackForge/
 │   ├── validator.py              (Person 1: Validation + explanations)
 │   └── governance.py             (Person 1: Skeleton; Person 3 extends)
 ├── ui/                           (PERSON 2 ONLY — DO NOT TOUCH)
-│   ├── public/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   └── App.jsx
-│   ├── package.json
-│   └── vite.config.js
+│   ├── chat.py
+│   ├── dashboard.py
+│   ├── engine_view.py
+│   └── styles.py
 ├── tests/
 │   ├── test_intent_parser.py
 │   ├── test_executor.py
@@ -89,7 +86,7 @@ StackForge/
     └── APP_DEFINITION_SCHEMA.md  (contract; auto-generated or manual)
 ```
 
-**Note:** Person 2 creates and owns everything in `ui/`. Person 1 creates engine layer. Person 3 owns `governance.py` deepening (but Person 1 ships skeleton).
+**Note:** Person 2 creates and owns `app.py` (Streamlit) and everything in `ui/`. Person 1 creates engine layer. Person 3 owns `governance.py` deepening (but Person 1 ships skeleton). **We are using Streamlit, NOT FastAPI/React.**
 
 ---
 
@@ -101,10 +98,9 @@ duckdb==1.2.0
 pandas==2.2.0
 python-dotenv==1.0.0
 pydantic==2.5.0
-fastapi==0.115.0
-uvicorn==0.30.0
+streamlit==1.40.0
+plotly==5.24.0
 numpy==1.26.0
-sqlalchemy==2.0.25
 requests==2.32.0
 ```
 
@@ -1620,155 +1616,91 @@ if __name__ == "__main__":
 
 ---
 
-### 2.8 `main.py` — FastAPI Entry Point
+### 2.8 `engine/pipeline.py` — Full Pipeline Runner (for Streamlit integration)
+
+**IMPORTANT:** We are using **Streamlit**, NOT FastAPI. There is no REST API. Person 2's `app.py` (Streamlit) will import your engine functions directly as Python calls. This file provides a convenience wrapper that runs the full pipeline in one call.
 
 ```python
-import os
 import logging
-from fastapi import FastAPI, HTTPException, BackgroundTasks
-from pydantic import BaseModel
 from typing import Optional, Dict, Any
-import json
 
-from data.sample_data_loader import get_connection
+from data.sample_data_loader import get_connection, get_table_schema, get_sample_data
 from engine.intent_parser import parse_intent
 from engine.executor import execute_app_components
 from engine.validator import validate_and_explain
 from engine.governance import run_governance_checks
 
-# ============================================================================
-# LOGGING
-# ============================================================================
-
-logging.basicConfig(
-    level=os.getenv("LOG_LEVEL", "INFO"),
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-)
 logger = logging.getLogger(__name__)
 
-# ============================================================================
-# FASTAPI APP
-# ============================================================================
 
-app = FastAPI(
-    title="StackForge Engine",
-    description="AI Data App Factory Engine Layer",
-    version="0.1.0",
-)
-
-# ============================================================================
-# REQUEST/RESPONSE MODELS
-# ============================================================================
-
-
-class ParseIntentRequest(BaseModel):
-    user_message: str
-    existing_app: Optional[Dict[str, Any]] = None
-
-
-class ExecuteAppRequest(BaseModel):
-    app_definition: Dict[str, Any]
-    filters: Optional[Dict[str, Any]] = None
-    role: str = "analyst"
-
-
-class AppResponse(BaseModel):
-    app_definition: Dict[str, Any]
-    execution_results: Dict[str, Any]
-    validation: Dict[str, Any]
-    governance: Dict[str, Any]
-
-
-# ============================================================================
-# ENDPOINTS
-# ============================================================================
-
-
-@app.post("/parse_intent")
-async def endpoint_parse_intent(request: ParseIntentRequest) -> Dict[str, Any]:
+def run_pipeline(
+    user_message: str,
+    existing_app: Optional[Dict[str, Any]] = None,
+    filters: Optional[Dict[str, Any]] = None,
+    role: str = "analyst",
+) -> Dict[str, Any]:
     """
-    Parse user message into an app_definition.
+    Full StackForge pipeline: parse → execute → validate → govern.
 
-    Input: Natural language query
-    Output: JSON app definition (visualizations + filters)
+    This is the main entry point that Person 2's Streamlit app calls.
+
+    Args:
+        user_message: Natural language query from the user
+        existing_app: Previous app_definition for conversational refinement
+        filters: User-selected filter values from the sidebar
+        role: User role (admin/analyst/viewer)
+
+    Returns:
+        Dict with keys: app_definition, execution_results, validation, governance
     """
-    try:
-        logger.info(f"Parsing intent: {request.user_message[:50]}...")
-        app_definition = parse_intent(
-            request.user_message,
-            existing_app=request.existing_app,
-        )
-        return {"success": True, "app_definition": app_definition}
-    except Exception as e:
-        logger.error(f"Parse intent failed: {e}")
-        raise HTTPException(status_code=400, detail=str(e))
+    conn = get_connection()
 
-
-@app.post("/execute_app")
-async def endpoint_execute_app(request: ExecuteAppRequest) -> AppResponse:
-    """
-    Execute an app definition: run all queries, validate, check governance.
-
-    Input: app_definition + filters + role
-    Output: Execution results + validation report + governance checks
-    """
-    try:
-        logger.info(f"Executing app: {request.app_definition.get('app_title')}")
-
-        conn = get_connection()
-
-        # 1. Execute queries
-        execution_results = execute_app_components(
-            conn,
-            request.app_definition,
-            filters=request.filters,
-        )
-
-        # 2. Validate
-        validation = validate_and_explain(
-            request.app_definition,
-            execution_results,
-        )
-
-        # 3. Governance
-        governance = run_governance_checks(
-            request.app_definition,
-            role=request.role,
-            execution_results=execution_results,
-        )
-
-        # Convert DataFrames to dict for JSON serialization
-        for component_id, result in execution_results.items():
-            if "data" in result and hasattr(result["data"], "to_dict"):
-                result["data"] = result["data"].to_dict(orient="records")
-
-        return AppResponse(
-            app_definition=request.app_definition,
-            execution_results=execution_results,
-            validation=validation,
-            governance=governance,
-        )
-
-    except Exception as e:
-        logger.error(f"Execute app failed: {e}")
-        raise HTTPException(status_code=400, detail=str(e))
-
-
-@app.get("/health")
-async def health_check() -> Dict[str, str]:
-    """Health check endpoint."""
-    return {"status": "ok", "service": "StackForge Engine"}
-
-
-if __name__ == "__main__":
-    import uvicorn
-
-    uvicorn.run(
-        app,
-        host="0.0.0.0",
-        port=8000,
-        log_level=os.getenv("LOG_LEVEL", "info").lower(),
+    # 1. Parse intent → app_definition
+    app_definition = parse_intent(
+        user_message,
+        existing_app=existing_app,
+        table_schema=get_table_schema(conn),
+        sample_data=get_sample_data(conn),
     )
+
+    # 2. Execute SQL queries via DuckDB
+    execution_results = execute_app_components(
+        conn, app_definition, filters=filters
+    )
+
+    # 3. Validate and generate explanations
+    validation = validate_and_explain(app_definition, execution_results)
+
+    # 4. Run governance checks
+    governance = run_governance_checks(
+        app_definition, role=role, execution_results=execution_results
+    )
+
+    # Convert DataFrames to dicts for Streamlit/Plotly consumption
+    for component_id, result in execution_results.items():
+        if "data" in result and hasattr(result["data"], "to_dict"):
+            result["data"] = result["data"].to_dict(orient="records")
+
+    return {
+        "app_definition": app_definition,
+        "execution_results": execution_results,
+        "validation": validation,
+        "governance": governance,
+    }
+```
+
+**How Person 2 calls this from Streamlit:**
+```python
+# In app.py (Person 2's file)
+from engine.pipeline import run_pipeline
+
+result = run_pipeline(
+    user_message=user_input,
+    existing_app=st.session_state.get("current_app"),
+    filters=st.session_state.get("active_filters"),
+    role=st.session_state.get("user_role", "analyst"),
+)
+st.session_state["current_app"] = result["app_definition"]
 ```
 
 ---
@@ -2112,7 +2044,7 @@ By the end of 19 hours, you must deliver:
 5. ✅ **Conversational Refinement** — Existing apps can be modified, not rebuilt
 6. ✅ **Validation & Explanations** — Clear warnings and user-friendly descriptions
 7. ✅ **Governance Integration** — Person 3 can plug into run_governance_checks() and extend
-8. ✅ **FastAPI Server** — /parse_intent and /execute_app endpoints working
+8. ✅ **Pipeline Runner** — `engine/pipeline.py` run_pipeline() works end-to-end and Person 2 can call it directly from Streamlit
 9. ✅ **Testing Coverage** — 24 test cases covering intent parser, executor, validator, governance, integration
 
 ### Communication with Team
@@ -2132,6 +2064,6 @@ By the end of 19 hours, you must deliver:
 
 - DuckDB Docs: https://duckdb.org/docs/
 - OpenAI Function Calling: https://platform.openai.com/docs/guides/function-calling
-- FastAPI Docs: https://fastapi.tiangolo.com/
+- Streamlit Docs: https://docs.streamlit.io/ (Person 2's domain, but good to understand how your engine gets called)
 
 **Good luck! You've got this. 🚀**
