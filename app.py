@@ -104,6 +104,22 @@ def call_pipeline(user_prompt: str) -> dict:
     )
 
 
+def _save_graph_output(result: dict, prompt: str) -> Path:
+    """Persist a pipeline result to graphs/<timestamp>.json and return the path."""
+    graphs_dir = Path("graphs")
+    graphs_dir.mkdir(exist_ok=True)
+    ts = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+    out_path = graphs_dir / f"output_{ts}.json"
+    payload = {
+        "saved_at": datetime.now().isoformat(),
+        "prompt": prompt,
+        "result": result,
+    }
+    with open(out_path, "w") as f:
+        json.dump(payload, f, default=str, indent=2)
+    return out_path
+
+
 def process_prompt(prompt: str):
     """Run pipeline, store results, add to chat with inline result."""
     st.session_state.messages.append({
@@ -113,6 +129,9 @@ def process_prompt(prompt: str):
     result = call_pipeline(prompt)
     st.session_state.pipeline_result = result
     st.session_state.current_app = result.get("app_definition")
+
+    # Persist to graphs/ folder
+    _save_graph_output(result, prompt)
 
     gov = result.get("governance", {})
     app_def = result.get("app_definition", {})
@@ -859,6 +878,18 @@ def main():
             "Show Engine", value=st.session_state.show_engine
         )
 
+        # ── Graph History (all roles) ──
+        st.markdown("<hr>", unsafe_allow_html=True)
+        st.markdown('<div class="section-label">History</div>', unsafe_allow_html=True)
+        if st.session_state.current_page == "graph_history":
+            if st.button("Back to Chat", key="back_from_history", use_container_width=True):
+                st.session_state.current_page = "chat"
+                st.rerun()
+        else:
+            if st.button("Graph History", key="graph_history_btn", use_container_width=True):
+                st.session_state.current_page = "graph_history"
+                st.rerun()
+
         # ── Admin: Audit History ──
         if role == "admin":
             st.markdown("<hr>", unsafe_allow_html=True)
@@ -888,6 +919,8 @@ def main():
     # ── Page routing ──
     if st.session_state.current_page == "audit_history" and role == "admin":
         _render_audit_history()
+    elif st.session_state.current_page == "graph_history":
+        _render_graph_history()
     else:
         # ── Layout: chat + optional engine right panel ──
         _engine_on = st.session_state.show_engine and st.session_state.get("pipeline_result")
@@ -918,6 +951,90 @@ def main():
             with st.spinner("Building..."):
                 process_prompt(user_input)
             st.rerun()
+
+
+def _render_graph_history():
+    """All roles: browse previously generated dashboards saved in graphs/."""
+    st.markdown(
+        f'<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">'
+        f'{LUCIDE["bar-chart-3"]}'
+        f'<span style="font-size:22px;font-weight:700;letter-spacing:-0.02em">Graph History</span>'
+        f'</div>'
+        f'<p style="color:#6b7280;font-size:13px;margin-bottom:20px">'
+        f'All dashboards generated in this workspace, newest first.</p>',
+        unsafe_allow_html=True,
+    )
+
+    graphs_dir = Path("graphs")
+    if not graphs_dir.exists():
+        st.info("No saved graphs yet. Generate a dashboard in the chat to get started.")
+        return
+
+    files = sorted(graphs_dir.glob("output_*.json"), reverse=True)
+    if not files:
+        st.info("No saved graphs yet. Generate a dashboard in the chat to get started.")
+        return
+
+    st.markdown(
+        f'<p style="color:#6b7280;font-size:12px;margin-bottom:12px">{len(files)} saved dashboard(s)</p>',
+        unsafe_allow_html=True,
+    )
+
+    for f in files:
+        try:
+            with open(f, "r") as fh:
+                payload = json.load(fh)
+        except (json.JSONDecodeError, OSError):
+            continue
+
+        result = payload.get("result", {})
+        prompt = payload.get("prompt", "")
+        saved_at = payload.get("saved_at", "")
+        app_def = result.get("app_definition", {})
+        gov = result.get("governance", {})
+        app_title = app_def.get("app_title", "Dashboard")
+        n_comps = len(app_def.get("components", []))
+        passed = gov.get("passed", True)
+
+        try:
+            dt = datetime.fromisoformat(saved_at)
+            ts_display = dt.strftime("%b %d %Y · %H:%M:%S")
+        except Exception:
+            ts_display = saved_at[:19] if saved_at else f.stem
+
+        status_badge = (
+            '<span style="background:#dcfce7;color:#16a34a;font-size:10px;'
+            'font-weight:600;padding:2px 7px;border-radius:4px">Passed</span>'
+            if passed else
+            '<span style="background:#fee2e2;color:#dc2626;font-size:10px;'
+            'font-weight:600;padding:2px 7px;border-radius:4px">Blocked</span>'
+        )
+
+        with st.expander(
+            f"{app_title}  ·  {ts_display}  ·  {n_comps} components",
+            expanded=False,
+        ):
+            st.markdown(
+                f'<p style="color:#6b7280;font-size:12px;margin-bottom:8px">'
+                f'<strong>Prompt:</strong> {prompt}</p>',
+                unsafe_allow_html=True,
+            )
+            st.markdown(status_badge, unsafe_allow_html=True)
+            st.markdown('<div style="height:8px"></div>', unsafe_allow_html=True)
+
+            # Re-render the dashboard using the stored execution results
+            _render_inline_dashboard(result)
+
+            col_dl, _ = st.columns([1, 4])
+            with col_dl:
+                with open(f, "rb") as fh:
+                    st.download_button(
+                        "Download JSON",
+                        data=fh,
+                        file_name=f.name,
+                        mime="application/json",
+                        key=f"dl_{f.stem}",
+                    )
 
 
 def _render_audit_history():
