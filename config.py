@@ -36,7 +36,7 @@ PII_PATTERNS = {
 }
 
 # ============================================================================
-# ROLE-BASED ACCESS CONTROL
+# ROLE-BASED ACCESS CONTROL (ENHANCED)
 # ============================================================================
 
 ROLES = {
@@ -44,24 +44,39 @@ ROLES = {
         "display_name": "Administrator",
         "capabilities": [
             "view_all_data",
+            "view_sensitive_data",
+            "view_pii",
             "export_data",
+            "export_sensitive",
             "create_app",
             "modify_app",
             "delete_app",
-            "view_pii",
-            "audit_trail",
+            "view_audit_trail",
+            "manage_roles",
+            "bypass_row_limit",
         ],
-        "max_rows_per_query": None,  # No limit
+        "max_rows_per_query": None,         # No limit
+        "max_components_per_app": 8,
+        "allowed_component_types": None,    # All types
+        "can_use_templates": True,
+        "session_timeout_minutes": 480,     # 8 hours
+        "export_formats": ["csv", "json", "pdf"],
     },
     "analyst": {
         "display_name": "Data Analyst",
         "capabilities": [
             "view_all_data",
+            "view_sensitive_data",
             "export_data",
             "create_app",
             "modify_app",
         ],
         "max_rows_per_query": 100000,
+        "max_components_per_app": 6,
+        "allowed_component_types": None,    # All types
+        "can_use_templates": True,
+        "session_timeout_minutes": 240,     # 4 hours
+        "export_formats": ["csv", "json"],
     },
     "viewer": {
         "display_name": "Viewer",
@@ -69,8 +84,66 @@ ROLES = {
             "view_all_data",
         ],
         "max_rows_per_query": 10000,
+        "max_components_per_app": 4,
+        "allowed_component_types": [
+            "bar_chart", "line_chart", "pie_chart",
+            "kpi_card", "metric_highlight",
+        ],  # No table or scatter_plot (can't see raw data)
+        "can_use_templates": False,
+        "session_timeout_minutes": 60,      # 1 hour
+        "export_formats": [],               # No export
     },
 }
+
+# ============================================================================
+# DATA SENSITIVITY CLASSIFICATION
+# ============================================================================
+
+COLUMN_SENSITIVITY = {
+    # Public — all roles can see
+    "public": [
+        "order_id", "order_date", "region", "product", "category",
+        "shipping_mode", "quantity",
+    ],
+    # Internal — analyst and admin only
+    "internal": [
+        "unit_cost", "total_cost", "shipping_cost", "warehouse_cost",
+        "defect_rate",
+    ],
+    # Restricted — admin only
+    "restricted": [
+        "supplier",  # Supplier names are business-sensitive
+    ],
+}
+
+# Reverse lookup: column → sensitivity level
+COLUMN_SENSITIVITY_MAP = {}
+for level, columns in COLUMN_SENSITIVITY.items():
+    for col in columns:
+        COLUMN_SENSITIVITY_MAP[col] = level
+
+# Which roles can access which sensitivity levels
+SENSITIVITY_ACCESS = {
+    "admin": ["public", "internal", "restricted"],
+    "analyst": ["public", "internal"],
+    "viewer": ["public"],
+}
+
+# ============================================================================
+# SQL SECURITY
+# ============================================================================
+
+# SQL keywords that should NEVER appear in generated queries
+SQL_BLOCKLIST = [
+    "DROP", "DELETE", "UPDATE", "INSERT", "ALTER", "CREATE",
+    "TRUNCATE", "EXEC", "EXECUTE", "GRANT", "REVOKE",
+    "UNION",  # Prevent UNION injection
+    "INTO OUTFILE", "INTO DUMPFILE",  # File write attempts
+    "LOAD_EXTENSION",  # DuckDB-specific: prevent loading extensions
+]
+
+# Max query length (characters) — prevents prompt injection via massive queries
+MAX_QUERY_LENGTH = 2000
 
 # ============================================================================
 # APPLICATION TEMPLATES
