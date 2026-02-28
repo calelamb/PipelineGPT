@@ -1,0 +1,56 @@
+{
+  "test_name": "View Delayed Shipments by Supplier",
+  "role": "administrator",
+  "timestamp": "2026-02-28T01:14:39.726655",
+  "suppliers": [
+    "Superior Materials",
+    "Reliable Suppliers Co"
+  ],
+  "delayed_shipments": [
+    {
+      "shipment_id": "SHIP-001",
+      "supplier": "Superior Materials",
+      "order_id": "ORD-12345",
+      "order_details": {
+        "items": 150,
+        "total_value": 45000.0,
+        "order_date": "2024-01-15"
+      },
+      "delivery_performance": {
+        "expected_delivery": "2024-02-01",
+        "actual_delivery": "2024-02-15",
+        "days_delayed": 14
+      },
+      "costs": {
+        "base_cost": 45000.0,
+        "delay_charges": 2250.0,
+        "total_cost": 47250.0
+      }
+    },
+    {
+      "shipment_id": "SHIP-002",
+      "supplier": "Reliable Suppliers Co",
+      "order_id": "ORD-12346",
+      "order_details": {
+        "items": 200,
+        "total_value": 62000.0,
+        "order_date": "2024-01-20"
+      },
+      "delivery_performance": {
+        "expected_delivery": "2024-02-05",
+        "actual_delivery": "2024-02-12",
+        "days_delayed": 7
+      },
+      "costs": {
+        "base_cost": 62000.0,
+        "delay_charges": 1240.0,
+        "total_cost": 63240.0
+      }
+    }
+  ],
+  "summary": {
+    "total_delayed_shipments": 2,
+    "total_delay_days": 21,
+    "total_delay_charges": 3490.0
+  }
+}

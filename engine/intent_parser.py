@@ -255,7 +255,7 @@ def parse_intent(
     client = OpenAI(api_key=api_key, base_url=base_url)
 
     # Call LLM with tool calling
-    model = os.getenv("OPENAI_MODEL", "openai/gpt-4.1")
+    model = os.getenv("OPENAI_MODEL", "openai/gpt-4o-mini")  # Changed to a more available model
     try:
         response = client.chat.completions.create(
             model=model,
@@ -267,6 +267,7 @@ def parse_intent(
             tool_choice={"type": "function", "function": {"name": "create_data_app"}},
             temperature=0.3,
             max_completion_tokens=4096,
+            timeout=30,  # Add 30 second timeout
         )
     except Exception as e:
         logger.error(f"OpenAI API error: {e}")
